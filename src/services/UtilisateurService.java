@@ -37,6 +37,7 @@ public class UtilisateurService {
                 throw new Exception("Utilisateur non trouvé");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
         

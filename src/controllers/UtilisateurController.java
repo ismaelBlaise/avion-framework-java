@@ -23,7 +23,7 @@ public class UtilisateurController {
             if(role.getRole().equals("admin")){
                 modelAndView.setUrl("template-back.jsp");
             }
-            else if(role.getRole().equals("utilisateur")){  
+            else if(role.getRole().equals("passager")){  
                 modelAndView.setUrl("template-front.jsp");
             }
         } catch (Exception e) {

@@ -41,7 +41,7 @@
 
             <div class="mb-3">
                 <label class="block text-gray-700">Contact</label>
-                <input type="text" placeholder="Numéro de telephone"
+                <input type="text" placeholder="Numero de telephone"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
