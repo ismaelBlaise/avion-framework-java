@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Aéroport</title>
+    <title>Connexion - Aeroport</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -15,8 +15,14 @@
         </div>
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Connexion</h2>
 
-        <!-- Formulaire -->
-        <form>
+        <!-- Affichage du message d'erreur -->
+        <% String erreur = (String) request.getAttribute("erreur"); %>
+        <% if (erreur != null) { %>
+            <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
+                <%= erreur %>
+            </div>
+        <% } %>
+        <form action="login" method="post"> 
             <div class="mb-4">
                 <label class="block text-gray-700">Email</label>
                 <div class="flex items-center border rounded-lg px-3 py-2 mt-1">
@@ -43,10 +49,9 @@
 
         <!-- Liens -->
         <div class="text-center mt-4">
-            
             <p class="text-sm mt-2">
                 Pas encore inscrit ?
-                <a href="signup.jsp" class="text-blue-500 hover:underline">Créer un compte</a>
+                <a href="roles" class="text-blue-500 hover:underline">Creer un compte</a>
             </p>
         </div>
     </div>

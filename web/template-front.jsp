@@ -10,7 +10,7 @@
     
     <header class="bg-white shadow-md fixed top-0 w-full flex items-center justify-between px-6 py-4">
         <div class="flex items-center space-x-4">
-            <span class="text-xl font-semibold">Aéroport</span>
+            <span class="text-xl font-semibold">Aeroport</span>
             <button class="text-gray-700 text-2xl">&#9776;</button>
         </div>
         <div class="flex items-center space-x-4">

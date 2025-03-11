@@ -14,10 +14,10 @@ INSERT INTO statuts (statut) VALUES ('Réservé'), ('Annulé'), ('Confirmé');
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 
 -- Utilisateurs
-INSERT INTO utilisateurs (nom, prenom, email, contact, mdp, id_role) VALUES
-('Admin', 'Super', 'admin@gmail.com', '770001122', 'admin123', 1),
-('Diop', 'Mamadou', 'mamadou@gmail.com', '771234567', 'pass123', 2),
-('Fall', 'Aissatou', 'aissatou@gmail.com', '776543210', 'pass456', 2);
+INSERT INTO utilisateurs (nom, prenom, email,date_naissance, contact, mdp, id_role) VALUES
+('Admin', 'Super', 'admin@gmail.com','2020-02-25', '770001122', 'admin123', 1),
+('Diop', 'Mamadou', 'mamadou@gmail.com', '2020-02-25','771234567', 'pass123', 2),
+('Fall', 'Aissatou', 'aissatou@gmail.com', '2020-02-25','776543210', 'pass456', 2);
 
 -- Vols
 INSERT INTO vols (numero, date_vol, heure_depart, heure_arrive, heure_reservation, heure_annulation, id_statut, id_ville_depart, id_ville_arrive, id_avion) VALUES

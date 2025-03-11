@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Back Office - Aéroport</title>
+    <title>Back Office - Aeroport</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
     
     <header class="bg-white shadow-md fixed top-0 w-full flex items-center justify-between px-6 py-4">
         <div class="flex items-center space-x-4">
-            <span class="text-xl font-semibold">Aéroport</span>
+            <span class="text-xl font-semibold">Aeroport</span>
             <button class="text-gray-700 text-2xl">&#9776;</button>
         </div>
         <div class="flex items-center space-x-4">
@@ -18,7 +18,7 @@
             <div class="relative">
                 <button class="text-gray-700 font-medium">K. Anderson ▼</button>
                 <ul class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md hidden group-hover:block">
-                    <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Déconnexion</li>
+                    <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Deconnexion</li>
                 </ul>
             </div>
         </div>
