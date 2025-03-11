@@ -5,19 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Login Aéroport</title>
+  <title>Pages / Sign up Aéroport</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <!-- <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> -->
-
-  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -26,16 +20,8 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -54,43 +40,62 @@
                   <span class="d-none d-lg-block">Aéroport</span>
                 </a>
               </div><!-- End Logo -->
-              <% 
-                  if(request.getAttribute("erreur")!=null){
-                    out.println(request.getAttribute("erreur"));
-                  }
-              %>
+
               <div class="card mb-3">
 
                 <div class="card-body">
 
                   <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Se connecter</h5>
+                    <h5 class="card-title text-center pb-0 fs-4">Creer un compte</h5>
                     <p class="text-center small">Entrer votre email et mot de  passe</p>
                   </div>
 
-                  <form action="login" method="post" class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" novalidate>
+                    <div class="col-12">
+                        <label for="yourName" class="form-label">Nom</label>
+                        <input type="text" name="nom" class="form-control" id="yourName" required>
+                        <div class="invalid-feedback">Vérifier votre nom</div>
+                      </div>
 
+                      <div class="col-12">
+                        <label for="yourName" class="form-label">Prénom</label>
+                        <input type="text" name="prenom" class="form-control" id="yourName" required>
+                        <div class="invalid-feedback">Vérifier votre prénom</div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="yourName" class="form-label">Conact</label>
+                        <input type="text" name="contact" class="form-control" id="yourName" required>
+                        <div class="invalid-feedback">Vérifier votre contact</div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="yourName" class="form-label">Date de naissance</label>
+                        <input type="date" name="contact" class="form-control" id="yourName" required>
+                        <div class="invalid-feedback">Vérifier votre date de naissance</div>
+                      </div>
+  
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="user.email" class="form-control" id="yourUsername" required>
+                        <input type="text" name="email" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Vérifier votre adresse email.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Mot de passe</label>
-                      <input type="password" name="user.mdp" class="form-control" id="yourPassword" required>
+                      <input type="password" name="password" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Vérifier votre mot de passe</div>
                     </div>
 
                     
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Se connecter</button>
+                      <button class="btn btn-primary w-100" type="submit">Creer un compte</button>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">Pas encore de compte? <a href="signup.jsp">creer un compte</a></p>
+                      <p class="small mb-0">Déja un compte? <a href="index.jsp">se connecter</a></p>
                     </div>
                   </form>
 

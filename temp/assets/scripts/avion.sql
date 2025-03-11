@@ -37,6 +37,7 @@ CREATE TABLE utilisateurs (
    nom VARCHAR(250) NOT NULL,
    prenom VARCHAR(250) NOT NULL,
    email VARCHAR(250) UNIQUE NOT NULL,
+   date_naissance DATE NOT NULL,
    contact VARCHAR(50) NOT NULL,
    mdp VARCHAR(250) NOT NULL,
    id_role INTEGER NOT NULL,

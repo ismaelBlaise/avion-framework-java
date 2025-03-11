@@ -54,7 +54,11 @@
                   <span class="d-none d-lg-block">Aéroport</span>
                 </a>
               </div><!-- End Logo -->
-
+              <% 
+                  if(request.getAttribute("erreur")!=null){
+                    out.println(request.getAttribute("erreur"));
+                  }
+              %>
               <div class="card mb-3">
 
                 <div class="card-body">
@@ -64,20 +68,20 @@
                     <p class="text-center small">Entrer votre email et mot de  passe</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form action="login" method="post" class="row g-3 needs-validation" novalidate>
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="email" class="form-control" id="yourUsername" required>
+                        <input type="text" name="user.email" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Vérifier votre adresse email.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Mot de passe</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <input type="password" name="user.mdp" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Vérifier votre mot de passe</div>
                     </div>
 

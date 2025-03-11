@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import models.Role;
 import models.Utilisateur;
 import util.CustomSession;
 import utils.DbConnect;
 
 public class UtilisateurService {
 
-    public void login(CustomSession customSession, String email, String password) throws Exception {
+    public Role login(CustomSession customSession, String email, String password) throws Exception {
         try (Connection connection = DbConnect.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM utilisateurs WHERE email = ?");
             preparedStatement.setString(1, email);
@@ -24,7 +25,11 @@ public class UtilisateurService {
                 utilisateur = utilisateur.toUtilisateur(resultSet);
 
                 if (utilisateur.getMdp().equals(password)) {
+                    preparedStatement.close();
+                    resultSet.close();
                     customSession.add("id", utilisateur.getIdUtilisateur());
+                    RoleService roleService=new RoleService();
+                    return roleService.findById(utilisateur.getIdRole());
                 } else {
                     throw new Exception("Mot de passe incorrect");
                 }
@@ -34,6 +39,7 @@ public class UtilisateurService {
         } catch (Exception e) {
             throw e;
         }
+        
     }
 
     public void register(String nom, String prenom, String email, String dateNaissance, String contact, String mdp) throws Exception {
