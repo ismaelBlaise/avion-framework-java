@@ -15,7 +15,7 @@ public class SignupDto {
     String contact;
     @FieldAnnotation(name = "mdp")
     String mdp;
-    @FieldAnnotation(name = "idRole")
+    @FieldAnnotation(name = "role")
     String idRole;
     public String getNom() {
         return nom;

@@ -75,7 +75,7 @@ public class UtilisateurService {
             preparedStatement.setString(4, dateNaissance);
             preparedStatement.setString(5, contact);
             preparedStatement.setString(6, mdp);
-            preparedStatement.setString(7, idRole);
+            preparedStatement.setInt(7,Integer.valueOf(idRole));
 
             preparedStatement.executeUpdate();
 

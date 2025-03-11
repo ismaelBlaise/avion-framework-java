@@ -29,25 +29,25 @@
         <form>
             <div class="mb-3">
                 <label class="block text-gray-700">Nom</label>
-                <input type="text" placeholder="Votre nom"
+                <input type="text" name="user.nom" placeholder="Votre nom"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700">Prenom</label>
-                <input type="text" placeholder="Votre prenom"
+                <input type="text" name="user.prenom" placeholder="Votre prenom"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700">Contact</label>
-                <input type="text" placeholder="Numéro de telephone"
+                <input type="text" name="user.contact" placeholder="Numero de telephone"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700">Date de naissance</label>
-                <input type="date"
+                <input type="date" name="user.dateNaissance"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
@@ -55,7 +55,7 @@
                 <label class="block text-gray-700">Email</label>
                 <div class="flex items-center border rounded-lg px-3 py-2 mt-1">
                     <i data-lucide="mail" class="w-5 h-5 text-gray-500"></i>
-                    <input type="email" placeholder="exemple@email.com"
+                    <input type="email" name="user.email" placeholder="exemple@email.com"
                         class="w-full outline-none pl-2 text-gray-700">
                 </div>
             </div>
