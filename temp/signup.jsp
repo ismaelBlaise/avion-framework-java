@@ -1,3 +1,7 @@
+<%@ page import="java.util.List"%>
+<%@ page import="models.Role"%>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +18,15 @@
             <i data-lucide="airplane" class="w-12 h-12 text-blue-500"></i>
         </div>
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Créer un compte</h2>
-
+        <% 
+          String erreur = (String) request.getAttribute("erreur"); 
+          List<Role> roles=(List<Role>)request.getAttribute("roles"); 
+        %>
+        <% if (erreur != null) { %>
+            <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
+                <%= erreur %>
+            </div>
+        <% } %>
         <form>
             <div class="mb-3">
                 <label class="block text-gray-700">Nom</label>
@@ -49,11 +61,20 @@
                 </div>
             </div>
 
+            <div class="mb-3">
+              <label class="block text-gray-700">Rôle</label>
+              <select name="role" class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
+                  <option value="passager">Passager</option>
+                  <option value="agent">Agent</option>
+                  <option value="admin">Administrateur</option>
+              </select>
+          </div>
+
             <div class="mb-4">
                 <label class="block text-gray-700">Mot de passe</label>
                 <div class="flex items-center border rounded-lg px-3 py-2 mt-1">
                     <i data-lucide="lock" class="w-5 h-5 text-gray-500"></i>
-                    <input type="password" placeholder="••••••••"
+                    <input type="password" 
                         class="w-full outline-none pl-2 text-gray-700">
                 </div>
             </div>
@@ -66,7 +87,7 @@
 
         <div class="text-center mt-4">
             <p class="text-sm">
-                Déjà un compte ? <a href="login.html" class="text-blue-500 hover:underline">Se connecter</a>
+                Déjà un compte ? <a href="index.jsp" class="text-blue-500 hover:underline">Se connecter</a>
             </p>
         </div>
     </div>
