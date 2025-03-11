@@ -26,7 +26,7 @@
                 <%= erreur %>
             </div>
         <% } %>
-        <form>
+        <form action="register" method="post">
             <div class="mb-3">
                 <label class="block text-gray-700">Nom</label>
                 <input type="text" name="user.nom" placeholder="Votre nom"

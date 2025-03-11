@@ -37,7 +37,7 @@ public class UtilisateurController {
     @Url(url="register")
     @Post
     public ModelAndView register(@ParamObject(name = "user") SignupDto signupDto){
-        ModelAndView modelAndView=new ModelAndView("signup.jsp");
+        ModelAndView modelAndView=new ModelAndView("redirect:roles");
         try {
             UtilisateurService utilisateurService=new UtilisateurService();
             utilisateurService.register(signupDto.getNom(), signupDto.getPrenom(), signupDto.getEmail(), signupDto.getDateNaissance(), signupDto.getIdRole(), signupDto.getContact(), signupDto.getMdp());
