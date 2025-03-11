@@ -37,6 +37,7 @@ public class RoleService {
                 role=role.toRole(resultSet);
                 roles.add(role);
             }
+            
             preparedStatement.close();
             resultSet.close();
             return roles;
