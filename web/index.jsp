@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Aéroport</title>
+    <title>Connexion - Aeroport</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -49,10 +49,9 @@
 
         <!-- Liens -->
         <div class="text-center mt-4">
-            
             <p class="text-sm mt-2">
                 Pas encore inscrit ?
-                <a href="roles" class="text-blue-500 hover:underline">Créer un compte</a>
+                <a href="roles" class="text-blue-500 hover:underline">Creer un compte</a>
             </p>
         </div>
     </div>

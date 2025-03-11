@@ -1,13 +1,12 @@
 <%@ page import="java.util.List"%>
 <%@ page import="models.Role"%>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - Aéroport</title>
+    <title>Inscription - Aeroport</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -17,7 +16,7 @@
         <div class="flex justify-center mb-4">
             <i data-lucide="airplane" class="w-12 h-12 text-blue-500"></i>
         </div>
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Créer un compte</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Creer un compte</h2>
         <% 
           String erreur = (String) request.getAttribute("erreur"); 
           List<Role> roles=(List<Role>)request.getAttribute("roles"); 
@@ -35,14 +34,14 @@
             </div>
 
             <div class="mb-3">
-                <label class="block text-gray-700">Prénom</label>
-                <input type="text" placeholder="Votre prénom"
+                <label class="block text-gray-700">Prenom</label>
+                <input type="text" placeholder="Votre prenom"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700">Contact</label>
-                <input type="text" placeholder="Numéro de téléphone"
+                <input type="text" placeholder="Numéro de telephone"
                     class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
             </div>
 
@@ -62,11 +61,15 @@
             </div>
 
             <div class="mb-3">
-              <label class="block text-gray-700">Rôle</label>
+              <label class="block text-gray-700">Role</label>
               <select name="role" class="w-full border rounded-lg px-3 py-2 mt-1 outline-none text-gray-700">
-                  <option value="passager">Passager</option>
-                  <option value="agent">Agent</option>
-                  <option value="admin">Administrateur</option>
+                  <%
+                    for(Role role:roles){
+                  %>
+                    <option value="<%=role.getIdRole()%>"><%=role.getRole()%></option>
+                  <%
+                    }
+                  %>
               </select>
           </div>
 
@@ -87,7 +90,7 @@
 
         <div class="text-center mt-4">
             <p class="text-sm">
-                Déjà un compte ? <a href="index.jsp" class="text-blue-500 hover:underline">Se connecter</a>
+                Deja un compte ? <a href="index.jsp" class="text-blue-500 hover:underline">Se connecter</a>
             </p>
         </div>
     </div>
