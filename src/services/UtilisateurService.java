@@ -78,6 +78,8 @@ public class UtilisateurService {
             preparedStatement.setInt(7,Integer.valueOf(idRole));
 
             preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.commit();
 
         } catch (SQLException e) {
             throw new Exception("Erreur lors de l'enregistrement dans la base de données : " + e.getMessage(), e);

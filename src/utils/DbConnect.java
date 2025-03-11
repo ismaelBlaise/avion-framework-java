@@ -19,6 +19,7 @@ public class DbConnect {
                 
                 
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                connection.setAutoCommit(false);
                 System.out.println("Connexion réussie à la base de données.");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
