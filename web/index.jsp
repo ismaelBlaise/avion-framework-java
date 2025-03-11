@@ -27,7 +27,7 @@
                 <label class="block text-gray-700">Email</label>
                 <div class="flex items-center border rounded-lg px-3 py-2 mt-1">
                     <i data-lucide="mail" class="w-5 h-5 text-gray-500"></i>
-                    <input type="email" placeholder="exemple@email.com"
+                    <input type="email" name="user.email" placeholder="exemple@email.com"
                         class="w-full outline-none pl-2 text-gray-700">
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <label class="block text-gray-700">Mot de passe</label>
                 <div class="flex items-center border rounded-lg px-3 py-2 mt-1">
                     <i data-lucide="lock" class="w-5 h-5 text-gray-500"></i>
-                    <input type="password" 
+                    <input type="password"  name="user.mdp"
                         class="w-full outline-none pl-2 text-gray-700">
                 </div>
             </div>

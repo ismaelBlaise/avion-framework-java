@@ -15,6 +15,7 @@ public class RoleService {
             PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM roles WHERE id_role =?");
             preparedStatement.setLong(1, id);
             ResultSet resultSet=preparedStatement.executeQuery();
+            resultSet.next();
             Role role=new Role();
             role=role.toRole(resultSet);
             preparedStatement.close();

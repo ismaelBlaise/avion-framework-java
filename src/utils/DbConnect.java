@@ -12,6 +12,7 @@ public class DbConnect {
     private static Connection connection = null;
 
     public static Connection getConnection() throws SQLException {
+        Connection connection=null;
         if (connection == null) {
             try {
                 
