@@ -42,7 +42,7 @@ public class UtilisateurService {
         
     }
 
-    public void register(String nom, String prenom, String email, String dateNaissance, String contact, String mdp) throws Exception {
+    public void register(String nom, String prenom, String email, String dateNaissance,String idRole,String contact, String mdp) throws Exception {
         try (Connection connection = DbConnect.getConnection()) {
             
             PreparedStatement checkEmailStmt = connection.prepareStatement("SELECT * FROM utilisateurs WHERE email = ?");
@@ -68,13 +68,14 @@ public class UtilisateurService {
                 throw new Exception("Le format du contact est invalide");
             }
 
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO utilisateurs (nom, prenom, email, date_naissance, contact, mdp) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO utilisateurs (nom, prenom, email, date_naissance, contact, mdp,id_role) VALUES (?, ?, ?, ?, ?, ?,?)");
             preparedStatement.setString(1, nom);
             preparedStatement.setString(2, prenom);
             preparedStatement.setString(3, email);
             preparedStatement.setString(4, dateNaissance);
             preparedStatement.setString(5, contact);
             preparedStatement.setString(6, mdp);
+            preparedStatement.setString(7, idRole);
 
             preparedStatement.executeUpdate();
 
