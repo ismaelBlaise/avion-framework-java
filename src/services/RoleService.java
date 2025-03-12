@@ -40,7 +40,7 @@ public class RoleService {
             preparedStatement.close();
             resultSet.close();
             return roles;
-        } catch (Exception e) {
+        } catch (Exception e) { 
             throw e;
         }
     }
