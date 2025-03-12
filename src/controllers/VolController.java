@@ -126,6 +126,7 @@ public class VolController {
     @Get
     public ModelAndView configurationMenu(@Param(name = "id") String id) {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("id", id);
         modelAndView.setAttribute("page", "vols/menu-configuration.jsp");
         return modelAndView;
     }
@@ -135,6 +136,12 @@ public class VolController {
     public ModelAndView heureReservationForm(@Param(name = "id") String id) {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
+        try {
+            Vol vol = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
         return modelAndView;
     }
 }

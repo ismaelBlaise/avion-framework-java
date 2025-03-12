@@ -2,25 +2,25 @@
     <!-- Conteneur du menu -->
     <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">configurations</h2>
-        
+        <% String id=(String) request.getAttribute("id"); %>
         <!-- Boutons du menu -->
         <div class="flex flex-col space-y-3">
-            <a href="vols-heure-reservation-form">
+            <a href="vols-heure-reservation-fo?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure reservation
                 </button>
             </a>
-            <a href="vols-heure-annulation-form">
+            <a href="vols-heure-annulation-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure d'annulation
                 </button>
             </a>
-            <a href="vols-caracteristique-form">
+            <a href="vols-caracteristique-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Caracteristique du vol
                 </button>
             </a>
-            <a href="vols-promotion-form">
+            <a href="vols-promotion-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Promotions
                 </button>
