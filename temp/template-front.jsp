@@ -72,7 +72,7 @@
     </aside>
 
     <main class="ml-64 pt-20 p-6 lg:ml-0">
-        <jsp:include page="<%= (request.getAttribute(\"pages\") != null) ? request.getAttribute(\"pages\").toString() : \"accueil.jsp\" %>" />
+        <jsp:include page="<%= (request.getAttribute(\"page\") != null) ? request.getAttribute(\"page\").toString() : \"accueil.jsp\" %>" />
 
         
     </main>
