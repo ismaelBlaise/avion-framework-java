@@ -72,7 +72,9 @@
     </aside>
 
     <main class="ml-64 pt-20 p-6 lg:ml-0">
-        <!-- <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1> -->
+        <jsp:include page="<%= (request.getAttribute(\"pages\") != null) ? request.getAttribute(\"pages\").toString() : \"accueil.jsp\" %>" />
+
+        
     </main>
 
 </body>
