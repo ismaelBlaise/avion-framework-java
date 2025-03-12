@@ -41,7 +41,7 @@ public class AvionService {
         return avions;
     }
 
-    // Récupérer un avion par ID
+   
     public Avion getAvionById(int id) throws Exception {
         Avion avion = null;
         try (Connection connection = DbConnect.getConnection()) {
