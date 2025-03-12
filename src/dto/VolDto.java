@@ -1,123 +1,93 @@
-package models;
+package dto;
 
-public class Vol {
+import annotation.FieldAnnotation;
 
-    private Long idVol;
+public class VolDto {
+
+    @FieldAnnotation(name = "numero")
     private String numero;
+    @FieldAnnotation(name = "dateVol")
     private String dateVol;
+    @FieldAnnotation(name = "heureDepart")
     private String heureDepart;
+    @FieldAnnotation(name = "heureArrive")
     private String heureArrive;
+    // @FieldAnnotation(name = "heureReservation")
     private String heureReservation;
+    // @FieldAnnotation(name = "heureAnnulation")
     private String heureAnnulation;
-    private Long idStatut;
-    private Long idVilleDepart;
-    private Long idVilleArrive;
-    private Long idAvion;
+    @FieldAnnotation(name = "idStatut")
+    private String idStatut;
+    @FieldAnnotation(name = "idVilleDepart")
+    private String idVilleDepart;
+    @FieldAnnotation(name = "idVilleArrive")
+    private String idVilleArrive;
+    @FieldAnnotation(name = "idAvion")
+    private String idAvion;
 
-    public Vol() {
-    }
-
-    // Constructeur
-    public Vol(Long idVol, String numero, String dateVol, String heureDepart, String heureArrive, String heureReservation, String heureAnnulation, Long idStatut, Long idVilleDepart, Long idVilleArrive, Long idAvion) {
-        this.idVol = idVol;
-        this.numero = numero;
-        this.dateVol = dateVol;
-        this.heureDepart = heureDepart;
-        this.heureArrive = heureArrive;
-        this.heureReservation = heureReservation;
-        this.heureAnnulation = heureAnnulation;
-        this.idStatut = idStatut;
-        this.idVilleDepart = idVilleDepart;
-        this.idVilleArrive = idVilleArrive;
-        this.idAvion = idAvion;
-    }
-
-    // Getters et setters
-    public Long getIdVol() {
-        return idVol;
-    }
-
-    public void setIdVol(Long idVol) {
-        this.idVol = idVol;
-    }
-
+    
     public String getNumero() {
         return numero;
     }
-
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
     public String getDateVol() {
         return dateVol;
     }
-
     public void setDateVol(String dateVol) {
         this.dateVol = dateVol;
     }
-
     public String getHeureDepart() {
         return heureDepart;
     }
-
     public void setHeureDepart(String heureDepart) {
         this.heureDepart = heureDepart;
     }
-
     public String getHeureArrive() {
         return heureArrive;
     }
-
     public void setHeureArrive(String heureArrive) {
         this.heureArrive = heureArrive;
     }
-
     public String getHeureReservation() {
         return heureReservation;
     }
-
     public void setHeureReservation(String heureReservation) {
         this.heureReservation = heureReservation;
     }
-
     public String getHeureAnnulation() {
         return heureAnnulation;
     }
-
     public void setHeureAnnulation(String heureAnnulation) {
         this.heureAnnulation = heureAnnulation;
     }
-
-    public Long getIdStatut() {
+    public String getIdStatut() {
         return idStatut;
     }
-
-    public void setIdStatut(Long idStatut) {
+    public void setIdStatut(String idStatut) {
         this.idStatut = idStatut;
     }
-
-    public Long getIdVilleDepart() {
+    public String getIdVilleDepart() {
         return idVilleDepart;
     }
-
-    public void setIdVilleDepart(Long idVilleDepart) {
+    public void setIdVilleDepart(String idVilleDepart) {
         this.idVilleDepart = idVilleDepart;
     }
-
-    public Long getIdVilleArrive() {
+    public String getIdVilleArrive() {
         return idVilleArrive;
     }
-
-    public void setIdVilleArrive(Long idVilleArrive) {
+    public void setIdVilleArrive(String idVilleArrive) {
         this.idVilleArrive = idVilleArrive;
     }
-
-    public Long getIdAvion() {
+    public String getIdAvion() {
         return idAvion;
     }
-
-    public void setIdAvion(Long idAvion) {
+    public void setIdAvion(String idAvion) {
         this.idAvion = idAvion;
     }
+
+    // Getters and Setters
+
+    
 }
