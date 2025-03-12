@@ -1,46 +1,53 @@
--- Rôles
+
 INSERT INTO roles (role) VALUES ('admin'), ('passager');
 
--- Villes
-INSERT INTO villes (ville) VALUES ('Paris'), ('Dakar'), ('Abidjan');
 
--- Avions
-INSERT INTO avions (capacite, modele) VALUES (180, 'Boeing 737'), (150, 'Airbus A320');
-
--- Statuts
 INSERT INTO statuts (statut) VALUES ('Réservé'), ('Annulé'), ('Confirmé');
 
--- Classes
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 
--- Utilisateurs
-INSERT INTO utilisateurs (nom, prenom, email,date_naissance, contact, mdp, id_role) VALUES
-('Admin', 'Super', 'admin@gmail.com','2020-02-25', '770001122', 'admin123', 1),
-('Diop', 'Mamadou', 'mamadou@gmail.com', '2020-02-25','771234567', 'pass123', 2),
-('Fall', 'Aissatou', 'aissatou@gmail.com', '2020-02-25','776543210', 'pass456', 2);
+INSERT INTO categories_age (categorie) VALUES ('Enfant'), ('Adulte'), ('Senior');
 
--- Vols
-INSERT INTO vols (numero, date_vol, heure_depart, heure_arrive, heure_reservation, heure_annulation, id_statut, id_ville_depart, id_ville_arrive, id_avion) VALUES
-('VOL001', '2024-10-10', '10:00', '13:00', '08:00', '09:00', 3, 1, 2, 1),
-('VOL002', '2024-10-15', '15:00', '18:00', '10:00', '11:00', 1, 2, 3, 2);
+INSERT INTO villes (nom_ville) VALUES ('Paris'), ('New York'), ('Londres'), ('Tokyo'), ('Dubaï');
 
--- Villes Escale
-INSERT INTO villes_escale (id_vol, id_ville) VALUES (1, 3);
+INSERT INTO avions (capacite, modele) VALUES (180, 'Boeing 737'), (250, 'Airbus A320'), (350, 'Boeing 777');
 
--- Configurations de Vol
-INSERT INTO conf_vol (id_vol, id_classe, montant, capacite) VALUES
-(1, 1, 50000, 100),
-(1, 2, 80000, 50),
-(2, 1, 70000, 90),
-(2, 3, 120000, 30);
+INSERT INTO utilisateurs (nom, prenom, email, contact, mdp, id_role) 
+VALUES 
+('Dupont', 'Jean', 'admin@example.com', '0601020304', 'adminpass', 1),  
+('Martin', 'Sophie', 'passager@example.com', '0605060708', 'passagerpass', 2);   
 
--- Promotions
-INSERT INTO promotions (id_vol, id_classe, pourcentage, nb_siege) VALUES
-(1, 1, 10.00, 10),
-(2, 3, 20.00, 5);
+INSERT INTO vols (numero, date_vol, heure_depart, heure_arrivee, id_statut, id_ville_depart, id_ville_arrivee, id_avion) 
+VALUES 
+('AF123', '2025-05-10', '10:00:00', '14:00:00', 3, 1, 2, 1),  
+('BA456', '2025-06-15', '15:30:00', '18:45:00', 1, 3, 4, 2);  
 
--- Réservations
-INSERT INTO reservations (date_reservation, prix, id_statut, id_classe, id_vol, id_utilisateur) VALUES
-(NOW(), 45000.0000, 1, 1, 1, 2),
-(NOW(), 68000.0000, 3, 2, 1, 3),
-(NOW(), 56000.0000, 3, 1, 2, 2);
+INSERT INTO reservations (date_reservation, prix, id_statut, id_classe, id_vol) 
+VALUES 
+('2025-04-01 12:00:00', 450.00, 3, 1, 1),  
+('2025-05-05 14:30:00', 1200.00, 1, 3, 2);  
+
+
+INSERT INTO reservation_details (id_reservation, id_categorie_age, nb) 
+VALUES 
+(1, 2, 1),  
+(2, 2, 2); 
+
+INSERT INTO villes_escale (id_vol, id_ville) 
+VALUES 
+(1, 5), 
+(2, 5); 
+
+INSERT INTO conf_vol (id_vol, id_classe, id_categorie_age, montant, capacite) 
+VALUES 
+(1, 1, 2, 450.00, 150),  
+(1, 2, 2, 700.00, 30),  
+(1, 3, 2, 1000.00, 10),  
+(2, 1, 2, 1200.00, 200),  
+(2, 3, 2, 1500.00, 20),
+(1, 2, 2, 900.00, 50); 
+
+INSERT INTO promotions (id_vol, id_classe, pourcentage, nb_siege) 
+VALUES 
+(1, 1, 10.00, 20), 
+(2, 3, 15.00, 5); 

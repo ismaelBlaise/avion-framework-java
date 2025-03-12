@@ -101,7 +101,7 @@ public class Utilisateur {
         utilisateur.setNom(resultSet.getString("nom"));
         utilisateur.setPrenom(resultSet.getString("prenom"));
         utilisateur.setEmail(resultSet.getString("email"));
-        utilisateur.setDateNaissance(resultSet.getString("date_naissance"));
+        // utilisateur.setDateNaissance(resultSet.getString("date_naissance"));
         utilisateur.setContact(resultSet.getString("contact"));
         utilisateur.setMdp(resultSet.getString("mdp"));
         utilisateur.setIdRole(resultSet.getLong("id_role"));
