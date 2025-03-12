@@ -5,7 +5,6 @@ import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
 import dto.LoginDto;
-import dto.SignupDto;
 import models.Role;
 import services.UtilisateurService;
 import util.CustomSession;

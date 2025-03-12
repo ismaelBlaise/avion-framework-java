@@ -41,7 +41,7 @@ public class AvionService {
         return avions;
     }
 
-    // Récupérer un avion par ID
+   
     public Avion getAvionById(int id) throws Exception {
         Avion avion = null;
         try (Connection connection = DbConnect.getConnection()) {
@@ -49,13 +49,15 @@ public class AvionService {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            avion = new Avion();
             if (resultSet.next()) {
-                avion = new Avion();
+                
                 avion.setIdAvion(resultSet.getLong("id_avion"));
                 avion.setCapacite(resultSet.getInt("capacite"));
                 avion.setModele(resultSet.getString("modele"));
             }
+            preparedStatement.close();
+            resultSet.close();
         }
         return avion;
     }

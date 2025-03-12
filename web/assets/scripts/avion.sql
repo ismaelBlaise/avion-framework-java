@@ -80,7 +80,7 @@ CREATE TABLE reservations (
 
 CREATE TABLE reservation_passeports (
    id_reservation_passeport SERIAL PRIMARY KEY,
-   passeport VARCHAR(50) NOT NULL UNIQUE,
+   passeport BYTEA NOT NULL UNIQUE,
    id_reservation INTEGER NOT NULL,
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
 );
