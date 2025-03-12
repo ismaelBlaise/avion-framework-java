@@ -53,7 +53,8 @@ public class AvionController {
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page","avions/modifier.jsp");
         try {
-            modelAndView.setAttribute("avion", avionService.getAvionById(Integer.parseInt(id)));
+            Avion avion=avionService.getAvionById(Integer.parseInt(id));
+            modelAndView.setAttribute("avion", avion);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
         }
