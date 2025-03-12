@@ -11,17 +11,17 @@
                 </button>
             </a>
             <a href="vols-liste">
-                <button class="w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
+                <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure d'annulation
                 </button>
             </a>
             <a href="vols-configuration">
-                <button class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">
+                <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Caracteristique du vol
                 </button>
             </a>
             <a href="vols-statistiques">
-                <button class="w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600">
+                <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Promotions
                 </button>
             </a>
