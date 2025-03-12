@@ -16,7 +16,7 @@
         <!-- Champ Modele -->
         <div>
             <label for="modele" class="block text-gray-700 font-medium mb-2">Modele</label>
-            <input type="text" value="<%=avion.getModele()%>" id="modele" name="avion.modele" required placeholder="Entrer le modele de l'avion"
+            <input type="text" value="<%= avion.getModele() %>" id="modele" name="avion.modele" required placeholder="Entrer le modele de l'avion"
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 

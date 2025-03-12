@@ -49,13 +49,15 @@ public class AvionService {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            
             if (resultSet.next()) {
                 avion = new Avion();
                 avion.setIdAvion(resultSet.getLong("id_avion"));
                 avion.setCapacite(resultSet.getInt("capacite"));
                 avion.setModele(resultSet.getString("modele"));
             }
+            preparedStatement.close();
+            resultSet.close();
         }
         return avion;
     }
