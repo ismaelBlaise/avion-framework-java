@@ -32,7 +32,7 @@ public class AvionController {
     }
 
 
-    @Url(url = "avions/delete")
+    @Url(url = "avions-delete")
     @Get
     public ModelAndView delete(@Param(name = "id") String id){
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
@@ -47,7 +47,7 @@ public class AvionController {
     }
 
 
-    @Url(url = "avions/ajouter")
+    @Url(url = "avions-ajouter")
     @Post
     public ModelAndView add(@ParamObject(name = "avion") AvionDto avionDto){
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
@@ -64,12 +64,12 @@ public class AvionController {
         return modelAndView;
     }
 
-    @Url(url = "avions/ajout-form")
+    @Url(url = "avions-ajout-form")
     @Get
     public ModelAndView addForm(){
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page","avions/ajout.jsp");
         return modelAndView;
     }
-    
+
 }

@@ -4,7 +4,7 @@
 <div class="py-6 max-w-4xl mx-auto">
     <!-- Bouton Ajouter un avion -->
     <div class="mb-4">
-        <a href="avions/ajout-form">
+        <a href="avions-ajout-form">
             <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                 Ajouter un avion
             </button>
@@ -34,8 +34,8 @@
                         <td class="px-4 py-3 border-b"><%= avion.getCapacite() %></td>
                         <td class="px-4 py-3 border-b"><%= avion.getModele() %></td>
                         <td class="px-4 py-3 border-b flex space-x-2">
-                            <a href="avions/update?id=<%= avion.getIdAvion() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
-                            <a href="avions/delete?id=<%= avion.getIdAvion() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
+                            <a href="avions-update?id=<%= avion.getIdAvion() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
+                            <a href="avions-delete?id=<%= avion.getIdAvion() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
                         </td>
                     </tr>
                 <% 

@@ -2,7 +2,7 @@
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Ajouter un nouvel avion</h2>
 
     <!-- Formulaire d'ajout d'avion -->
-    <form action="avions/ajouter" method="POST" class="space-y-6">
+    <form action="avions-ajouter" method="POST" class="space-y-6">
         <% String erreur = (String) request.getAttribute("erreur"); %>
         <% if (erreur != null) { %>
             <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
