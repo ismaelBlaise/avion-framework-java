@@ -11,7 +11,7 @@
             </div>
         <% } %>
         <% 
-            Avion avion=(Avion) request.getAttribute("avion");
+            //Avion avion=(Avion) request.getAttribute("avion");
             Avion avion=new Avion();
             avion.setIdAvion(0);
             avion.setModele("A");
