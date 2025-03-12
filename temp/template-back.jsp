@@ -60,7 +60,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
+                        <li><a href="avions" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Classe</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Villes</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Statuts</a></li>
@@ -72,7 +72,12 @@
     </aside>
 
     <main class="ml-64 pt-20 p-6 lg:ml-0">
-        <!-- <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1> -->
+        
+         
+            <jsp:include page="<%= (request.getAttribute(\"pages\") != null) ? request.getAttribute(\"pages\").toString() : \"accueil.jsp\" %>" />
+
+        
+        
     </main>
 
 </body>
