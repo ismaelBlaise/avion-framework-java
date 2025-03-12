@@ -12,6 +12,11 @@
         <% } %>
         <% 
             Avion avion=(Avion) request.getAttribute("avion");
+            Avion avion=new Avion();
+            avion.setIdAvion(0);
+            avion.setModele("A");
+            avion.setCapacite(2);
+
         %>
         <!-- Champ Modele -->
         <div>
