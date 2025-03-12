@@ -1,123 +1,88 @@
-package models;
+package dto;
 
-public class Vol {
 
-    private Long idVol;
+public class VolDto {
+
+    private String idVol;
     private String numero;
     private String dateVol;
     private String heureDepart;
     private String heureArrive;
     private String heureReservation;
     private String heureAnnulation;
-    private Long idStatut;
-    private Long idVilleDepart;
-    private Long idVilleArrive;
-    private Long idAvion;
-
-    public Vol() {
-    }
-
-    // Constructeur
-    public Vol(Long idVol, String numero, String dateVol, String heureDepart, String heureArrive, String heureReservation, String heureAnnulation, Long idStatut, Long idVilleDepart, Long idVilleArrive, Long idAvion) {
-        this.idVol = idVol;
-        this.numero = numero;
-        this.dateVol = dateVol;
-        this.heureDepart = heureDepart;
-        this.heureArrive = heureArrive;
-        this.heureReservation = heureReservation;
-        this.heureAnnulation = heureAnnulation;
-        this.idStatut = idStatut;
-        this.idVilleDepart = idVilleDepart;
-        this.idVilleArrive = idVilleArrive;
-        this.idAvion = idAvion;
-    }
-
-    // Getters et setters
-    public Long getIdVol() {
+    private String idStatut;
+    private String idVilleDepart;
+    private String idVilleArrive;
+    private String idAvion;
+    
+    public String getIdVol() {
         return idVol;
     }
-
-    public void setIdVol(Long idVol) {
+    public void setIdVol(String idVol) {
         this.idVol = idVol;
     }
-
     public String getNumero() {
         return numero;
     }
-
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
     public String getDateVol() {
         return dateVol;
     }
-
     public void setDateVol(String dateVol) {
         this.dateVol = dateVol;
     }
-
     public String getHeureDepart() {
         return heureDepart;
     }
-
     public void setHeureDepart(String heureDepart) {
         this.heureDepart = heureDepart;
     }
-
     public String getHeureArrive() {
         return heureArrive;
     }
-
     public void setHeureArrive(String heureArrive) {
         this.heureArrive = heureArrive;
     }
-
     public String getHeureReservation() {
         return heureReservation;
     }
-
     public void setHeureReservation(String heureReservation) {
         this.heureReservation = heureReservation;
     }
-
     public String getHeureAnnulation() {
         return heureAnnulation;
     }
-
     public void setHeureAnnulation(String heureAnnulation) {
         this.heureAnnulation = heureAnnulation;
     }
-
-    public Long getIdStatut() {
+    public String getIdStatut() {
         return idStatut;
     }
-
-    public void setIdStatut(Long idStatut) {
+    public void setIdStatut(String idStatut) {
         this.idStatut = idStatut;
     }
-
-    public Long getIdVilleDepart() {
+    public String getIdVilleDepart() {
         return idVilleDepart;
     }
-
-    public void setIdVilleDepart(Long idVilleDepart) {
+    public void setIdVilleDepart(String idVilleDepart) {
         this.idVilleDepart = idVilleDepart;
     }
-
-    public Long getIdVilleArrive() {
+    public String getIdVilleArrive() {
         return idVilleArrive;
     }
-
-    public void setIdVilleArrive(Long idVilleArrive) {
+    public void setIdVilleArrive(String idVilleArrive) {
         this.idVilleArrive = idVilleArrive;
     }
-
-    public Long getIdAvion() {
+    public String getIdAvion() {
         return idAvion;
     }
-
-    public void setIdAvion(Long idAvion) {
+    public void setIdAvion(String idAvion) {
         this.idAvion = idAvion;
     }
+
+    // Getters and Setters
+
+    
 }
