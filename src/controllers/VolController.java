@@ -129,4 +129,12 @@ public class VolController {
         modelAndView.setAttribute("page", "vols/menu-configuration.jsp");
         return modelAndView;
     }
+
+    @Url(url = "vols-heure-reservation-form")
+    @Get
+    public ModelAndView heureReservationForm(@Param(name = "id") String id) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
+        return modelAndView;
+    }
 }

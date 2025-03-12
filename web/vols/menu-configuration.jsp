@@ -5,22 +5,22 @@
         
         <!-- Boutons du menu -->
         <div class="flex flex-col space-y-3">
-            <a href="vols-ajout-form">
+            <a href="vols-heure-reservation-form">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure reservation
                 </button>
             </a>
-            <a href="vols-liste">
+            <a href="vols-heure-annulation-form">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure d'annulation
                 </button>
             </a>
-            <a href="vols-configuration">
+            <a href="vols-caracteristique-form">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Caracteristique du vol
                 </button>
             </a>
-            <a href="vols-statistiques">
+            <a href="vols-promotion-form">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Promotions
                 </button>
