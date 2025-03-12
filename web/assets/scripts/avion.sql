@@ -70,18 +70,25 @@ CREATE TABLE villes_escale (
    FOREIGN KEY (id_ville) REFERENCES villes(id_ville) ON DELETE CASCADE
 );
 
-CREATE TABLE reservations (
-   id_reservation SERIAL PRIMARY KEY,
-   date_reservation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   prix NUMERIC(15, 4) CHECK (prix > 0),
-   id_statut INTEGER NOT NULL,
-   id_classe INTEGER NOT NULL,
-   id_vol INTEGER NOT NULL,
-   id_utilisateur INTEGER NOT NULL,
-   FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE CASCADE,
-   FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
-   FOREIGN KEY (id_vol) REFERENCES vols(id_vol) ON DELETE CASCADE,
-   FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur) ON DELETE CASCADE
+CREATE TABLE reservations(
+   Id_reservation SERIAL,
+   date_reservation TIMESTAMP,
+   prix NUMERIC(15,4)  ,
+   Id_statut INTEGER NOT NULL,
+   Id_classe INTEGER NOT NULL,
+   Id_vol INTEGER NOT NULL,
+   PRIMARY KEY(Id_reservation),
+   FOREIGN KEY(Id_statut) REFERENCES statuts(Id_statut),
+   FOREIGN KEY(Id_classe) REFERENCES classes(Id_classe),
+   FOREIGN KEY(Id_vol) REFERENCES vols(Id_vol)
+);
+
+CREATE TABLE reservation_passeports(
+   Id_reservation_passeports SERIAL,
+   passeport VARCHAR(50) ,
+   Id_reservation INTEGER NOT NULL,
+   PRIMARY KEY(Id_reservation_passeports),
+   FOREIGN KEY(Id_reservation) REFERENCES reservations(Id_reservation)
 );
 
 CREATE TABLE conf_vol (
