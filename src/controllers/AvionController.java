@@ -47,6 +47,20 @@ public class AvionController {
     }
 
 
+    @Url(url = "avions-update-form")
+    @Get
+    public ModelAndView updateForm(@Param(name = "id") String id){
+        ModelAndView modelAndView=new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page","avions/modifier.jsp");
+        try {
+            modelAndView.setAttribute("avion", avionService.getAvionById(Integer.parseInt(id)));
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
+
+
     @Url(url = "avions-ajouter")
     @Post
     public ModelAndView add(@ParamObject(name = "avion") AvionDto avionDto){
@@ -57,6 +71,24 @@ public class AvionController {
             avion.setCapacite(Integer.parseInt(avionDto.getCapacite()));
             avion.setModele(avionDto.getModele());
             avionService.ajouterAvion(avion);
+            modelAndView.setUrl("redirect:avions");
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url = "avions-update")
+    @Post
+    public ModelAndView updateForm(@ParamObject(name = "avion") AvionDto avionDto){
+        ModelAndView modelAndView=new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page","avions/modifier.jsp");
+        try {
+            Avion avion=new Avion();
+            avion.setCapacite(Integer.parseInt(avionDto.getCapacite()));
+            avion.setModele(avionDto.getModele());
+            avionService.updateAvion(avion);
             modelAndView.setUrl("redirect:avions");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());

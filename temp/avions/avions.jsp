@@ -34,7 +34,7 @@
                         <td class="px-4 py-3 border-b"><%= avion.getCapacite() %></td>
                         <td class="px-4 py-3 border-b"><%= avion.getModele() %></td>
                         <td class="px-4 py-3 border-b flex space-x-2">
-                            <a href="avions-update?id=<%= avion.getIdAvion() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
+                            <a href="avions-update-form?id=<%= avion.getIdAvion() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
                             <a href="avions-delete?id=<%= avion.getIdAvion() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
                         </td>
                     </tr>
