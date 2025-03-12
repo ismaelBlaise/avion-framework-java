@@ -19,8 +19,8 @@ VALUES
 
 INSERT INTO vols (numero, date_vol, heure_depart, heure_arrivee, id_statut, id_ville_depart, id_ville_arrivee, id_avion) 
 VALUES 
-('AF123', '2025-05-10', '10:00:00', '14:00:00', 3, 1, 2, 1),  
-('BA456', '2025-06-15', '15:30:00', '18:45:00', 1, 3, 4, 2);  
+('AF123', '2025-05-10', '10:00:00', '14:00:00', 3, 1, 2, 3),  
+('BA456', '2025-06-15', '15:30:00', '18:45:00', 1, 3, 4, 3);  
 
 INSERT INTO reservations (date_reservation, prix, id_statut, id_classe, id_vol) 
 VALUES 

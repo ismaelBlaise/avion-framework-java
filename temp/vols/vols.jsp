@@ -17,10 +17,10 @@
             <thead>
                 <tr class="text-left bg-gray-100 text-sm font-semibold text-gray-700">
                     <th class="px-4 py-3 border-b">ID Vol</th>
-                    <th class="px-4 py-3 border-b">Numéro</th>
+                    <th class="px-4 py-3 border-b">Numero</th>
                     <th class="px-4 py-3 border-b">Date de Vol</th>
-                    <th class="px-4 py-3 border-b">Heure de Départ</th>
-                    <th class="px-4 py-3 border-b">Heure d'Arrivée</th>
+                    <th class="px-4 py-3 border-b">Heure de Depart</th>
+                    <th class="px-4 py-3 border-b">Heure d'Arrivee</th>
                     <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
             </thead>
@@ -40,6 +40,9 @@
                         <td class="px-4 py-3 border-b flex space-x-2">
                             <a href="vols-update-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
                             <a href="vols-delete?id=<%= vol.getIdVol() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
+                            <a href="vols-config?id=<%= vol.getIdVol() %>">
+                                <button class="text-green-500 hover:text-green-700">Configuration</button>
+                            </a>
                         </td>
                     </tr>
                 <% 
@@ -47,7 +50,7 @@
                     } else {
                 %>
                     <tr>
-                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">Aucun vol trouvé</td>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">Aucun vol trouve</td>
                     </tr>
                 <% 
                     }
