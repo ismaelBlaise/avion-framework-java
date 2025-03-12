@@ -5,7 +5,7 @@
         <% String id=(String) request.getAttribute("id"); %>
         <!-- Boutons du menu -->
         <div class="flex flex-col space-y-3">
-            <a href="vols-heure-reservation-fo?id=<%=id%>">
+            <a href="vols-heure-reservation-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                     Heure reservation
                 </button>
