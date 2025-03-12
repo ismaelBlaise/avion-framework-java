@@ -7,19 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const menuButton = document.querySelector('button');
+            const menuButton = document.querySelector('#menu-button');
             const sidebar = document.querySelector('aside');
             const dropdownMenu = document.querySelector('.dropdown-menu');
             const profileButton = document.querySelector('button[aria-haspopup="true"]');
             const subMenuButton = document.querySelector('.submenu-toggle');
             const subMenu = document.querySelector('.submenu');
 
-            // Toggle Sidebar
+            // Toggle Sidebar visibility when the burger icon is clicked
             menuButton.addEventListener('click', function() {
                 sidebar.classList.toggle('hidden');
             });
 
-            // Toggle dropdown menu pour le profil
+            // Toggle dropdown menu for the profile
             profileButton.addEventListener('click', function() {
                 dropdownMenu.classList.toggle('hidden');
             });
@@ -35,7 +35,8 @@
 
     <header class="bg-white shadow-md fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-10">
         <div class="flex items-center space-x-4">
-            <button class="text-gray-700 text-3xl lg:hidden" aria-label="Open Sidebar">&#9776;</button>
+            <!-- Burger Icon -->
+            <button id="menu-button" class="text-gray-700 text-3xl lg:hidden" aria-label="Open Sidebar">&#9776;</button>
             <span class="text-xl font-semibold text-gray-700" style="color:blue ;">Aeroport</span>
         </div>
         <div class="flex items-center space-x-4">
@@ -50,7 +51,7 @@
         </div>
     </header>
 
-    <!-- Sidebar (à droite) -->
+    <!-- Sidebar (à gauche) -->
     <aside class="bg-white w-64 fixed top-0 left-0 h-full shadow-md pt-16 lg:block hidden transition-all duration-300">
         <nav class="px-4 py-6">
             <ul class="space-y-4">
@@ -60,7 +61,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
+                        <li><a href="avions" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Classe</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Villes</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Statuts</a></li>
@@ -73,8 +74,6 @@
 
     <main class="ml-64 pt-20 p-6 lg:ml-0">
         <jsp:include page="<%= (request.getAttribute(\"page\") != null) ? request.getAttribute(\"page\").toString() : \"accueil.jsp\" %>" />
-
-        
     </main>
 
 </body>

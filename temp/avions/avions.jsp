@@ -1,4 +1,7 @@
-<div class="py-6">
+<%@ page import="java.util.List" %>
+<%@ page import="models.Avion" %>
+
+<div class="py-6 max-w-4xl mx-auto">
     <!-- Bouton Ajouter un avion -->
     <div class="mb-4">
         <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
@@ -11,33 +14,38 @@
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
             <thead>
                 <tr class="text-left bg-gray-100 text-sm font-semibold text-gray-700">
-                    <th class="px-6 py-4 border-b">ID Avion</th>
-                    <th class="px-6 py-4 border-b">Capacité</th>
-                    <th class="px-6 py-4 border-b">Modèle</th>
-                    <th class="px-6 py-4 border-b">Actions</th>
+                    <th class="px-4 py-3 border-b">ID Avion</th>
+                    <th class="px-4 py-3 border-b">Capacite</th>
+                    <th class="px-4 py-3 border-b">Modele</th>
+                    <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
             </thead>
             <tbody class="text-sm text-gray-700">
-                <!-- Exemple d'itération sur des données d'avions -->
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 border-b">1</td>
-                    <td class="px-6 py-4 border-b">150</td>
-                    <td class="px-6 py-4 border-b">Airbus A320</td>
-                    <td class="px-6 py-4 border-b flex space-x-2">
-                        <button class="text-blue-500 hover:text-blue-700">Modifier</button>
-                        <button class="text-red-500 hover:text-red-700">Supprimer</button>
-                    </td>
-                </tr>
-                <!-- Répéter pour chaque avion -->
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 border-b">2</td>
-                    <td class="px-6 py-4 border-b">200</td>
-                    <td class="px-6 py-4 border-b">Boeing 737</td>
-                    <td class="px-6 py-4 border-b flex space-x-2">
-                        <button class="text-blue-500 hover:text-blue-700">Modifier</button>
-                        <button class="text-red-500 hover:text-red-700">Supprimer</button>
-                    </td>
-                </tr>
+                <!-- Iteration sur la liste d'avions -->
+                <%
+                    List<Avion> avions = (List<Avion>) request.getAttribute("avions");
+                    if (avions != null) {
+                        for (Avion avion : avions) {
+                %>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 border-b"><%= avion.getIdAvion() %></td>
+                        <td class="px-4 py-3 border-b"><%= avion.getCapacite() %></td>
+                        <td class="px-4 py-3 border-b"><%= avion.getModele() %></td>
+                        <td class="px-4 py-3 border-b flex space-x-2">
+                            <a href="avions/update?id=<%= avion.getIdAvion() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
+                            <a href="avions/delete?id=<%= avion.getIdAvion() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
+                        </td>
+                    </tr>
+                <% 
+                        }
+                    } else {
+                %>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Aucun avion trouve</td>
+                    </tr>
+                <% 
+                    }
+                %>
             </tbody>
         </table>
     </div>
