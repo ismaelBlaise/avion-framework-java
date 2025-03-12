@@ -4,7 +4,7 @@
 <div class="py-6 max-w-4xl mx-auto">
     <!-- Bouton Ajouter un avion -->
     <div class="mb-4">
-        <a href="ajout.jsp">
+        <a href="avions/ajout-form">
             <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                 Ajouter un avion
             </button>

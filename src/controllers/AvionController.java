@@ -63,4 +63,13 @@ public class AvionController {
         }
         return modelAndView;
     }
+
+    @Url(url = "avions/ajout-form")
+    @Get
+    public ModelAndView addForm(){
+        ModelAndView modelAndView=new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page","avions/ajout.jsp");
+        return modelAndView;
+    }
+    
 }
