@@ -48,12 +48,12 @@
         </form>
 
         <!-- Liens -->
-        <div class="text-center mt-4">
+        <!-- <div class="text-center mt-4">
             <p class="text-sm mt-2">
                 Pas encore inscrit ?
                 <a href="roles" class="text-blue-500 hover:underline">Creer un compte</a>
             </p>
-        </div>
+        </div> -->
     </div>
 
     <script>

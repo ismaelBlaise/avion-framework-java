@@ -34,10 +34,10 @@ public class UtilisateurController {
         return modelAndView;
     }
 
-    @Url(url="register")
-    @Post
-    public ModelAndView register(@ParamObject(name = "user") SignupDto signupDto){
-        ModelAndView modelAndView=new ModelAndView(null);
-        return modelAndView;
-    }
+    // @Url(url="register")
+    // @Post
+    // public ModelAndView register(@ParamObject(name = "user") SignupDto signupDto){
+    //     ModelAndView modelAndView=new ModelAndView(null);
+    //     return modelAndView;
+    // }
 }
