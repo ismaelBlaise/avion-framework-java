@@ -121,4 +121,12 @@ public class VolController {
         modelAndView.setAttribute("page", "vols/ajout.jsp");
         return modelAndView;
     }
+
+    @Url(url = "vols-configuration")
+    @Get
+    public ModelAndView configurationMenu(@Param(name = "id") String id) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/menu-configuration.jsp");
+        return modelAndView;
+    }
 }
