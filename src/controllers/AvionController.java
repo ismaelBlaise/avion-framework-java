@@ -82,11 +82,12 @@ public class AvionController {
 
     @Url(url = "avions-update")
     @Post
-    public ModelAndView updateForm(@ParamObject(name = "avion") AvionDto avionDto){
+    public ModelAndView updateForm(@Param(name="id") String id,@ParamObject(name = "avion") AvionDto avionDto){
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page","avions/modifier.jsp");
         try {
             Avion avion=new Avion();
+            avion.setIdAvion(Long.parseLong(id));
             avion.setCapacite(Integer.parseInt(avionDto.getCapacite()));
             avion.setModele(avionDto.getModele());
             avionService.updateAvion(avion);

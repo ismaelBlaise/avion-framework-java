@@ -13,6 +13,8 @@
         <% 
             Vol vol = (Vol) request.getAttribute("vol");
         %>
+        <input type="hidden" value="<%= vol.getIdVol() %>" id="id" name="id">
+
         <!-- Champ Numero -->
         <div>
             <label for="numero" class="block text-gray-700 font-medium mb-2">Numero</label>

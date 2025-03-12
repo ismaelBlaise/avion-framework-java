@@ -1,26 +1,31 @@
 package dto;
 
+import annotation.FieldAnnotation;
 
 public class VolDto {
 
-    private String idVol;
+    @FieldAnnotation(name = "numero")
     private String numero;
+    @FieldAnnotation(name = "dateVol")
     private String dateVol;
+    @FieldAnnotation(name = "heureDepart")
     private String heureDepart;
+    @FieldAnnotation(name = "heureArrive")
     private String heureArrive;
+    // @FieldAnnotation(name = "heureReservation")
     private String heureReservation;
+    // @FieldAnnotation(name = "heureAnnulation")
     private String heureAnnulation;
+    @FieldAnnotation(name = "idStatut")
     private String idStatut;
+    @FieldAnnotation(name = "idVilleDepart")
     private String idVilleDepart;
+    @FieldAnnotation(name = "idVilleArrive")
     private String idVilleArrive;
+    @FieldAnnotation(name = "idAvion")
     private String idAvion;
+
     
-    public String getIdVol() {
-        return idVol;
-    }
-    public void setIdVol(String idVol) {
-        this.idVol = idVol;
-    }
     public String getNumero() {
         return numero;
     }

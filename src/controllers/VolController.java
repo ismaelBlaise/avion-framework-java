@@ -89,12 +89,12 @@ public class VolController {
     // Modifier un vol
     @Url(url = "vols-update")
     @Post
-    public ModelAndView update(@ParamObject(name = "vol") VolDto volDto) {
+    public ModelAndView update(@Param(name = "id") String id,@ParamObject(name = "vol") VolDto volDto) {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/modifier.jsp");
         try {
             Vol vol = new Vol();
-            vol.setIdVol(Long.parseLong(volDto.getIdVol()));
+            vol.setIdVol(Long.parseLong(id));
             vol.setNumero(volDto.getNumero());
             vol.setDateVol(volDto.getDateVol());
             vol.setHeureDepart(volDto.getHeureDepart());

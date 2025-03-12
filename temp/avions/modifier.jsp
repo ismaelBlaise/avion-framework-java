@@ -13,6 +13,7 @@
         <% 
             Avion avion=(Avion) request.getAttribute("avion");
         %>
+        <input type="hidden" value="<%= avion.getIdAvion() %>" id="id" name="id">
         <!-- Champ Modele -->
         <div>
             <label for="modele" class="block text-gray-700 font-medium mb-2">Modele</label>
