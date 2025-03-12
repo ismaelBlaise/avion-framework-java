@@ -11,7 +11,7 @@ import utils.DbConnect;
 
 public class AvionService {
 
-    // Ajouter un avion
+    
     public void ajouterAvion(Avion avion) throws Exception {
         try (Connection connection = DbConnect.getConnection()) {
             String query = "INSERT INTO avions (capacite, modele) VALUES (?, ?)";
@@ -22,7 +22,7 @@ public class AvionService {
         }
     }
 
-    // Récupérer tous les avions
+    
     public List<Avion> getAllAvions() throws Exception {
         List<Avion> avions = new ArrayList<>();
         try (Connection connection = DbConnect.getConnection()) {
