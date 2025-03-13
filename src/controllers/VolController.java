@@ -160,4 +160,35 @@ public class VolController {
         }
         return modelAndView;
     }
+
+
+    @Url(url = "vols-heure-annulation-form")
+    @Get
+    public ModelAndView heureAnnulationForm(@Param(name = "id") String id) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/heure-annulation.jsp");
+        try {
+            Vol vol = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
+
+    @Url(url = "vols-heure-annulation")
+    @Get
+    public ModelAndView heureAnnulation(@Param(name = "id") String id, @Param(name = "heureAnnulation") String heureAnnulation) {
+        ModelAndView modelAndView = new ModelAndView("redirect:vols");
+        // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
+        try {
+            volService.ajouterHeureReservation(id, heureAnnulation);
+            Vol vol = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("vol", vol);
+
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
 }
