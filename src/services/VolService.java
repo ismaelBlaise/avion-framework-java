@@ -30,6 +30,20 @@ public class VolService {
     }
 
 
+    public void ajouterHeureReservation(String id,String heureReservation) throws Exception{
+        try (Connection connection = DbConnect.getConnection()) {
+            String query = "UPDATE vols SET heure_reservation = ? WHERE id_vol = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, heureReservation);
+            preparedStatement.setString(2, id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
     public List<Vol> getAllVols() throws Exception {
         List<Vol> vols = new ArrayList<>();
         try (Connection connection = DbConnect.getConnection()) {

@@ -21,6 +21,8 @@
                     <th class="px-4 py-3 border-b">Date de Vol</th>
                     <th class="px-4 py-3 border-b">Heure de Depart</th>
                     <th class="px-4 py-3 border-b">Heure d'Arrivee</th>
+                    <th class="px-4 py-3 border-b">Heure limite reservation</th>
+                    <th class="px-4 py-3 border-b">Heure limite annulation</th>
                     <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
             </thead>
@@ -37,6 +39,8 @@
                         <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureDepart() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureArrive() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getHeureReservation()==null? "Non configurer" %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer" %></td>
                         <td class="px-4 py-3 border-b flex space-x-2">
                             <a href="vols-update-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
                             <a href="vols-delete?id=<%= vol.getIdVol() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
