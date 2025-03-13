@@ -1,5 +1,9 @@
 package controllers;
 
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.time.ZoneOffset;
+
 import annotation.Controller;
 import annotation.Get;
 import annotation.Param;
@@ -151,8 +155,13 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("redirect:vols");
         // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
         try {
-            System.out.println(heureReservation);
-            volService.ajouterHeureReservation(id, heureReservation);
+            
+             // Convertir en LocalTime
+            LocalTime localTime = LocalTime.parse(heureReservation);
+
+            // Ajouter un fuseau horaire (ex: UTC+2)
+            OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
+            volService.ajouterHeureReservation(id, offsetTime.toString());
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
@@ -183,7 +192,11 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("redirect:vols");
         // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
         try {
-            volService.ajouterHeureAnnulation(id, heureAnnulation);
+            LocalTime localTime = LocalTime.parse(heureAnnulation);
+
+            // Ajouter un fuseau horaire (ex: UTC+2)
+            OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
+            volService.ajouterHeureAnnulation(id, offsetTime.toString());
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
