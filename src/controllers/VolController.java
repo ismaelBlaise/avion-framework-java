@@ -161,7 +161,7 @@ public class VolController {
 
             // Ajouter un fuseau horaire (ex: UTC+2)
             // OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
-            volService.ajouterHeureReservation(id, heureReservation+"+03:00");
+            volService.ajouterHeureReservation(id, heureReservation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
@@ -196,7 +196,7 @@ public class VolController {
 
             // Ajouter un fuseau horaire (ex: UTC+2)
             // OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
-            volService.ajouterHeureAnnulation(id, heureAnnulation+"+03:00");
+            volService.ajouterHeureAnnulation(id, heureAnnulation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
