@@ -151,6 +151,7 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("redirect:vols");
         // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
         try {
+            System.out.println(heureReservation);
             volService.ajouterHeureReservation(id, heureReservation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
@@ -182,7 +183,7 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("redirect:vols");
         // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
         try {
-            volService.ajouterHeureReservation(id, heureAnnulation);
+            volService.ajouterHeureAnnulation(id, heureAnnulation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 

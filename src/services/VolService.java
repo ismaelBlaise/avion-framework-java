@@ -3,6 +3,7 @@ package services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class VolService {
         try (Connection connection = DbConnect.getConnection()) {
             String query = "UPDATE vols SET heure_reservation = ? WHERE id_vol = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, heureReservation);
-            preparedStatement.setString(2, id);
+            preparedStatement.setTime(1,Time.valueOf(heureReservation));
+            preparedStatement.setInt(2,Integer.parseInt(id));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,8 +48,8 @@ public class VolService {
         try (Connection connection = DbConnect.getConnection()) {
             String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, heureAnnulation);
-            preparedStatement.setString(2, id);
+            preparedStatement.setTime(1, Time.valueOf(heureAnnulation));
+            preparedStatement.setInt(2,Integer.parseInt(id));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
