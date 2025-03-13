@@ -148,12 +148,13 @@ public class VolController {
     @Url(url = "vols-heure-reservation")
     @Get
     public ModelAndView heureReservation(@Param(name = "id") String id, @Param(name = "heureReservation") String heureReservation) {
-        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
-        modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
+        ModelAndView modelAndView = new ModelAndView("redirect:vols");
+        // modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
         try {
             volService.ajouterHeureReservation(id, heureReservation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
+
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
         }
