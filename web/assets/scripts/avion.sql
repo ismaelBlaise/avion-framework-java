@@ -34,7 +34,9 @@ CREATE TABLE statuts (
 
 CREATE TABLE categories_age (
    id_categorie_age SERIAL PRIMARY KEY,
-   categorie VARCHAR(50) NOT NULL UNIQUE
+   categorie VARCHAR(50) NOT NULL UNIQUE,
+   age_min INTEGER,
+   age_max INTEGER
 );
 
 CREATE TABLE utilisateurs (
