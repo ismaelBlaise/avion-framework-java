@@ -5,6 +5,9 @@ public class Statut {
     private Long idStatut;
     private String statut;
 
+    public Statut() {
+    }
+
     // Constructeur
     public Statut(Long idStatut, String statut) {
         this.idStatut = idStatut;

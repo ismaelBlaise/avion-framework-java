@@ -1,4 +1,9 @@
 <%@ page import="models.Vol" %>
+<%@ page import="models.Ville" %>
+<%@ page import="models.Avion" %>
+<%@ page import="models.Statut" %>
+<%@ page import="java.util.List" %>
+
 <div class="max-w-4xl mx-auto py-8">
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Modifier le vol</h2>
 
@@ -12,6 +17,9 @@
         <% } %>
         <% 
             Vol vol = (Vol) request.getAttribute("vol");
+            List<Statut> statuts = (List<Statut>) request.getAttribute("statuts");
+            List<Ville> villes = (List<Ville>) request.getAttribute("villes");
+            List<Avion> avions = (List<Avion>) request.getAttribute("avions");
         %>
         <input type="hidden" value="<%= vol.getIdVol() %>" id="id" name="id">
 
@@ -43,32 +51,56 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
-        <!-- Champ Statut (idStatut) -->
+        <!-- Champ Statut -->
         <div>
             <label for="idStatut" class="block text-gray-700 font-medium mb-2">Statut</label>
-            <input type="number" value="<%= vol.getIdStatut() %>" id="idStatut" name="vol.idStatut" required placeholder="Entrer le statut du vol"
+            <select id="idStatut" name="vol.idStatut" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Statut statut : statuts) { %>
+                    <option value="<%= statut.getIdStatut() %>" <%= vol.getIdStatut() == statut.getIdStatut() ? "selected" : "" %>>
+                        <%= statut.getStatut() %>
+                    </option>
+                <% } %>
+            </select>
         </div>
 
-        <!-- Champ Ville de Depart (idVilleDepart) -->
+        <!-- Champ Ville de Depart -->
         <div>
             <label for="idVilleDepart" class="block text-gray-700 font-medium mb-2">Ville de depart</label>
-            <input type="number" value="<%= vol.getIdVilleDepart() %>" id="idVilleDepart" name="vol.idVilleDepart" required placeholder="Entrer l'ID de la ville de depart"
+            <select id="idVilleDepart" name="vol.idVilleDepart" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Ville ville : villes) { %>
+                    <option value="<%= ville.getIdVille() %>" <%= vol.getIdVilleDepart() == ville.getIdVille() ? "selected" : "" %>>
+                        <%= ville.getVille() %>
+                    </option>
+                <% } %>
+            </select>
         </div>
 
-        <!-- Champ Ville d'Arrivee (idVilleArrive) -->
+        <!-- Champ Ville d'Arrivee -->
         <div>
             <label for="idVilleArrive" class="block text-gray-700 font-medium mb-2">Ville d'arrivee</label>
-            <input type="number" value="<%= vol.getIdVilleArrive() %>" id="idVilleArrive" name="vol.idVilleArrive" required placeholder="Entrer l'ID de la ville d'arrivee"
+            <select id="idVilleArrive" name="vol.idVilleArrive" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Ville ville : villes) { %>
+                    <option value="<%= ville.getIdVille() %>" <%= vol.getIdVilleArrive() == ville.getIdVille() ? "selected" : "" %>>
+                        <%= ville.getVille() %>
+                    </option>
+                <% } %>
+            </select>
         </div>
 
-        <!-- Champ ID Avion -->
+        <!-- Champ Avion -->
         <div>
-            <label for="idAvion" class="block text-gray-700 font-medium mb-2">ID Avion</label>
-            <input type="number" value="<%= vol.getIdAvion() %>" id="idAvion" name="vol.idAvion" required placeholder="Entrer l'ID de l'avion"
+            <label for="idAvion" class="block text-gray-700 font-medium mb-2">Avion</label>
+            <select id="idAvion" name="vol.idAvion" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Avion avion : avions) { %>
+                    <option value="<%= avion.getIdAvion() %>" <%= vol.getIdAvion() == avion.getIdAvion() ? "selected" : "" %>>
+                        <%= avion.getModele() %>
+                    </option>
+                <% } %>
+            </select>
         </div>
 
         <!-- Bouton Soumettre -->

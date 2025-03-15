@@ -2,7 +2,7 @@
 INSERT INTO roles (role) VALUES ('admin'), ('passager');
 
 
-INSERT INTO statuts (statut) VALUES ('Réservé'), ('Annulé'), ('Confirmé');
+INSERT INTO statuts (statut) VALUES ('Reserve'), ('Annule'), ('Confirme');
 
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 
@@ -22,32 +22,5 @@ VALUES
 ('AF123', '2025-05-10', '10:00:00', '14:00:00', 3, 1, 2, 3),  
 ('BA456', '2025-06-15', '15:30:00', '18:45:00', 1, 3, 4, 3);  
 
-INSERT INTO reservations (date_reservation, prix, id_statut, id_classe, id_vol) 
-VALUES 
-('2025-04-01 12:00:00', 450.00, 3, 1, 1),  
-('2025-05-05 14:30:00', 1200.00, 1, 3, 2);  
 
 
-INSERT INTO reservation_details (id_reservation, id_categorie_age, nb) 
-VALUES 
-(1, 2, 1),  
-(2, 2, 2); 
-
-INSERT INTO villes_escale (id_vol, id_ville) 
-VALUES 
-(1, 5), 
-(2, 5); 
-
-INSERT INTO conf_vol (id_vol, id_classe, id_categorie_age, montant, capacite) 
-VALUES 
-(1, 1, 2, 450.00, 150),  
-(1, 2, 2, 700.00, 30),  
-(1, 3, 2, 1000.00, 10),  
-(2, 1, 2, 1200.00, 200),  
-(2, 3, 2, 1500.00, 20),
-(1, 2, 2, 900.00, 50); 
-
-INSERT INTO promotions (id_vol, id_classe, pourcentage, nb_siege) 
-VALUES 
-(1, 1, 10.00, 20), 
-(2, 3, 15.00, 5); 

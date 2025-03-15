@@ -43,7 +43,7 @@
             <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Profile" class="w-10 h-10 rounded-full">
 
             <div class="relative">
-                <button class="text-gray-700 font-medium" aria-haspopup="true">K. Anderson </button>
+                <button class="text-gray-700 font-medium" aria-haspopup="true">B. Ismael </button>
                 <ul class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border rounded shadow-md hidden">
                     <li><a href="#" class="block text-gray-600 hover:bg-gray-200 px-4 py-2 cursor-pointer">Deconnexion</a></li>
                 </ul>

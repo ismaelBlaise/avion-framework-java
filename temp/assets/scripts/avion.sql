@@ -34,7 +34,9 @@ CREATE TABLE statuts (
 
 CREATE TABLE categories_age (
    id_categorie_age SERIAL PRIMARY KEY,
-   categorie VARCHAR(50) NOT NULL UNIQUE
+   categorie VARCHAR(50) NOT NULL UNIQUE,
+   age_min INTEGER,
+   age_max INTEGER
 );
 
 CREATE TABLE utilisateurs (
@@ -69,7 +71,6 @@ CREATE TABLE vols (
 CREATE TABLE reservations (
    id_reservation SERIAL PRIMARY KEY,
    date_reservation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
    id_statut INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
    id_vol INTEGER NOT NULL,
@@ -118,6 +119,7 @@ CREATE TABLE promotions (
 CREATE TABLE reservation_details (
    id_reservation INTEGER NOT NULL,
    id_categorie_age INTEGER NOT NULL,
+   prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
    nb INTEGER NOT NULL CHECK (nb > 0),
    PRIMARY KEY (id_reservation, id_categorie_age),
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
