@@ -1,8 +1,5 @@
 package controllers;
 
-import java.time.LocalTime;
-import java.time.OffsetTime;
-import java.time.ZoneOffset;
 
 import annotation.Controller;
 import annotation.Get;
@@ -12,6 +9,7 @@ import annotation.Post;
 import annotation.Url;
 import dto.VolDto;
 import models.Vol;
+import services.ClasseService;
 import services.VolService;
 import util.ModelAndView;
 
@@ -19,6 +17,7 @@ import util.ModelAndView;
 public class VolController {
 
     private VolService volService = new VolService();
+    private ClasseService  classeService=new ClasseService();
 
     // Afficher tous les vols
     @Url(url = "vols")
@@ -200,6 +199,22 @@ public class VolController {
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url = "vols-caracteristique-form")
+    @Get
+    public ModelAndView  caracteristiqueForm(@Param(name = "id") String id) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/caracteristique.jsp");
+        try {
+            Vol vol = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
         }
