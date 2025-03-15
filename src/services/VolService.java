@@ -8,10 +8,24 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Statut;
 import models.Vol;
 import utils.DbConnect;
 
 public class VolService {
+
+    public List<Vol> getAllVolsDisponible() throws Exception{
+        List<Vol> vols = getAllVols();
+        StatutService statutService=new StatutService();
+        Statut statut=statutService.getByStatut("Disponible");
+        for (Vol vol : vols) {
+            if(!statut.getIdStatut().equals(vol.getIdStatut())){
+                vols.remove(vol);
+            }
+        }
+        return vols;
+        
+    }
 
     public void ajouterVol(Vol vol) throws Exception {
         try (Connection connection = DbConnect.getConnection()) {

@@ -65,6 +65,33 @@ public class StatutService {
         }
     }
 
+
+    public Statut getByStatut(String statutStr) throws Exception {
+        PreparedStatement preparedStatement = null;
+        Statut statut = null;
+        try(Connection connection=DbConnect.getConnection()){
+            preparedStatement = connection.prepareStatement("SELECT * FROM statuts WHERE statut = ?");
+            preparedStatement.setString(1,statutStr );
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                statut = new Statut();
+                statut.setIdStatut(resultSet.getLong("id_statut"));
+                statut.setStatut(resultSet.getString("statut"));
+            }
+            preparedStatement.close();
+            resultSet.close();
+            return statut;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public Statut findStatutVols(Vol vol) throws Exception{
        
         
