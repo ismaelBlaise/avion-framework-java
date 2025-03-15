@@ -1,6 +1,7 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
@@ -17,15 +18,16 @@ public class VolService {
             String query = "INSERT INTO vols (numero, date_vol, heure_depart, heure_arrivee, heure_reservation, heure_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, vol.getNumero());
-            preparedStatement.setString(2, vol.getDateVol());
-            preparedStatement.setString(3, vol.getHeureDepart());
-            preparedStatement.setString(4, vol.getHeureArrive());
-            preparedStatement.setString(5, vol.getHeureReservation());
-            preparedStatement.setString(6, vol.getHeureAnnulation());
+            preparedStatement.setDate(2, Date.valueOf(vol.getDateVol()));
+            preparedStatement.setTime(3, Time.valueOf(vol.getHeureDepart()+":00"));
+            preparedStatement.setTime(4, Time.valueOf(vol.getHeureArrive()+":00"));
+            preparedStatement.setTime(5, Time.valueOf(vol.getHeureReservation()+":00"));
+            preparedStatement.setTime(6, Time.valueOf(vol.getHeureAnnulation()+":00"));
             preparedStatement.setLong(7, vol.getIdStatut());
             preparedStatement.setLong(8, vol.getIdVilleDepart());
             preparedStatement.setLong(9, vol.getIdVilleArrive());
             preparedStatement.setLong(10, vol.getIdAvion());
+            preparedStatement.setLong(11, vol.getIdVol());
             preparedStatement.executeUpdate();
         }
     }
@@ -118,11 +120,11 @@ public class VolService {
             String query = "UPDATE vols SET numero = ?, date_vol = ?, heure_depart = ?, heure_arrivee = ?, heure_reservation = ?, heure_annulation = ?, id_statut = ?, id_ville_depart = ?, id_ville_arrivee = ?, id_avion = ? WHERE id_vol = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, vol.getNumero());
-            preparedStatement.setString(2, vol.getDateVol());
-            preparedStatement.setString(3, vol.getHeureDepart());
-            preparedStatement.setString(4, vol.getHeureArrive());
-            preparedStatement.setString(5, vol.getHeureReservation());
-            preparedStatement.setString(6, vol.getHeureAnnulation());
+            preparedStatement.setDate(2, Date.valueOf(vol.getDateVol()));
+            preparedStatement.setTime(3, Time.valueOf(vol.getHeureDepart()+":00"));
+            preparedStatement.setTime(4, Time.valueOf(vol.getHeureArrive()+":00"));
+            preparedStatement.setTime(5, Time.valueOf(vol.getHeureReservation()+":00"));
+            preparedStatement.setTime(6, Time.valueOf(vol.getHeureAnnulation()+":00"));
             preparedStatement.setLong(7, vol.getIdStatut());
             preparedStatement.setLong(8, vol.getIdVilleDepart());
             preparedStatement.setLong(9, vol.getIdVilleArrive());
