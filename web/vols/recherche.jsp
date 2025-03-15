@@ -4,7 +4,7 @@
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Rechercher un vol</h2>
 
     <!-- Formulaire de recherche de vol -->
-    <form action="vols-rechercher" method="GET" class="space-y-6">
+    <form action="vols-rechercher" method="POST" class="space-y-6">
         <% 
             String erreur = (String) request.getAttribute("erreur"); 
             List<Ville> villes = (List<Ville>) request.getAttribute("villes");
@@ -27,7 +27,7 @@
         <!-- Champ Date de vol (Intervalle) -->
         <div class="flex space-x-4">
             <div>
-                <label for="dateDebut" class="block text-gray-700 font-medium mb-2">Date de vol - Début</label>
+                <label for="dateDebut" class="block text-gray-700 font-medium mb-2">Date de vol - Debut</label>
                 <input type="date" id="dateDebut" name="dateDebut" 
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
@@ -38,23 +38,23 @@
             </div>
         </div>
 
-        <!-- Champ Heure de départ (Intervalle) -->
+        <!-- Champ Heure de depart (Intervalle) -->
         <div class="flex space-x-4">
             <div>
-                <label for="heureDepartDebut" class="block text-gray-700 font-medium mb-2">Heure de départ - Début</label>
+                <label for="heureDepartDebut" class="block text-gray-700 font-medium mb-2">Heure de depart - Debut</label>
                 <input type="time" id="heureDepartDebut" name="heureDepartDebut" 
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-                <label for="heureDepartFin" class="block text-gray-700 font-medium mb-2">Heure de départ - Fin</label>
+                <label for="heureDepartFin" class="block text-gray-700 font-medium mb-2">Heure de depart - Fin</label>
                 <input type="time" id="heureDepartFin" name="heureDepartFin" 
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </div>
 
-        <!-- Champ Ville de départ -->
+        <!-- Champ Ville de depart -->
         <div>
-            <label for="idVilleDepart" class="block text-gray-700 font-medium mb-2">Ville de départ</label>
+            <label for="idVilleDepart" class="block text-gray-700 font-medium mb-2">Ville de depart</label>
             <select id="idVilleDepart" name="idVilleDepart" 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Toutes les villes</option>
@@ -64,9 +64,9 @@
             </select>
         </div>
 
-        <!-- Champ Ville d'arrivée -->
+        <!-- Champ Ville d'arrivee -->
         <div>
-            <label for="idVilleArrive" class="block text-gray-700 font-medium mb-2">Ville d'arrivée</label>
+            <label for="idVilleArrive" class="block text-gray-700 font-medium mb-2">Ville d'arrivee</label>
             <select id="idVilleArrive" name="idVilleArrive" 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Toutes les villes</option>

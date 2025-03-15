@@ -99,6 +99,43 @@ public class VolController {
         }
         return modelAndView;
     }  
+
+
+    @Url(url ="vols-recherche-form")
+    @Get
+    public ModelAndView rechercheForm(){
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/recherche.jsp");
+        try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            // Vol vol = volService.getVolById(Long.parseLong(id));
+            // modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url ="vols-rechercher")
+    @Post
+    public ModelAndView recherche(){
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/vols.jsp");
+        try {
+            modelAndView.setAttribute("vols", volService.getAllVols());
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
     
     
     @Url(url = "vols-promotion-ajouter")
