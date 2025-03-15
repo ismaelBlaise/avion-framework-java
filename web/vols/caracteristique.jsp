@@ -40,7 +40,7 @@
 
         <!-- Champ Categorie d'âge -->
         <div>
-            <label for="idCategorieAge" class="block text-gray-700 font-medium mb-2">Categorie d'âge</label>
+            <label for="idCategorieAge" class="block text-gray-700 font-medium mb-2">Categorie d'age</label>
             <select id="idCategorieAge" name="conf_vol.idCategorieAge" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <% 

@@ -7,10 +7,12 @@ import annotation.Param;
 import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
+import dto.ConfVolDto;
 import dto.VolDto;
 import models.Vol;
 import services.CategorieAgeService;
 import services.ClasseService;
+import services.ConfVolService;
 import services.VolService;
 import util.ModelAndView;
 
@@ -18,6 +20,7 @@ import util.ModelAndView;
 public class VolController {
 
     private VolService volService = new VolService();
+
 
     // Afficher tous les vols
     @Url(url = "vols")
@@ -218,6 +221,22 @@ public class VolController {
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url = "vols-caracteristique-ajouter")
+    @Post
+    public ModelAndView ajouterCaracteristique(@ParamObject(name = "conf_vol") ConfVolDto confVolDto) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/caracteristique.jsp");
+        ConfVolService confVolService=new ConfVolService();
+        try {
+            confVolService.ajouterCaracteristique(confVolDto);
+            modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
         }
