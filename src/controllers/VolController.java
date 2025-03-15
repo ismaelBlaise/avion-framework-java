@@ -132,12 +132,18 @@ public class VolController {
     public ModelAndView recherche(@ParamObject(name = "recherche") RechercheDto rechercheDto){
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/vols.jsp");
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
         RechercheService rechercheService=new RechercheService();
         try {
-
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
             List<Vol> vols=rechercheService.rechercher(rechercheDto);
             modelAndView.setAttribute("vols", vols);
         } catch (Exception e) {
+
             modelAndView.setAttribute("page", "vols/recherche.jsp");;
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
