@@ -92,6 +92,8 @@ public class VolController {
             modelAndView.setAttribute("statuts", statutService.getAllStatuts());
             // Vol vol = volService.getVolById(Long.parseLong(id));
             // modelAndView.setAttribute("vol", vol);
+            System.out.println(volDto.getHeureDepart());
+
             Vol vol = new Vol();
             vol.setNumero(volDto.getNumero());
             vol.setDateVol(volDto.getDateVol());
@@ -130,6 +132,7 @@ public class VolController {
             vol.setIdVol(Long.parseLong(id));
             vol.setNumero(volDto.getNumero());
             vol.setDateVol(volDto.getDateVol());
+            // System.out.println(volDto.getHeureDepart());
             vol.setHeureDepart(volDto.getHeureDepart());
             vol.setHeureArrive(volDto.getHeureArrive());
             vol.setHeureReservation(volDto.getHeureReservation());
