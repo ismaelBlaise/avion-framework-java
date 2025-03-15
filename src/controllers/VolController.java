@@ -106,15 +106,19 @@ public class VolController {
     public ModelAndView promotionAjouter(@ParamObject(name = "promotion") PromotionDto promotionDto) {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/promotion.jsp");
+        Vol vol=null;
         try {
             ClasseService classeService=new ClasseService();
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             // Vol vol = volService.getVolById(Long.parseLong(id));
             PromotionService promotionService=new PromotionService();
             promotionService.ajouterPromotion(promotionDto);
+            vol = volService.getVolById(Long.parseLong(promotionDto.getIdVol()));
             modelAndView.setUrl("redirect:vols");
             // modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
+                
+            modelAndView.setAttribute("vol", vol);
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
