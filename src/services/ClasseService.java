@@ -10,6 +10,7 @@ import models.Classe;
 import utils.DbConnect;
 
 public class ClasseService {
+    
     public List<Classe> getAllClasses() throws Exception {
         List<Classe> classes = null;
         try (Connection connection=DbConnect.getConnection()){
