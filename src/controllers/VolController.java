@@ -8,7 +8,9 @@ import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
 import dto.VolDto;
+import models.CategorieAge;
 import models.Vol;
+import services.CategorieAgeService;
 import services.ClasseService;
 import services.VolService;
 import util.ModelAndView;
@@ -18,6 +20,7 @@ public class VolController {
 
     private VolService volService = new VolService();
     private ClasseService  classeService=new ClasseService();
+    private CategorieAgeService categorieAgeService=new CategorieAgeService();
 
     // Afficher tous les vols
     @Url(url = "vols")
@@ -214,6 +217,7 @@ public class VolController {
         try {
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
