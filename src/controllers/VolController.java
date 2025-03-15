@@ -23,7 +23,9 @@ import util.ModelAndView;
 public class VolController {
 
     private VolService volService = new VolService();
-
+    AvionService avionService=new AvionService();
+    VilleService villeService=new VilleService();
+    StatutService statutService=new StatutService();
 
     // Afficher tous les vols
     @Url(url = "vols")
@@ -85,6 +87,11 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/ajout.jsp");
         try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            // Vol vol = volService.getVolById(Long.parseLong(id));
+            // modelAndView.setAttribute("vol", vol);
             Vol vol = new Vol();
             vol.setNumero(volDto.getNumero());
             vol.setDateVol(volDto.getDateVol());
@@ -96,7 +103,9 @@ public class VolController {
             vol.setIdVilleDepart(Long.parseLong(volDto.getIdVilleDepart()));
             vol.setIdVilleArrive(Long.parseLong(volDto.getIdVilleArrive()));
             vol.setIdAvion(Long.parseLong(volDto.getIdAvion()));
+            
             volService.ajouterVol(vol);
+
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
@@ -112,6 +121,11 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/modifier.jsp");
         try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            Vol vol2 = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("vol", vol2);
             Vol vol = new Vol();
             vol.setIdVol(Long.parseLong(id));
             vol.setNumero(volDto.getNumero());
