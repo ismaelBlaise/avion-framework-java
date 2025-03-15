@@ -8,12 +8,14 @@ import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
 import dto.ConfVolDto;
+import dto.PromotionDto;
 import dto.VolDto;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
 import services.ClasseService;
 import services.ConfVolService;
+import services.PromotionService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
@@ -79,6 +81,45 @@ public class VolController {
         }
         return modelAndView;
     }
+
+
+    @Url(url = "vols-promotion-form")
+    @Get
+    public ModelAndView promotionForm(@Param(name = "id") String id) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/promotion.jsp");
+        try {
+            ClasseService classeService=new ClasseService();
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            Vol vol = volService.getVolById(Long.parseLong(id));
+            modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }  
+    
+    
+    @Url(url = "vols-promotion-ajouter")
+    @Get
+    public ModelAndView promotionAjouter(@ParamObject(name = "promotion") PromotionDto promotionDto) {
+        ModelAndView modelAndView = new ModelAndView("template-back.jsp");
+        modelAndView.setAttribute("page", "vols/promotion.jsp");
+        try {
+            ClasseService classeService=new ClasseService();
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            // Vol vol = volService.getVolById(Long.parseLong(id));
+            PromotionService promotionService=new PromotionService();
+            promotionService.ajouterPromotion(promotionDto);
+            modelAndView.setUrl("redirect:vols");
+            // modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }  
 
     // Ajouter un vol
     @Url(url = "vols-ajouter")
