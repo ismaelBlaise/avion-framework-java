@@ -35,7 +35,7 @@ public class VolService {
         try (Connection connection = DbConnect.getConnection()) {
             String query = "UPDATE vols SET heure_reservation = ? WHERE id_vol = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1,heureReservation+":00");
+            preparedStatement.setTime(1,Time.valueOf(heureReservation+":00"));
             preparedStatement.setInt(2,Integer.parseInt(id));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class VolService {
         try (Connection connection = DbConnect.getConnection()) {
             String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1,heureAnnulation+":00");
+            preparedStatement.setTime(1,Time.valueOf(heureAnnulation+":00"));
             preparedStatement.setInt(2,Integer.parseInt(id));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
