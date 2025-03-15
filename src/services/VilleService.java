@@ -22,7 +22,7 @@ public class VilleService {
             while (resultSet.next()) {
                 Ville ville=new Ville();
                 ville.setIdVille(resultSet.getLong("id_ville"));
-                ville.setVille(resultSet.getString("ville"));
+                ville.setVille(resultSet.getString("nom_ville"));
                 villes.add(ville);
             }
             return villes;

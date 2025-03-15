@@ -14,6 +14,7 @@ import services.AvionService;
 import services.CategorieAgeService;
 import services.ClasseService;
 import services.ConfVolService;
+import services.StatutService;
 import services.VilleService;
 import services.VolService;
 import util.ModelAndView;
@@ -57,9 +58,15 @@ public class VolController {
     @Url(url = "vols-update-form")
     @Get
     public ModelAndView updateForm(@Param(name = "id") String id) {
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/modifier.jsp");
         try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
