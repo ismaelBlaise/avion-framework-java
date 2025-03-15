@@ -13,9 +13,9 @@ public class RechercheDto {
     String heureDebut;
     @FieldAnnotation(name = "heureFin")
     String heureFin;
-    @FieldAnnotation(name = "villeDepart")
+    @FieldAnnotation(name = "idVilleDepart")
     String villeDepart;
-    @FieldAnnotation(name = "villeArrive")
+    @FieldAnnotation(name = "idVilleArrive")
     String villeArrive;
     @FieldAnnotation(name = "idStatut")
     String idStatut;

@@ -1,6 +1,8 @@
 package controllers;
 
 
+import java.util.List;
+
 import annotation.Controller;
 import annotation.Get;
 import annotation.Param;
@@ -9,6 +11,7 @@ import annotation.Post;
 import annotation.Url;
 import dto.ConfVolDto;
 import dto.PromotionDto;
+import dto.RechercheDto;
 import dto.VolDto;
 import models.Vol;
 import services.AvionService;
@@ -16,6 +19,7 @@ import services.CategorieAgeService;
 import services.ClasseService;
 import services.ConfVolService;
 import services.PromotionService;
+import services.RechercheService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
@@ -125,12 +129,16 @@ public class VolController {
 
     @Url(url ="vols-rechercher")
     @Post
-    public ModelAndView recherche(){
+    public ModelAndView recherche(@ParamObject(name = "recherche") RechercheDto rechercheDto){
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/vols.jsp");
+        RechercheService rechercheService=new RechercheService();
         try {
-            modelAndView.setAttribute("vols", volService.getAllVols());
+
+            List<Vol> vols=rechercheService.rechercher(rechercheDto);
+            modelAndView.setAttribute("vols", vols);
         } catch (Exception e) {
+            modelAndView.setAttribute("page", "vols/recherche.jsp");;
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
