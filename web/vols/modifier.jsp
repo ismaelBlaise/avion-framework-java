@@ -58,7 +58,7 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <% for (Statut statut : statuts) { %>
                     <option value="<%= statut.getIdStatut() %>" <%= vol.getIdStatut() == statut.getIdStatut() ? "selected" : "" %>>
-                        <%= statut.getNom() %>
+                        <%= statut.getStatut() %>
                     </option>
                 <% } %>
             </select>
