@@ -3,6 +3,7 @@ package services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Ville;
@@ -14,6 +15,7 @@ public class VilleService {
         Connection connection=null;
         List<Ville> villes=null;
         try {
+            villes=new ArrayList<>();
             connection=DbConnect.getConnection();
             preparedStatement=connection.prepareStatement("SELECT * FROM villes");
             ResultSet resultSet=preparedStatement.executeQuery();
