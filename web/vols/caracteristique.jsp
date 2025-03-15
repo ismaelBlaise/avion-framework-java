@@ -1,9 +1,15 @@
+
+<%@ page import="models.*" %>
+<%@ page import="java.util.*" %>
 <div class="max-w-4xl mx-auto py-8">
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Ajouter une caracteristique de vol</h2>
 
     <!-- Formulaire d'ajout de caracteristique -->
     <form action="vols-caracteristique-ajouter" method="POST" class="space-y-6">
-        <% String erreur = (String) request.getAttribute("erreur"); %>
+        <% 
+            String erreur = (String) request.getAttribute("erreur"); 
+            Vol vol=(Vol) request.getAttribute("vol");
+        %>
         <% if (erreur != null) { %>
             <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
                 <%= erreur %>
@@ -13,9 +19,9 @@
         <!-- Champ Vol (Desactive) -->
         <div>
             <label for="idVol" class="block text-gray-700 font-medium mb-2">Vol</label>
-            <input type="text" id="idVol" name="conf_vol.idVol" value="<%= ((Vol) request.getAttribute("vol")).getNumero() %>" 
+            <input type="text" id="idVol" value="<%= vol.getNumero() %>" 
                 disabled class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            <input type="hidden" name="conf_vol.idVol" value="<%= ((Vol) request.getAttribute("vol")).getIdVol() %>">
+            <input type="hidden" name="conf_vol.idVol" value="<%= vol.getIdVol() %>">
         </div>
 
         <!-- Champ Classe -->
