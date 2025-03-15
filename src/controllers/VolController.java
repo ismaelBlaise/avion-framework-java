@@ -10,9 +10,11 @@ import annotation.Url;
 import dto.ConfVolDto;
 import dto.VolDto;
 import models.Vol;
+import services.AvionService;
 import services.CategorieAgeService;
 import services.ClasseService;
 import services.ConfVolService;
+import services.VilleService;
 import services.VolService;
 import util.ModelAndView;
 
@@ -123,8 +125,16 @@ public class VolController {
     @Url(url = "vols-ajout-form")
     @Get
     public ModelAndView addForm() {
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/ajout.jsp");
+        try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return modelAndView;
     }
 
