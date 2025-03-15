@@ -61,10 +61,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="avions" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Classe</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Villes</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Statuts</a></li>
+                        <li><a href="avions" class="block text-gray-600 hover:text-gray-900">Vols</a></li>
                         <li><a href="#" class="block text-gray-600 hover:text-gray-900">Recherche</a></li>
                     </ul>
                 </li>
