@@ -12,9 +12,9 @@ public class VolDto {
     private String heureDepart;
     @FieldAnnotation(name = "heureArrive")
     private String heureArrive;
-    @FieldAnnotation(name = "heureReservation")
+    // @FieldAnnotation(name = "heureReservation")
     private String heureReservation;
-    @FieldAnnotation(name = "heureAnnulation")
+    // @FieldAnnotation(name = "heureAnnulation")
     private String heureAnnulation;
     @FieldAnnotation(name = "idStatut")
     private String idStatut;
