@@ -2,7 +2,7 @@
 INSERT INTO roles (role) VALUES ('admin'), ('passager');
 
 
-INSERT INTO statuts (statut) VALUES ('Réservé'), ('Annulé'), ('Confirmé');
+INSERT INTO statuts (statut) VALUES ('Reserve'), ('Annule'), ('Confirme');
 
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 
