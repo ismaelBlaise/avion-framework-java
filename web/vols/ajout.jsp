@@ -9,6 +9,8 @@
             String erreur = (String) request.getAttribute("erreur"); 
             List<Ville> villes = (List<Ville>) request.getAttribute("villes");
             List<Avion> avions = (List<Avion>) request.getAttribute("avions");
+            List<Statut> statuts = (List<Statut>) request.getAttribute("statuts");
+
         %>
         <% if (erreur != null) { %>
             <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
@@ -65,7 +67,17 @@
                 <% } %>
             </select>
         </div>
-
+        <div>
+            <label for="idStatut" class="block text-gray-700 font-medium mb-2">Statut</label>
+            <select id="idStatut" name="vol.idStatut" required 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Statut statut : statuts) { %>
+                    <option value="<%= statut.getIdStatut() %>" >
+                        <%= statut.getStatut() %>
+                    </option>
+                <% } %>
+            </select>
+        </div>
         <!-- Champ Avion -->
         <div>
             <label for="idAvion" class="block text-gray-700 font-medium mb-2">Avion</label>

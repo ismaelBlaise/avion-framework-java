@@ -35,6 +35,7 @@ public class VolController {
             modelAndView.setAttribute("vols", volService.getAllVols());
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -50,6 +51,7 @@ public class VolController {
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -71,6 +73,7 @@ public class VolController {
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -97,6 +100,7 @@ public class VolController {
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -123,7 +127,9 @@ public class VolController {
             volService.updateVol(vol);
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
+
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -134,11 +140,13 @@ public class VolController {
     public ModelAndView addForm() {
         AvionService avionService=new AvionService();
         VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/ajout.jsp");
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,6 +172,7 @@ public class VolController {
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -186,6 +195,7 @@ public class VolController {
 
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -201,6 +211,7 @@ public class VolController {
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -221,6 +232,7 @@ public class VolController {
 
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -240,6 +252,7 @@ public class VolController {
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
@@ -256,6 +269,7 @@ public class VolController {
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }
