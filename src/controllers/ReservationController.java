@@ -97,7 +97,7 @@ public class ReservationController {
         ReservationService reservationService=new ReservationService();
         try {
             reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idCategorieAge), Integer.parseInt(nb));
-            modelAndView.setAttribute("reservation",idReservation);
+            modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {
