@@ -8,10 +8,12 @@ import dto.ConfVolDto;
 import utils.DbConnect;
 
 public class ConfVolService {
-    public void ajouterCaracteristique(ConfVolDto confVolDto) throws Exception{
-        PreparedStatement preparedStatement=null;
-        try (Connection connection=DbConnect.getConnection()) {
-            preparedStatement=connection.prepareStatement("INSERT INTO conf_vol(id_vol, id_classe, id_categorie_age, montant, capacite) VALUES (?,?,?,?,?)"); 
+
+    public void ajouterCaracteristique(ConfVolDto confVolDto) throws Exception {
+        PreparedStatement preparedStatement = null;
+
+        try (Connection connection = DbConnect.getConnection()) {
+            preparedStatement = connection.prepareStatement("INSERT INTO conf_vol(id_vol, id_classe, id_categorie_age, montant, capacite) VALUES (?,?,?,?,?)");
             preparedStatement.setLong(1, Long.parseLong(confVolDto.getIdVol()));
             preparedStatement.setLong(2, Long.parseLong(confVolDto.getIdClasse()));
             preparedStatement.setLong(3, Long.parseLong(confVolDto.getIdCategorieAge()));
@@ -19,17 +21,17 @@ public class ConfVolService {
             preparedStatement.setInt(5, Integer.parseInt(confVolDto.getCapacite()));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            throw e;
-        }
-        finally {
+            throw e;  // Relancer l'exception après l'avoir capturée
+        } finally {
             try {
-                preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace();  // Afficher l'exception en cas d'erreur lors de la fermeture
             }
         }
     }
-
 
     public double recupererPrixParCategorieAge(int idCategorieAge, int idVol) throws Exception {
         PreparedStatement preparedStatement = null;
@@ -51,20 +53,16 @@ public class ConfVolService {
                 prix = resultSet.getDouble("montant");
             }
         } catch (Exception e) {
-            throw e;
+            throw e;  // Relancer l'exception après l'avoir capturée
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace();  // Afficher l'exception en cas d'erreur lors de la fermeture
             }
         }
 
         return prix;
     }
-
-
-
-
 }

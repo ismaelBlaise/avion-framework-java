@@ -10,11 +10,18 @@ import models.CategorieAge;
 import utils.DbConnect;
 
 public class CategorieAgeService {
+    
     public List<CategorieAge> getAllCategoriesAge() throws Exception {
         List<CategorieAge> categories = new ArrayList<>();
-        try (Connection connection = DbConnect.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM categories_age");
-            ResultSet resultSet = preparedStatement.executeQuery();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DbConnect.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM categories_age");
+            resultSet = preparedStatement.executeQuery();
+            
             while (resultSet.next()) {
                 CategorieAge categorieAge = new CategorieAge();
                 categorieAge.setIdCategorieAge(resultSet.getInt("id_categorie_age"));
@@ -23,11 +30,20 @@ public class CategorieAgeService {
                 categorieAge.setAgeMax(resultSet.getObject("age_max", Integer.class));
                 categories.add(categorieAge);
             }
-            resultSet.close();
-            preparedStatement.close();
-            return categories;
         } catch (Exception e) {
+            // Relancer l'exception après l'avoir capturée
             throw e;
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
+        return categories;
     }
 }

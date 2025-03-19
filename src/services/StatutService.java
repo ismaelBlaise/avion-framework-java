@@ -93,9 +93,7 @@ public class StatutService {
     }
 
     public Statut findStatutVols(Vol vol) throws Exception{
-       
-        
-            Statut statut =getStatutById(vol.getIdStatut());
+        Statut statut =getStatutById(vol.getIdStatut());
         return statut;
     }
 
