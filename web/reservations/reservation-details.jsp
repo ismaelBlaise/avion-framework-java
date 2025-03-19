@@ -28,11 +28,11 @@
             </div>
         <% } %>
 
-        <input type="hidden" name="detail.idReservation" value="<%= reservation %>">
+        <input type="hidden" name="idReservation" value="<%= reservation %>">
 
         <div>
             <label for="idCategorieAge" class="block text-gray-700 font-medium mb-2">Categorie d'age</label>
-            <select id="idCategorieAge" name="detail.idCategorieAge" required
+            <select id="idCategorieAge" name="idCategorieAge" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <% for (CategorieAge categorie : categoriesAge) { %>
                     <option value="<%= categorie.getIdCategorieAge() %>"><%= categorie.getCategorie() %></option>
@@ -42,7 +42,7 @@
 
         <div>
             <label for="nb" class="block text-gray-700 font-medium mb-2">Nombre de places</label>
-            <input type="number" id="nb" name="detail.nb" min="1" required
+            <input type="number" id="nb" name="nb" min="1" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 

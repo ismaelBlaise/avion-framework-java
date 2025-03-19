@@ -92,13 +92,16 @@ public class ReservationController {
     @Post
     public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "nb") String nb){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
         CategorieAgeService categorieAgeService=new CategorieAgeService();
+        ReservationService reservationService=new ReservationService();
         try {
-            
+            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idCategorieAge), Integer.parseInt(nb));
             modelAndView.setAttribute("reservation",idReservation);
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
+            modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {
-            modelAndView.setAttribute("page", "reservations/reservations.jsp");
+            
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
