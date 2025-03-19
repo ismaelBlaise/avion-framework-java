@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import org.postgresql.util.PSQLException;
 
 import annotation.Controller;
@@ -8,11 +10,16 @@ import annotation.Param;
 import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
+import dto.RechercheDto;
 import dto.ReservationDto;
+import models.Vol;
+import services.AvionService;
 import services.CategorieAgeService;
 import services.ClasseService;
+import services.RechercheService;
 import services.ReservationService;
 import services.StatutService;
+import services.VilleService;
 import services.VolService;
 import util.ModelAndView;
 
@@ -108,5 +115,52 @@ public class ReservationController {
         return modelAndView;
     }
     
+
+
+    @Url(url ="vols-recherche-front-form")
+    @Get
+    public ModelAndView rechercheForm(){
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
+        ModelAndView modelAndView = new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/recherche.jsp");
+        try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            // Vol vol = volService.getVolById(Long.parseLong(id));
+            // modelAndView.setAttribute("vol", vol);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url ="vols-rechercher-front")
+    @Post
+    public ModelAndView recherche(@ParamObject(name = "recherche") RechercheDto rechercheDto){
+        ModelAndView modelAndView = new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/vols.jsp");
+        AvionService avionService=new AvionService();
+        VilleService villeService=new VilleService();
+        StatutService statutService=new StatutService();
+        RechercheService rechercheService=new RechercheService();
+        try {
+            modelAndView.setAttribute("avions",avionService.getAllAvions());
+            modelAndView.setAttribute("villes", villeService.getAllVilles());
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            List<Vol> vols=rechercheService.rechercher(rechercheDto);
+            modelAndView.setAttribute("vols", vols);
+        } catch (Exception e) {
+
+            modelAndView.setAttribute("page", "reservations/recherche.jsp");;
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
 }
  
