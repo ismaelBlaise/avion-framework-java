@@ -3,8 +3,12 @@ package controllers;
 import annotation.Controller;
 import annotation.Get;
 import annotation.Param;
+import annotation.ParamObject;
+import annotation.Post;
 import annotation.Url;
+import dto.ReservationDto;
 import services.ClasseService;
+import services.ReservationService;
 import services.StatutService;
 import services.VolService;
 import util.ModelAndView;
@@ -48,6 +52,31 @@ public class ReservationController {
     }
 
 
+    @Url(url = "vols-reserver")
+    @Post
+    public ModelAndView reserver(@ParamObject(name = "reservation") ReservationDto reservationDto){
+        StatutService statutService=new StatutService();
+        ClasseService classeService=new ClasseService();
+        ReservationService reservationService=new ReservationService();
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/reservations.jsp");
+        try {
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
+            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
+            modelAndView.setAttribute("reservation",id);
+            
+            modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
+        } catch (Exception e) {
+            
+            modelAndView.setAttribute("page", "reservations/reservations.jsp");
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return modelAndView; 
+    }
     
 }
  

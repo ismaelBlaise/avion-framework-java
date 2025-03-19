@@ -18,5 +18,45 @@ public class ReservationDto {
     @FieldAnnotation(name = "idVol")
     private String idVol;
 
+    public String getIdReservation() {
+        return idReservation;
+    }
+
+    public void setIdReservation(String idReservation) {
+        this.idReservation = idReservation;
+    }
+
+    public String getDateReservation() {
+        return dateReservation;
+    }
+
+    public void setDateReservation(String dateReservation) {
+        this.dateReservation = dateReservation;
+    }
+
+    public String getIdStatut() {
+        return idStatut;
+    }
+
+    public void setIdStatut(String idStatut) {
+        this.idStatut = idStatut;
+    }
+
+    public String getIdClasse() {
+        return idClasse;
+    }
+
+    public void setIdClasse(String idClasse) {
+        this.idClasse = idClasse;
+    }
+
+    public String getIdVol() {
+        return idVol;
+    }
+
+    public void setIdVol(String idVol) {
+        this.idVol = idVol;
+    }
+
     
 }
