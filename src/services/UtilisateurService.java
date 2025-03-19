@@ -26,7 +26,9 @@ public class UtilisateurService {
                     preparedStatement.close();
                     resultSet.close();
                     customSession.add("id", utilisateur.getIdUtilisateur());
+
                     RoleService roleService=new RoleService();
+                    
                     return roleService.findById(utilisateur.getIdRole());
                 } else {
                     throw new Exception("Mot de passe incorrect");

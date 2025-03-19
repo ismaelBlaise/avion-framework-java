@@ -36,14 +36,14 @@
     <header class="bg-white shadow-md fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-10">
         <div class="flex items-center space-x-4">
             <!-- Burger Icon -->
-            <button id="menu-button" class="text-gray-700 text-3xl lg:hidden" aria-label="Open Sidebar">&#9776;</button>
+            <button id="menu-button" class="text-gray-700 text-3xl" aria-label="Open Sidebar">&#9776;</button>
             <span class="text-xl font-semibold text-gray-700" style="color:blue ;">Aeroport</span>
         </div>
         <div class="flex items-center space-x-4">
             <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Profile" class="w-10 h-10 rounded-full">
 
             <div class="relative">
-                <button class="text-gray-700 font-medium" aria-haspopup="true">K. Anderson </button>
+                <button class="text-gray-700 font-medium" aria-haspopup="true">B. Ismael </button>
                 <ul class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border rounded shadow-md hidden">
                     <li><a href="#" class="block text-gray-600 hover:bg-gray-200 px-4 py-2 cursor-pointer">Deconnexion</a></li>
                 </ul>
@@ -52,7 +52,7 @@
     </header>
 
     <!-- Sidebar (à gauche) -->
-    <aside class="bg-white w-64 fixed top-0 left-0 h-full shadow-md pt-16 lg:block hidden transition-all duration-300">
+    <aside class="bg-white w-64 fixed top-0 left-0 h-full shadow-md pt-16  transition-all duration-300">
         <nav class="px-4 py-6">
             <ul class="space-y-4">
                 <li>
@@ -61,11 +61,8 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="avions" class="block text-gray-600 hover:text-gray-900">Avions</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Classe</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Villes</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Statuts</a></li>
-                        <li><a href="#" class="block text-gray-600 hover:text-gray-900">Recherche</a></li>
+                        <li><a href="vols-disponible" class="block text-gray-600 hover:text-gray-900">Vols</a></li>
+                        <li><a href="vols-recherche-form" class="block text-gray-600 hover:text-gray-900">Recherche</a></li>
                     </ul>
                 </li>
             </ul>
