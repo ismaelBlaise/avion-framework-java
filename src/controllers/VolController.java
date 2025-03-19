@@ -377,11 +377,15 @@ public class VolController {
     public ModelAndView ajouterCaracteristique(@ParamObject(name = "conf_vol") ConfVolDto confVolDto) {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/caracteristique.jsp");
+        Vol vol=null;
         ConfVolService confVolService=new ConfVolService();
         try {
+            vol=volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             confVolService.ajouterCaracteristique(confVolDto);
+            
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
+            modelAndView.setAttribute("vol", vol);
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
