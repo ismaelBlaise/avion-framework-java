@@ -12,23 +12,23 @@ import utils.DbConnect;
 public class UtilisateurService {
 
     public Role login(CustomSession customSession, String email, String password) throws Exception {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try (Connection connection = DbConnect.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM utilisateurs WHERE email = ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM utilisateurs WHERE email = ?");
             preparedStatement.setString(1, email);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 Utilisateur utilisateur = new Utilisateur();
                 utilisateur = utilisateur.toUtilisateur(resultSet);
 
                 if (utilisateur.getMdp().equals(password)) {
-                    preparedStatement.close();
-                    resultSet.close();
                     customSession.add("id", utilisateur.getIdUtilisateur());
 
-                    RoleService roleService=new RoleService();
-                    
+                    RoleService roleService = new RoleService();
                     return roleService.findById(utilisateur.getIdRole());
                 } else {
                     throw new Exception("Mot de passe incorrect");
@@ -38,11 +38,18 @@ public class UtilisateurService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            throw new Exception("Erreur lors de la tentative de connexion : " + e.getMessage(), e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        
     }
 
+    // Méthode d'enregistrement (commentée dans le code initial)
     // public void register(String nom, String prenom, String email, String dateNaissance, String contact, String mdp) throws Exception {
     //     try (Connection connection = DbConnect.getConnection()) {
             
