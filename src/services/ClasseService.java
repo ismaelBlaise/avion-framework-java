@@ -13,22 +13,36 @@ public class ClasseService {
     
     public List<Classe> getAllClasses() throws Exception {
         List<Classe> classes = null;
-        try (Connection connection=DbConnect.getConnection()){
-            classes=new ArrayList<>();
-            PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM classes");
-            ResultSet resultSet=preparedStatement.executeQuery();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DbConnect.getConnection();
+            classes = new ArrayList<>();
+            preparedStatement = connection.prepareStatement("SELECT * FROM classes");
+            resultSet = preparedStatement.executeQuery();
+            
             while (resultSet.next()) {
-                Classe classe=new Classe();
+                Classe classe = new Classe();
                 classe.setIdClasse(resultSet.getLong("id_classe"));
                 classe.setClasse(resultSet.getString("classe"));
                 classes.add(classe);
             }
-            preparedStatement.close();
-            resultSet.close();
-            return classes;
         } catch (Exception e) {
+            // Relancer l'exception après l'avoir capturée
             throw e;
-            
-        } 
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return classes;
     }
 }
