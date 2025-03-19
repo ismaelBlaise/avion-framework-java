@@ -4,7 +4,7 @@
 <%
     String erreur = (String) request.getAttribute("erreur");
     String succes = (String) request.getAttribute("succes");
-    int reservation = (int) request.getAttribute("reservation");
+    String reservation = (String) request.getAttribute("reservation");
     List<CategorieAge> categoriesAge = (List<CategorieAge>) request.getAttribute("categoriesAge");
 %>
 
