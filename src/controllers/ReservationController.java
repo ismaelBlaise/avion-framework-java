@@ -90,8 +90,8 @@ public class ReservationController {
 
     @Url(url = "vols-reservation-details")
     @Post
-    public ModelAndView ajouterDetails(){
-        ModelAndView modelAndView=new ModelAndView("");
+    public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "nb") String nb){
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         
         return modelAndView;
     }
