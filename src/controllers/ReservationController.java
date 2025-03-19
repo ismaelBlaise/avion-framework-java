@@ -9,6 +9,7 @@ import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
 import dto.ReservationDto;
+import services.CategorieAgeService;
 import services.ClasseService;
 import services.ReservationService;
 import services.StatutService;
@@ -60,6 +61,7 @@ public class ReservationController {
         StatutService statutService=new StatutService();
         ClasseService classeService=new ClasseService();
         ReservationService reservationService=new ReservationService();
+        CategorieAgeService categorieAgeService=new CategorieAgeService();
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservations.jsp");
         try {
@@ -69,7 +71,7 @@ public class ReservationController {
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
             int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
             modelAndView.setAttribute("reservation",id);
-            
+            modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
            } catch (PSQLException e) {
             modelAndView.setAttribute("page", "reservations/reservations.jsp");
@@ -84,6 +86,12 @@ public class ReservationController {
         }
         
         return modelAndView; 
+    }
+
+    @Url(url = "vols-reservation-details")
+    @Post
+    public ModelAndView ajouterDetails(){
+        return null;
     }
     
 }
