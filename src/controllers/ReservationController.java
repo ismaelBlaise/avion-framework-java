@@ -91,7 +91,9 @@ public class ReservationController {
     @Url(url = "vols-reservation-details")
     @Post
     public ModelAndView ajouterDetails(){
-        return null;
+        ModelAndView modelAndView=new ModelAndView("");
+        
+        return modelAndView;
     }
     
 }
