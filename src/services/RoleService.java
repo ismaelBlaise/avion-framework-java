@@ -26,13 +26,13 @@ public class RoleService {
                 role = role.toRole(resultSet);
             }
         } catch (Exception e) {
-            throw e; // Relancer l'exception après l'avoir capturée
+            throw e; 
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
             } catch (Exception e) {
-                e.printStackTrace(); // Afficher l'exception si la fermeture échoue
+                e.printStackTrace(); 
             }
         }
 
@@ -54,13 +54,13 @@ public class RoleService {
                 roles.add(role);
             }
         } catch (Exception e) {
-            throw e; // Relancer l'exception après l'avoir capturée
+            throw e;  
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
             } catch (Exception e) {
-                e.printStackTrace(); // Afficher l'exception si la fermeture échoue
+                e.printStackTrace();  
             }
         }
 

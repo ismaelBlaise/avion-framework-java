@@ -10,8 +10,7 @@ import models.Avion;
 import utils.DbConnect;
 
 public class AvionService {
-
-    // Ajouter un avion
+ 
     public void ajouterAvion(Avion avion) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -23,7 +22,7 @@ public class AvionService {
             preparedStatement.setString(2, avion.getModele());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+            
             throw e;
         } finally {
             if (preparedStatement != null) {
@@ -34,8 +33,7 @@ public class AvionService {
             }
         }
     }
-
-    // Récupérer tous les avions
+ 
     public List<Avion> getAllAvions() throws Exception {
         List<Avion> avions = new ArrayList<>();
         Connection connection = null;
@@ -55,7 +53,7 @@ public class AvionService {
                 avions.add(avion);
             }
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+           
             throw e;
         } finally {
             if (resultSet != null) {
@@ -71,7 +69,7 @@ public class AvionService {
         return avions;
     }
 
-    // Récupérer un avion par ID
+     
     public Avion getAvionById(int id) throws Exception {
         Avion avion = null;
         Connection connection = null;
@@ -91,7 +89,7 @@ public class AvionService {
                 avion.setModele(resultSet.getString("modele"));
             }
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+             
             throw e;
         } finally {
             if (resultSet != null) {
@@ -107,7 +105,7 @@ public class AvionService {
         return avion;
     }
 
-    // Mettre à jour un avion
+    
     public void updateAvion(Avion avion) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -120,7 +118,7 @@ public class AvionService {
             preparedStatement.setLong(3, avion.getIdAvion());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+             
             throw e;
         } finally {
             if (preparedStatement != null) {
@@ -132,7 +130,7 @@ public class AvionService {
         }
     }
 
-    // Supprimer un avion
+
     public void deleteAvion(int id) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -143,7 +141,7 @@ public class AvionService {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+             
             throw e;
         } finally {
             if (preparedStatement != null) {

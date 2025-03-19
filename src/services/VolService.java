@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class VolService {
         this.statutService = new StatutService();
     }
 
-    // Get all available flights
+     
     public List<Vol> getAllVolsDisponible() throws Exception {
         List<Vol> vols = getAllVols();
         Statut statut = statutService.getByStatut("Disponible");
@@ -28,7 +29,6 @@ public class VolService {
         return vols;
     }
 
-    // Add a new flight
     public void ajouterVol(Vol vol) throws Exception {
         String query = "INSERT INTO vols (numero, date_vol, heure_depart, heure_arrivee, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -48,35 +48,59 @@ public class VolService {
         }
     }
 
-    // Add reservation hour for a flight
     public void ajouterHeureReservation(String id, String heureReservation) throws Exception {
         String query = "UPDATE vols SET heure_reservation = ? WHERE id_vol = ?";
-
-        try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
-            preparedStatement.setInt(2, Integer.parseInt(id));
-            preparedStatement.executeUpdate();
+        Vol vol = null;
+        
+        try (Connection connection = DbConnect.getConnection(); 
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            
+            vol = getVolById(Long.parseLong(id));
+            
+            if (vol != null) {
+                if (Time.valueOf(vol.getHeureDepart() + ":00").before(Time.valueOf(heureReservation + ":00"))) {
+                    preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
+                    preparedStatement.setLong(2, Long.parseLong(id));
+                    preparedStatement.executeUpdate();
+                } else {
+                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée avant l'heure de départ.");
+                }
+            } else {
+                throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
+            }
+            
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erreur d'argument : " + e.getMessage());
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    // Add cancellation hour for a flight
     public void ajouterHeureAnnulation(String id, String heureAnnulation) throws Exception {
         String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
-
-        try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        
+        try (Connection connection = DbConnect.getConnection(); 
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+             
             preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
-            preparedStatement.setInt(2, Integer.parseInt(id));
+            preparedStatement.setLong(2, Long.parseLong(id));
             preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.err.println("Erreur de base de données : " + e.getMessage());
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    // Get all flights
+
+    
     public List<Vol> getAllVols() throws Exception {
         List<Vol> vols = new ArrayList<>();
         String query = "SELECT * FROM vols";
@@ -102,7 +126,6 @@ public class VolService {
         return vols;
     }
 
-    // Get flight by ID
     public Vol getVolById(Long id) throws Exception {
         Vol vol = null;
         String query = "SELECT * FROM vols WHERE id_vol = ?";
@@ -130,7 +153,6 @@ public class VolService {
         return vol;
     }
 
-    // Update flight details
     public void updateVol(Vol vol) throws Exception {
         String query = "UPDATE vols SET numero = ?, date_vol = ?, heure_depart = ?, heure_arrivee = ?, id_statut = ?, id_ville_depart = ?, id_ville_arrivee = ?, id_avion = ? WHERE id_vol = ?";
 
@@ -148,7 +170,6 @@ public class VolService {
         }
     }
 
-    // Delete flight by ID
     public void deleteVol(Long id) throws Exception {
         String query = "DELETE FROM vols WHERE id_vol = ?";
 

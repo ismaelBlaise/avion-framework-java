@@ -31,7 +31,7 @@ public class CategorieAgeService {
                 categories.add(categorieAge);
             }
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+            
             throw e;
         } finally {
             if (resultSet != null) {

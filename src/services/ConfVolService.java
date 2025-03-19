@@ -21,14 +21,14 @@ public class ConfVolService {
             preparedStatement.setInt(5, Integer.parseInt(confVolDto.getCapacite()));
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            throw e;  // Relancer l'exception après l'avoir capturée
+            throw e;   
         } finally {
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }
             } catch (Exception e) {
-                e.printStackTrace();  // Afficher l'exception en cas d'erreur lors de la fermeture
+                e.printStackTrace();   
             }
         }
     }
@@ -39,27 +39,25 @@ public class ConfVolService {
         double prix = 0.0;
 
         try (Connection connection = DbConnect.getConnection()) {
-            // Préparer la requête pour récupérer le prix en fonction de l'id_vol et de l'id_categorie_age
             String sql = "SELECT montant FROM conf_vol WHERE id_categorie_age = ? AND id_vol = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idCategorieAge);
             preparedStatement.setInt(2, idVol);
 
-            // Exécuter la requête
+             
             resultSet = preparedStatement.executeQuery();
-
-            // Si un résultat est trouvé, récupérer le prix
+ 
             if (resultSet.next()) {
                 prix = resultSet.getDouble("montant");
             }
         } catch (Exception e) {
-            throw e;  // Relancer l'exception après l'avoir capturée
+            throw e;  
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
             } catch (Exception e) {
-                e.printStackTrace();  // Afficher l'exception en cas d'erreur lors de la fermeture
+                e.printStackTrace();  
             }
         }
 

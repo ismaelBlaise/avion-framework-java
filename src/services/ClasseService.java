@@ -30,7 +30,7 @@ public class ClasseService {
                 classes.add(classe);
             }
         } catch (Exception e) {
-            // Relancer l'exception après l'avoir capturée
+             
             throw e;
         } finally {
             if (resultSet != null) {

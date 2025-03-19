@@ -16,7 +16,6 @@ public class PromotionService {
             preparedStatement.setLong(1, Long.parseLong(promotionDto.getIdVol()));
             preparedStatement.setLong(2, Long.parseLong(promotionDto.getIdClasse()));
             preparedStatement.setDouble(3, Double.parseDouble(promotionDto.getPourcentage()));
-            // System.out.println(promotionDto.getNbSieze());
             preparedStatement.setLong(4, Long.parseLong(promotionDto.getNbSieze()));
             preparedStatement.executeUpdate();
         }catch (Exception e){
