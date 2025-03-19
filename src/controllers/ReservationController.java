@@ -4,6 +4,10 @@ import annotation.Controller;
 import annotation.Get;
 import annotation.Param;
 import annotation.Url;
+import models.Vol;
+import services.ClasseService;
+import services.RoleService;
+import services.StatutService;
 import services.VolService;
 import util.ModelAndView;
 
@@ -26,11 +30,22 @@ public class ReservationController {
     }
 
 
-    @Url(url = "vols-reserver")
+    @Url(url = "vols-reserver-form")
     @Get
     public ModelAndView reserverVol(@Param(name = "id") String id){
+        StatutService statutService=new StatutService();
+        ClasseService classeService=new ClasseService();
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
-        modelAndVo
+        modelAndView.setAttribute("page", "reservations/reservations.jsp");
+        try {
+            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        modelAndView.setAttribute("vol", id);
+        
         return modelAndView; 
     }
 

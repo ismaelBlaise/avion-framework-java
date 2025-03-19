@@ -43,7 +43,7 @@
                         <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer":vol.getHeureAnnulation() %></td>
                         <td class="px-4 py-3 border-b"><%= statutService.findStatutVols(vol).getStatut() %></td>
                         <td class="px-4 py-3 border-b flex space-x-2">
-                            <a href="vols-reserver?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Resrever</button></a>
+                            <a href="vols-reserver-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Resrever</button></a>
                             
                         </td>
                     </tr>
