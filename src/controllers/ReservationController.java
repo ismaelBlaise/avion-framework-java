@@ -29,7 +29,12 @@ public class ReservationController {
     @Url(url = "vols-reserver")
     @Get
     public ModelAndView reserverVol(@Param(name = "id") String id){
-        ModelAndView modelAndView=new ModelAndView(id);
-        return modelAndView;
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndVo
+        return modelAndView; 
     }
+
+
+    
 }
+ 
