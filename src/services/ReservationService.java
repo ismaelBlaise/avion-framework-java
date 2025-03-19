@@ -21,7 +21,7 @@ public class ReservationService {
             String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setTimestamp(1, Timestamp.valueOf(dateReservation));
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(dateReservation+":00.00"));
             preparedStatement.setInt(2, idStatut);
             preparedStatement.setInt(3, idClasse);
             preparedStatement.setInt(4, idVol);
