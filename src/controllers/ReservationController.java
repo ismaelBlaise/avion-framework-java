@@ -1,5 +1,7 @@
 package controllers;
 
+import org.postgresql.util.PSQLException;
+
 import annotation.Controller;
 import annotation.Get;
 import annotation.Param;
@@ -61,6 +63,7 @@ public class ReservationController {
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservations.jsp");
         try {
+           try {
             modelAndView.setAttribute("statuts", statutService.getAllStatuts());
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
@@ -68,6 +71,11 @@ public class ReservationController {
             modelAndView.setAttribute("reservation",id);
             
             modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
+           } catch (PSQLException e) {
+            modelAndView.setAttribute("page", "reservations/reservations.jsp");
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+           }
         } catch (Exception e) {
             
             modelAndView.setAttribute("page", "reservations/reservations.jsp");

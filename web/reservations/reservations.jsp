@@ -10,7 +10,7 @@
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Creer une reservation pour le vol <strong><%=vol.getNumero()%></strong></h2>
 
     <!-- Formulaire d'ajout de reservation -->
-    <form action="reservations-ajouter" method="POST" class="space-y-6">
+    <form action="vols-reserver" method="POST" class="space-y-6">
         
         
         <% if (erreur != null) { %>

@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import utils.DbConnect;
 
 public class ReservationService {
@@ -18,7 +21,7 @@ public class ReservationService {
             String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, dateReservation);
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(dateReservation));
             preparedStatement.setInt(2, idStatut);
             preparedStatement.setInt(3, idClasse);
             preparedStatement.setInt(4, idVol);
