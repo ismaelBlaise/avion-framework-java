@@ -17,6 +17,7 @@ public class ReservationService {
         int idReservation = -1;
 
         try {
+            System.out.println(dateReservation);
             connection = DbConnect.getConnection();
             String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
