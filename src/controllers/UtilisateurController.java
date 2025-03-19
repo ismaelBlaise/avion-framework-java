@@ -1,6 +1,7 @@
 package controllers;
 
 import annotation.Controller;
+import annotation.Get;
 import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
@@ -31,6 +32,16 @@ public class UtilisateurController {
         }
         
         return modelAndView;
+    }
+
+
+    @Url(url = "deconnexion")
+    @Get
+    public ModelAndView deconnexion(CustomSession customSession){
+        ModelAndView modelAndView=new ModelAndView("index.jsp");
+        customSession.delete("id");
+        return modelAndView;
+    
     }
 
     // @Url(url="register")
