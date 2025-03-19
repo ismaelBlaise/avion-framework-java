@@ -3,32 +3,32 @@ package models;
 import java.sql.Timestamp;
 
 public class Reservation {
-
-    private Long idReservation;
+    private int idReservation;
     private Timestamp dateReservation;
-    private Double prix;
-    private Long idStatut;
-    private Long idClasse;
-    private Long idVol;
-    private Long idUtilisateur;
+    private int idStatut;
+    private int idClasse;
+    private int idVol;
 
-    // Constructeur
-    public Reservation(Long idReservation, Timestamp dateReservation, Double prix, Long idStatut, Long idClasse, Long idVol, Long idUtilisateur) {
+    // Constructeur par défaut
+    public Reservation() {
+        this.dateReservation = new Timestamp(System.currentTimeMillis());
+    }
+
+    // Constructeur avec paramètres
+    public Reservation(int idReservation, Timestamp dateReservation, int idStatut, int idClasse, int idVol) {
         this.idReservation = idReservation;
         this.dateReservation = dateReservation;
-        this.prix = prix;
         this.idStatut = idStatut;
         this.idClasse = idClasse;
         this.idVol = idVol;
-        this.idUtilisateur = idUtilisateur;
     }
 
-    // Getters et setters
-    public Long getIdReservation() {
+    // Getters et Setters
+    public int getIdReservation() {
         return idReservation;
     }
 
-    public void setIdReservation(Long idReservation) {
+    public void setIdReservation(int idReservation) {
         this.idReservation = idReservation;
     }
 
@@ -40,43 +40,39 @@ public class Reservation {
         this.dateReservation = dateReservation;
     }
 
-    public Double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(Double prix) {
-        this.prix = prix;
-    }
-
-    public Long getIdStatut() {
+    public int getIdStatut() {
         return idStatut;
     }
 
-    public void setIdStatut(Long idStatut) {
+    public void setIdStatut(int idStatut) {
         this.idStatut = idStatut;
     }
 
-    public Long getIdClasse() {
+    public int getIdClasse() {
         return idClasse;
     }
 
-    public void setIdClasse(Long idClasse) {
+    public void setIdClasse(int idClasse) {
         this.idClasse = idClasse;
     }
 
-    public Long getIdVol() {
+    public int getIdVol() {
         return idVol;
     }
 
-    public void setIdVol(Long idVol) {
+    public void setIdVol(int idVol) {
         this.idVol = idVol;
     }
 
-    public Long getIdUtilisateur() {
-        return idUtilisateur;
-    }
-
-    public void setIdUtilisateur(Long idUtilisateur) {
-        this.idUtilisateur = idUtilisateur;
+    // Méthode toString() pour affichage
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "idReservation=" + idReservation +
+                ", dateReservation=" + dateReservation +
+                ", idStatut=" + idStatut +
+                ", idClasse=" + idClasse +
+                ", idVol=" + idVol +
+                '}';
     }
 }

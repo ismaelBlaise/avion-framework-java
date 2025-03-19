@@ -24,7 +24,6 @@
                 </tr>
             </thead>
             <tbody class="text-sm text-gray-700">
-                <!-- Iteration sur la liste des vols -->
                 <%
                     List<Vol> vols = (List<Vol>) request.getAttribute("vols");
                     StatutService statutService=new StatutService();
@@ -34,7 +33,6 @@
                                 
                 %>
                     <tr class="hover:bg-gray-50">
-                        <!-- <td class="px-4 py-3 border-b"><%= vol.getIdVol() %></td> -->
                         <td class="px-4 py-3 border-b"><%= vol.getNumero() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureDepart() %></td>
@@ -43,7 +41,7 @@
                         <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer":vol.getHeureAnnulation() %></td>
                         <td class="px-4 py-3 border-b"><%= statutService.findStatutVols(vol).getStatut() %></td>
                         <td class="px-4 py-3 border-b flex space-x-2">
-                            <a href="vols-reserver?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Resrever</button></a>
+                            <a href="vols-reserver-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Resrever</button></a>
                             
                         </td>
                     </tr>

@@ -2,6 +2,7 @@ package services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import dto.ConfVolDto;
 import utils.DbConnect;
@@ -28,6 +29,41 @@ public class ConfVolService {
             }
         }
     }
+
+
+    public double recupererPrixParCategorieAge(int idCategorieAge, int idVol) throws Exception {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        double prix = 0.0;
+
+        try (Connection connection = DbConnect.getConnection()) {
+            // Préparer la requête pour récupérer le prix en fonction de l'id_vol et de l'id_categorie_age
+            String sql = "SELECT montant FROM conf_vol WHERE id_categorie_age = ? AND id_vol = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idCategorieAge);
+            preparedStatement.setInt(2, idVol);
+
+            // Exécuter la requête
+            resultSet = preparedStatement.executeQuery();
+
+            // Si un résultat est trouvé, récupérer le prix
+            if (resultSet.next()) {
+                prix = resultSet.getDouble("montant");
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return prix;
+    }
+
 
 
 
