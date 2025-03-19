@@ -2,6 +2,7 @@ package controllers;
 
 import annotation.Controller;
 import annotation.Get;
+import annotation.Param;
 import annotation.Url;
 import services.VolService;
 import util.ModelAndView;
@@ -21,6 +22,14 @@ public class ReservationController {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
+        return modelAndView;
+    }
+
+
+    @Url(url = "vols-reserver")
+    @Get
+    public ModelAndView reserverVol(@Param(name = "id") String id){
+        ModelAndView modelAndView=new ModelAndView(id);
         return modelAndView;
     }
 }
