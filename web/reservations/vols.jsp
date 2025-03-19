@@ -24,7 +24,6 @@
                 </tr>
             </thead>
             <tbody class="text-sm text-gray-700">
-                <!-- Iteration sur la liste des vols -->
                 <%
                     List<Vol> vols = (List<Vol>) request.getAttribute("vols");
                     StatutService statutService=new StatutService();
@@ -34,7 +33,6 @@
                                 
                 %>
                     <tr class="hover:bg-gray-50">
-                        <!-- <td class="px-4 py-3 border-b"><%= vol.getIdVol() %></td> -->
                         <td class="px-4 py-3 border-b"><%= vol.getNumero() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureDepart() %></td>

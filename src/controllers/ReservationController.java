@@ -40,11 +40,11 @@ public class ReservationController {
         try {
             modelAndView.setAttribute("statuts", statutService.getAllStatuts());
             modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(id)));
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
-        modelAndView.setAttribute("vol", id);
         
         return modelAndView; 
     }
