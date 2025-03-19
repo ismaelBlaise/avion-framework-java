@@ -16,12 +16,13 @@ public class ReservationService {
         int idReservation = -1;
 
         try {
-            System.out.println(dateReservation);
+            String[] tab=dateReservation.split("T");
+            String date=tab[0]+" "+tab[1]+":00.000";
             connection = DbConnect.getConnection();
             String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setTimestamp(1, Timestamp.valueOf(dateReservation+":00.00"));
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(date));
             preparedStatement.setInt(2, idStatut);
             preparedStatement.setInt(3, idClasse);
             preparedStatement.setInt(4, idVol);
