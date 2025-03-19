@@ -7,9 +7,9 @@
             Vol vol=(Vol) request.getAttribute("vol");
 %>
 <div class="max-w-4xl mx-auto py-8">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Creer une reservation pour le vol <%=vol.getNumero()%></h2>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Creer une reservation pour le vol <strong><%=vol.getNumero()%></strong></h2>
 
-    <!-- Formulaire d'ajout de réservation -->
+    <!-- Formulaire d'ajout de reservation -->
     <form action="reservations-ajouter" method="POST" class="space-y-6">
         
         
@@ -21,7 +21,7 @@
 
         
         <div>
-            <label for="dateReservation" class="block text-gray-700 font-medium mb-2">Date de réservation</label>
+            <label for="dateReservation" class="block text-gray-700 font-medium mb-2">Date de reservation</label>
             <input type="datetime-local" id="dateReservation" name="reservation.dateReservation" required 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
