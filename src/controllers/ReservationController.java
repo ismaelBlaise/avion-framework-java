@@ -92,7 +92,16 @@ public class ReservationController {
     @Post
     public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "nb") String nb){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
-        
+        CategorieAgeService categorieAgeService=new CategorieAgeService();
+        try {
+            
+            modelAndView.setAttribute("reservation",idReservation);
+            modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
+        } catch (Exception e) {
+            modelAndView.setAttribute("page", "reservations/reservations.jsp");
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
         return modelAndView;
     }
     
