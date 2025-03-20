@@ -380,6 +380,11 @@ public class VolController {
         Vol vol=null;
         ConfVolService confVolService=new ConfVolService();
         try {
+            ClasseService  classeService=new ClasseService();
+            CategorieAgeService categorieAgeService=new CategorieAgeService();
+            
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
             vol=volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             confVolService.ajouterCaracteristique(confVolDto);
             
