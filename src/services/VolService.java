@@ -81,10 +81,22 @@ public class VolService {
 
     public void ajouterHeureAnnulation(String id, String heureAnnulation) throws Exception {
         String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
-        
+        Vol vol=null;
         try (Connection connection = DbConnect.getConnection(); 
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            vol = getVolById(Long.parseLong(id));
             
+            if (vol != null) {
+                if (Time.valueOf(vol.getHeureDepart() + ":00").before(Time.valueOf(heureAnnulation + ":00"))) {
+                    preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
+                    preparedStatement.setLong(2, Long.parseLong(id));
+                    preparedStatement.executeUpdate();
+                } else {
+                    throw new IllegalArgumentException("L'annulation ne peut pas être effectuée avant l'heure de départ.");
+                }
+            } else {
+                throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
+            }
              
             preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
             preparedStatement.setLong(2, Long.parseLong(id));
