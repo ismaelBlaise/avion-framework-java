@@ -59,12 +59,12 @@ public class VolService {
             vol = getVolById(Long.parseLong(id));
             
             if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart()).before(Time.valueOf(heureReservation + ":00"))) {
+                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureReservation + ":00"))) {
                     preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
                     preparedStatement.setLong(2, Long.parseLong(id));
                     preparedStatement.executeUpdate();
                 } else {
-                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée avant l'heure de départ.");
+                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée apres l'heure de départ.");
                 }
             } else {
                 throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
@@ -88,12 +88,12 @@ public class VolService {
             vol = getVolById(Long.parseLong(id));
             
             if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart()).before(Time.valueOf(heureAnnulation + ":00"))) {
+                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureAnnulation + ":00"))) {
                     preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
                     preparedStatement.setLong(2, Long.parseLong(id));
                     preparedStatement.executeUpdate();
                 } else {
-                    throw new IllegalArgumentException("L'annulation ne peut pas être effectuée avant l'heure de départ.");
+                    throw new IllegalArgumentException("L'annulation ne peut pas être effectuée apres l'heure de départ.");
                 }
             } else {
                 throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
