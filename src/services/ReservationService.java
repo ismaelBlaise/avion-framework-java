@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import models.Reservation;
+import models.Vol;
 import utils.DbConnect;
 
 public class ReservationService {
@@ -37,6 +39,9 @@ public class ReservationService {
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;  
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw e;  
         } finally {
             try {
                 
@@ -50,15 +55,26 @@ public class ReservationService {
         }
     }
 
-    public int creerReservation(String dateReservation, int idStatut, int idClasse, int idVol) {
+    public int creerReservation(String dateReservation, int idStatut, int idClasse, int idVol) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
         int idReservation = -1;
-
+        Vol vol=null;
+        VolService volService=new VolService();
         try {
+            vol=volService.getVolById(Long.valueOf(idVol));
+
             String[] tab=dateReservation.split("T");
             String date=tab[0]+" "+tab[1]+":00.000";
+            if(vol.getHeureReservation()==null){
+                if(Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(tab[1]+":00"))){
+                    throw new Exception("Impossible de reserver apres l'heure de depart");
+                }
+            }
+            else if(Time.valueOf(vol.getHeureReservation()).after(Time.valueOf(tab[1]+":00"))) {
+                throw new Exception("Impossible de reserver apres l'heure fin de reservation");
+            }
             connection = DbConnect.getConnection();
             String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
@@ -76,6 +92,10 @@ public class ReservationService {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
+        }catch (Exception e) {
+            e.printStackTrace();
+        throw e;     
         } finally {
             try {
                 if (generatedKeys != null) generatedKeys.close();
