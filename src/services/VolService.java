@@ -59,12 +59,12 @@ public class VolService {
             vol = getVolById(Long.parseLong(id));
             
             if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart() + ":00").before(Time.valueOf(heureReservation + ":00"))) {
+                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureReservation + ":00"))) {
                     preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
                     preparedStatement.setLong(2, Long.parseLong(id));
                     preparedStatement.executeUpdate();
                 } else {
-                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée avant l'heure de départ.");
+                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée apres l'heure de départ.");
                 }
             } else {
                 throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
@@ -72,6 +72,7 @@ public class VolService {
             
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur d'argument : " + e.getMessage());
+            e.printStackTrace();
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,16 +82,29 @@ public class VolService {
 
     public void ajouterHeureAnnulation(String id, String heureAnnulation) throws Exception {
         String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
-        
+        Vol vol=null;
         try (Connection connection = DbConnect.getConnection(); 
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            vol = getVolById(Long.parseLong(id));
             
+            if (vol != null) {
+                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureAnnulation + ":00"))) {
+                    preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
+                    preparedStatement.setLong(2, Long.parseLong(id));
+                    preparedStatement.executeUpdate();
+                } else {
+                    throw new IllegalArgumentException("L'annulation ne peut pas être effectuée apres l'heure de départ.");
+                }
+            } else {
+                throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
+            }
              
             preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
             preparedStatement.setLong(2, Long.parseLong(id));
             preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("Erreur de base de données : " + e.getMessage());
             throw e;
         } catch (Exception e) {

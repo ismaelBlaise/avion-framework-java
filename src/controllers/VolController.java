@@ -303,11 +303,14 @@ public class VolController {
 
             // Ajouter un fuseau horaire (ex: UTC+2)
             // OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
-            volService.ajouterHeureReservation(id, heureReservation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
 
+            volService.ajouterHeureReservation(id, heureReservation);
+            
         } catch (Exception e) {
+            modelAndView.setUrl("template-back.jsp");
+            modelAndView.setAttribute("page", "vols/heure-reservation.jsp");
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
@@ -340,11 +343,14 @@ public class VolController {
 
             // Ajouter un fuseau horaire (ex: UTC+2)
             // OffsetTime offsetTime = localTime.atOffset(ZoneOffset.of("+03:00"));
-            volService.ajouterHeureAnnulation(id, heureAnnulation);
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
+            volService.ajouterHeureAnnulation(id, heureAnnulation);
+            
 
         } catch (Exception e) {
+            modelAndView.setUrl("template-back.jsp");
+            modelAndView.setAttribute("page", "vols/heure-annulation.jsp");
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
         }
@@ -380,6 +386,11 @@ public class VolController {
         Vol vol=null;
         ConfVolService confVolService=new ConfVolService();
         try {
+            ClasseService  classeService=new ClasseService();
+            CategorieAgeService categorieAgeService=new CategorieAgeService();
+            
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
             vol=volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             confVolService.ajouterCaracteristique(confVolDto);
             
