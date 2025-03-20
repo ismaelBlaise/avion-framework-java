@@ -59,7 +59,7 @@ public class VolService {
             vol = getVolById(Long.parseLong(id));
             
             if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart() + ":00").before(Time.valueOf(heureReservation + ":00"))) {
+                if (Time.valueOf(vol.getHeureDepart()).before(Time.valueOf(heureReservation + ":00"))) {
                     preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
                     preparedStatement.setLong(2, Long.parseLong(id));
                     preparedStatement.executeUpdate();
@@ -72,6 +72,7 @@ public class VolService {
             
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur d'argument : " + e.getMessage());
+            e.printStackTrace();
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,7 +88,7 @@ public class VolService {
             vol = getVolById(Long.parseLong(id));
             
             if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart() + ":00").before(Time.valueOf(heureAnnulation + ":00"))) {
+                if (Time.valueOf(vol.getHeureDepart()).before(Time.valueOf(heureAnnulation + ":00"))) {
                     preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
                     preparedStatement.setLong(2, Long.parseLong(id));
                     preparedStatement.executeUpdate();
@@ -103,6 +104,7 @@ public class VolService {
             preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("Erreur de base de données : " + e.getMessage());
             throw e;
         } catch (Exception e) {
