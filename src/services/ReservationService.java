@@ -1,6 +1,7 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,15 +65,18 @@ public class ReservationService {
         VolService volService=new VolService();
         try {
             vol=volService.getVolById(Long.valueOf(idVol));
-
+            
             String[] tab=dateReservation.split("T");
             String date=tab[0]+" "+tab[1]+":00.000";
+            if(Date.valueOf(vol.getDateVol()).before(Date.valueOf(tab[0]))){
+                throw new Exception("Impossible de reserver apres la date de depart");
+            }
             if(vol.getHeureReservation()==null){
-                if(Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(tab[1]+":00"))){
+                if(Time.valueOf(vol.getHeureDepart()).before(Time.valueOf(tab[1]+":00"))){
                     throw new Exception("Impossible de reserver apres l'heure de depart");
                 }
             }
-            else if(Time.valueOf(vol.getHeureReservation()).after(Time.valueOf(tab[1]+":00"))) {
+            else if(Time.valueOf(vol.getHeureReservation()).before(Time.valueOf(tab[1]+":00"))) {
                 throw new Exception("Impossible de reserver apres l'heure fin de reservation");
             }
             connection = DbConnect.getConnection();
