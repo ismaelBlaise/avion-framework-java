@@ -40,7 +40,7 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/vols.jsp");
         try {
-            modelAndView.setAttribute("vols", statutService.getAllBySource("vols"));
+            modelAndView.setAttribute("vols", volService.getAllVols());
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
