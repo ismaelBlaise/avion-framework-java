@@ -22,6 +22,7 @@ public class StatutService {
                 Statut statut = new Statut();
                 statut.setIdStatut(resultSet.getLong("id_statut"));
                 statut.setStatut(resultSet.getString("statut"));
+                statut.setSource(resultSet.getString("source"));
                 statuts.add(statut);
             }
             preparedStatement.close();
@@ -36,6 +37,18 @@ public class StatutService {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public List<Statut> getAllBySource(String source) throws Exception{
+        List<Statut> statuts=getAllStatuts();
+        List<Statut> statutsRet=new ArrayList<>();
+        for (Statut statut : statuts) {
+            if(statut.getSource().equals(source)){
+                statutsRet.add(statut);
+            }
+        }
+        return statutsRet;
     }
 
 
@@ -91,6 +104,8 @@ public class StatutService {
             }
         }
     }
+
+
 
     public Statut findStatutVols(Vol vol) throws Exception{
         Statut statut =getStatutById(vol.getIdStatut());

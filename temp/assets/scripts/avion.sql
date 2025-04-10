@@ -29,7 +29,8 @@ CREATE TABLE classes (
 
 CREATE TABLE statuts (
    id_statut SERIAL PRIMARY KEY,
-   statut VARCHAR(50) NOT NULL UNIQUE
+   statut VARCHAR(50) NOT NULL UNIQUE,
+   source VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE categories_age (

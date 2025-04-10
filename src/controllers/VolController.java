@@ -40,7 +40,7 @@ public class VolController {
         ModelAndView modelAndView = new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page", "vols/vols.jsp");
         try {
-            modelAndView.setAttribute("vols", volService.getAllVols());
+            modelAndView.setAttribute("vols", statutService.getAllBySource("vols"));
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
@@ -76,7 +76,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             // Vol vol = volService.getVolById(Long.parseLong(id));
             // modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             List<Vol> vols=rechercheService.rechercher(rechercheDto);
             modelAndView.setAttribute("vols", vols);
         } catch (Exception e) {
@@ -164,6 +164,7 @@ public class VolController {
             // Vol vol = volService.getVolById(Long.parseLong(id));
             PromotionService promotionService=new PromotionService();
             vol = volService.getVolById(Long.parseLong(promotionDto.getIdVol()));
+            
             promotionService.ajouterPromotion(promotionDto);
             
             modelAndView.setUrl("redirect:vols");
@@ -186,7 +187,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts",statutService.getAllBySource("vols"));
             // Vol vol = volService.getVolById(Long.parseLong(id));
             // modelAndView.setAttribute("vol", vol);
             System.out.println(volDto.getHeureDepart());
@@ -222,7 +223,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts",statutService.getAllBySource("vols"));
             Vol vol2 = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol2);
             Vol vol = new Vol();
@@ -260,7 +261,7 @@ public class VolController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
         } catch (Exception e) {
             e.printStackTrace();
         }

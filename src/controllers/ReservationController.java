@@ -50,7 +50,7 @@ public class ReservationController {
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservations.jsp");
         try {
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("reservation"));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(id)));
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class ReservationController {
         modelAndView.setAttribute("page", "reservations/reservations.jsp");
         try {
            try {
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
             int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
@@ -128,7 +128,7 @@ public class ReservationController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             // Vol vol = volService.getVolById(Long.parseLong(id));
             // modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
@@ -151,7 +151,7 @@ public class ReservationController {
         try {
             modelAndView.setAttribute("avions",avionService.getAllAvions());
             modelAndView.setAttribute("villes", villeService.getAllVilles());
-            modelAndView.setAttribute("statuts", statutService.getAllStatuts());
+            modelAndView.setAttribute("statuts",statutService.getAllBySource("vols"));
             List<Vol> vols=rechercheService.rechercher(rechercheDto);
             modelAndView.setAttribute("vols", vols);
         } catch (Exception e) {
