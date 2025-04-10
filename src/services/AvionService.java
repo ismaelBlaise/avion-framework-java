@@ -88,6 +88,7 @@ public class AvionService {
                 avion.setCapacite(resultSet.getInt("capacite"));
                 avion.setModele(resultSet.getString("modele"));
             }
+            return avion;
         } catch (Exception e) {
              
             throw e;
@@ -102,7 +103,7 @@ public class AvionService {
                 connection.close();
             }
         }
-        return avion;
+        // return avion;
     }
 
     

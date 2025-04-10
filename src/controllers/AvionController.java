@@ -56,6 +56,7 @@ public class AvionController {
             Avion avion=avionService.getAvionById(Integer.parseInt(id));
             modelAndView.setAttribute("avion", avion);
         } catch (Exception e) {
+            e.printStackTrace();
             modelAndView.setAttribute("erreur", e.getMessage());
         }
         return modelAndView;
