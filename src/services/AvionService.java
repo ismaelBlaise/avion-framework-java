@@ -70,7 +70,7 @@ public class AvionService {
     }
 
      
-    public Avion getAvionById(int id) throws Exception {
+    public Avion getAvionById(Long id) throws Exception {
         Avion avion = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -79,7 +79,7 @@ public class AvionService {
             connection = DbConnect.getConnection();
             String query = "SELECT * FROM avions WHERE id_avion = ?";
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

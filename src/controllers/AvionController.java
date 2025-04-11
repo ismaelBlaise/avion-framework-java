@@ -52,9 +52,10 @@ public class AvionController {
     public ModelAndView updateForm(@Param(name = "id") String id){
         ModelAndView modelAndView=new ModelAndView("template-back.jsp");
         modelAndView.setAttribute("page","avions/modifier.jsp");
+        AvionService aService=new AvionService();
         try {
-            Avion avion=avionService.getAvionById(Integer.parseInt(id));
-                                                                                                                                                                                                                                                                                                                         "");
+            Avion avion=aService.getAvionById(Long.parseLong(id));
+                                                                                                                                                                                                                                                                                                               
             modelAndView.setAttribute("avion", avion);
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,7 +11,7 @@
             </div>
         <% } %>
         <% 
-            Avion avion=(Avion) request.getAttribute("avion");
+            Avion avion=(Avion) request.getAttribute("ok");
         %>
         <input type="hidden" value="<%= avion.getIdAvion() %>" id="id" name="id">
         <!-- Champ Modele -->
