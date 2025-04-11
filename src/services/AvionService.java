@@ -82,15 +82,16 @@ public class AvionService {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 avion = new Avion();
                 avion.setIdAvion(resultSet.getLong("id_avion"));
                 avion.setCapacite(resultSet.getInt("capacite"));
                 avion.setModele(resultSet.getString("modele"));
+                return avion;
             }
-            return avion;
+            return new Avion();
         } catch (Exception e) {
-             
+            e.printStackTrace();
             throw e;
         } finally {
             if (resultSet != null) {
