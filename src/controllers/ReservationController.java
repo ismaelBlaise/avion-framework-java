@@ -106,6 +106,7 @@ public class ReservationController {
         CategorieAgeService categorieAgeService=new CategorieAgeService();
         ReservationService reservationService=new ReservationService();
         try {
+            System.out.println(promotion);
             modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             ClasseService classeService=new ClasseService();
