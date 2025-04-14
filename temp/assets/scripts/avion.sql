@@ -122,11 +122,9 @@ CREATE TABLE promotions (
 CREATE TABLE reservation_details (
    id_reservation INTEGER NOT NULL,
    id_categorie_age INTEGER NOT NULL,
-   id_classe INTEGER NOT NULL,
    prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
    nb INTEGER NOT NULL CHECK (nb > 0),
-   PRIMARY KEY (id_reservation, id_categorie_age,id_classe),
+   PRIMARY KEY (id_reservation, id_categorie_age),
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
-   FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
    FOREIGN KEY (id_categorie_age) REFERENCES categories_age(id_categorie_age) ON DELETE CASCADE
 );

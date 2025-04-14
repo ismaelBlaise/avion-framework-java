@@ -45,4 +45,15 @@ public class ClasseService {
         }
         return classes;
     }
+
+
+    public Classe findById(int id) throws Exception{
+        List<Classe> classes=getAllClasses();
+        for (Classe classe : classes) {
+            if(classe.getIdClasse()==id){
+                return classe;
+            }
+        }
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ INSERT INTO roles (role) VALUES ('admin'), ('passager');
 
 
 INSERT INTO statuts (statut,source) VALUES ('Non disponible','vols'),('Disponible','vols'), ('Annule','reservation'), ('Confirme','reservation'),('Payee','reservation');
+-- INSERT INTO statuts (statut,source) VALUES ('En ','vols');
 
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 

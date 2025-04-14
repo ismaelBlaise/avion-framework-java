@@ -77,9 +77,10 @@ public class ReservationController {
             modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
-            int idUtilisateur=(int)session.get("id");
-            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur,Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
+            Long idUtilisateur=(Long) session.get("id");
+            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur.intValue(),Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
             modelAndView.setAttribute("reservation",id);
+            modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
            } catch (PSQLException e) {

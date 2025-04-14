@@ -125,14 +125,16 @@ public class ReservationService {
             double prix=confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse,reservation.getIdVol());
             
             
-            String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age,id_classe, prix, nb) VALUES (?, ?, ?,?, ?)";
+            // String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age,id_classe, prix, nb) VALUES (?, ?, ?,?, ?)";
+            String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age, prix, nb) VALUES ( ?, ?,?, ?)";
+            
             preparedStatement = connection.prepareStatement(sql);
     
             preparedStatement.setInt(1, idReservation);
             preparedStatement.setInt(2, idCategorieAge);
-            preparedStatement.setInt(3, idClasse);
-            preparedStatement.setDouble(4, prix);
-            preparedStatement.setInt(5, nb);
+            // preparedStatement.setInt(3, idClasse);
+            preparedStatement.setDouble(3, prix);
+            preparedStatement.setInt(4, nb);
     
             preparedStatement.executeUpdate();
     
