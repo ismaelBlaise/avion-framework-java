@@ -33,6 +33,7 @@ public class ReservationService {
                 reservation.setIdReservation(resultSet.getInt("id_reservation"));
                 reservation.setDateReservation(resultSet.getTimestamp("date_reservation"));
                 reservation.setIdStatut(resultSet.getInt("id_statut"));
+                reservation.setIdUtilisateur(resultSet.getInt("id_utilisateur"));
                 reservation.setIdClasse(resultSet.getInt("id_classe"));
                 reservation.setIdVol(resultSet.getInt("id_vol"));
             }
@@ -56,7 +57,7 @@ public class ReservationService {
         }
     }
 
-    public int creerReservation(String dateReservation, int idStatut, int idClasse, int idVol) throws Exception {
+    public int creerReservation(String dateReservation, int idStatut,int idUtilisateur, int idClasse, int idVol) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -80,13 +81,14 @@ public class ReservationService {
                 throw new Exception("Impossible de reserver apres l'heure fin de reservation");
             }
             connection = DbConnect.getConnection();
-            String sql = "INSERT INTO reservations (date_reservation, id_statut, id_classe, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
+            String sql = "INSERT INTO reservations (date_reservation, id_statut,id_utilisateur, id_classe, id_vol) VALUES (?,?, ?, ?, ?) RETURNING id_reservation";
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setTimestamp(1, Timestamp.valueOf(date));
             preparedStatement.setInt(2, idStatut);
-            preparedStatement.setInt(3, idClasse);
-            preparedStatement.setInt(4, idVol);
+            preparedStatement.setInt(3,idUtilisateur);
+            preparedStatement.setInt(4, idClasse);
+            preparedStatement.setInt(5, idVol);
 
             generatedKeys = preparedStatement.executeQuery();
 
@@ -113,28 +115,30 @@ public class ReservationService {
     }    
 
 
-    public void ajouterDetails(int idReservation, int idCategorieAge, int nb) {
+    public void ajouterDetails(int idReservation, int idClasse,int idCategorieAge, int nb) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ConfVolService confVolService=new ConfVolService();
         try {
             connection = DbConnect.getConnection();
             Reservation reservation=findById(idReservation);
-            double prix=confVolService.recupererPrixParCategorieAge(idCategorieAge, reservation.getIdVol());
+            double prix=confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse,reservation.getIdVol());
             
-            prix*=nb;
-            String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age, prix, nb) VALUES (?, ?, ?, ?)";
+            
+            String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age,id_classe, prix, nb) VALUES (?, ?, ?,?, ?)";
             preparedStatement = connection.prepareStatement(sql);
     
             preparedStatement.setInt(1, idReservation);
             preparedStatement.setInt(2, idCategorieAge);
-            preparedStatement.setDouble(3, prix);
-            preparedStatement.setInt(4, nb);
+            preparedStatement.setInt(3, idClasse);
+            preparedStatement.setDouble(4, prix);
+            preparedStatement.setInt(5, nb);
     
             preparedStatement.executeUpdate();
     
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();

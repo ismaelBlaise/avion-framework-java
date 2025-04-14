@@ -73,9 +73,11 @@ CREATE TABLE reservations (
    id_reservation SERIAL PRIMARY KEY,
    date_reservation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    id_statut INTEGER NOT NULL,
+   id_utilisateur INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
    id_vol INTEGER NOT NULL,
    FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE SET NULL,
+   FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur) ON DELETE SET NULL,
    FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
    FOREIGN KEY (id_vol) REFERENCES vols(id_vol) ON DELETE CASCADE
 );
@@ -120,9 +122,11 @@ CREATE TABLE promotions (
 CREATE TABLE reservation_details (
    id_reservation INTEGER NOT NULL,
    id_categorie_age INTEGER NOT NULL,
+   id_classe INTEGER NOT NULL,
    prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
    nb INTEGER NOT NULL CHECK (nb > 0),
-   PRIMARY KEY (id_reservation, id_categorie_age),
+   PRIMARY KEY (id_reservation, id_categorie_age,id_classe),
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
+   FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
    FOREIGN KEY (id_categorie_age) REFERENCES categories_age(id_categorie_age) ON DELETE CASCADE
 );

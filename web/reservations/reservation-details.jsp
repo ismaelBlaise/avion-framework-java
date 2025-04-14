@@ -29,7 +29,18 @@
         <% } %>
 
         <input type="hidden" name="idReservation" value="<%= reservation %>">
-
+        <div>
+            <label for="idClasse" class="block text-gray-700 font-medium mb-2">Classe</label>
+            <select id="idClasse" name="idClasse" required 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% 
+                    List<Classe> classes = (List<Classe>) request.getAttribute("classes");
+                    for (Classe classe : classes) { 
+                %>
+                    <option value="<%= classe.getIdClasse() %>"><%= classe.getClasse() %></option>
+                <% } %>
+            </select>
+        </div>
         <div>
             <label for="idCategorieAge" class="block text-gray-700 font-medium mb-2">Categorie d'age</label>
             <select id="idCategorieAge" name="idCategorieAge" required

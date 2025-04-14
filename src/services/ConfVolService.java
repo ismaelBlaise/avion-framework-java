@@ -33,22 +33,25 @@ public class ConfVolService {
         }
     }
 
-    public double recupererPrixParCategorieAge(int idCategorieAge, int idVol) throws Exception {
+    public double recupererPrixParCategorieAge(int idCategorieAge,int idClasse, int idVol) throws Exception {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         double prix = 0.0;
 
         try (Connection connection = DbConnect.getConnection()) {
-            String sql = "SELECT montant FROM conf_vol WHERE id_categorie_age = ? AND id_vol = ?";
+            String sql = "SELECT montant FROM conf_vol WHERE id_categorie_age = ? AND id_vol = ? AND id_classe=?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idCategorieAge);
             preparedStatement.setInt(2, idVol);
+            preparedStatement.setInt(3, idClasse);
 
              
             resultSet = preparedStatement.executeQuery();
  
             if (resultSet.next()) {
                 prix = resultSet.getDouble("montant");
+            }else{
+                throw  new Exception("Prix non configurer");
             }
         } catch (Exception e) {
             throw e;  

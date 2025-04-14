@@ -1,4 +1,4 @@
-<%@ page import="models.Avion" %>
+<%@page import="models.Avion" %>
 <div class="max-w-4xl mx-auto py-8">
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Modifier l'avion</h2>
 
@@ -11,7 +11,7 @@
             </div>
         <% } %>
         <% 
-            Avion avion=(Avion) request.getAttribute("ok");
+            Avion avion=(Avion) request.getAttribute("avion");
         %>
         <input type="hidden" value="<%= avion.getIdAvion() %>" id="id" name="id">
         <!-- Champ Modele -->

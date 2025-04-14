@@ -21,6 +21,7 @@ import services.ReservationService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
+import util.CustomSession;
 import util.ModelAndView;
 
 @Controller
@@ -64,7 +65,7 @@ public class ReservationController {
 
     @Url(url = "vols-reserver")
     @Post
-    public ModelAndView reserver(@ParamObject(name = "reservation") ReservationDto reservationDto){
+    public ModelAndView reserver(@ParamObject(name = "reservation") ReservationDto reservationDto,CustomSession session){
         StatutService statutService=new StatutService();
         ClasseService classeService=new ClasseService();
         ReservationService reservationService=new ReservationService();
@@ -76,7 +77,8 @@ public class ReservationController {
             modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
-            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
+            int idUtilisateur=(int)session.get("id");
+            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur,Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
             modelAndView.setAttribute("reservation",id);
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
@@ -97,15 +99,17 @@ public class ReservationController {
 
     @Url(url = "vols-reservation-details")
     @Post
-    public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "nb") String nb){
+    public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "idClasse") String idClasse,@Param(name = "nb") String nb){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
         CategorieAgeService categorieAgeService=new CategorieAgeService();
         ReservationService reservationService=new ReservationService();
         try {
-            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idCategorieAge), Integer.parseInt(nb));
+            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb));
             modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
+            ClasseService classeService=new ClasseService();
+            modelAndView.setAttribute("classes",classeService.getAllClasses());
             modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {
             
