@@ -78,9 +78,9 @@ public class ReservationController {
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
             Long idUtilisateur=(Long) session.get("id");
-            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur.intValue(),Integer.parseInt(reservationDto.getIdClasse()),Integer.parseInt(reservationDto.getIdVol()));
+            int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur.intValue(),Integer.parseInt(reservationDto.getIdVol()));
             modelAndView.setAttribute("reservation",id);
-            modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
+            // modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
            } catch (PSQLException e) {
@@ -100,17 +100,18 @@ public class ReservationController {
 
     @Url(url = "vols-reservation-details")
     @Post
-    public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "idClasse") String idClasse,@Param(name = "nb") String nb){
+    public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "idClasse") String idClasse,@Param(name = "nb") String nb,@Param(name = "promotion") String promotion){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
         CategorieAgeService categorieAgeService=new CategorieAgeService();
         ReservationService reservationService=new ReservationService();
         try {
-            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb));
             modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             ClasseService classeService=new ClasseService();
             modelAndView.setAttribute("classes",classeService.getAllClasses());
+            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb),Boolean.valueOf(promotion));
+            
             modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {
             

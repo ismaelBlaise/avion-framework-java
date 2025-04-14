@@ -37,15 +37,7 @@
             </select>
         </div>
 
-        <div>
-            <label for="idClasse" class="block text-gray-700 font-medium mb-2">Classe</label>
-            <select id="idClasse" name="reservation.idClasse" required 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <% for (Classe classe : classes) { %>
-                    <option value="<%= classe.getIdClasse() %>"><%= classe.getClasse() %></option>
-                <% } %>
-            </select>
-        </div>
+       
 
         <div>
             <label for="idVol" class="block text-gray-700 font-medium mb-2">Vol</label>

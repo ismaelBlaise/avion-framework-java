@@ -12,8 +12,8 @@ public class ReservationDto {
     @FieldAnnotation(name = "idStatut")
     private String idStatut;
 
-    @FieldAnnotation(name = "idClasse")
-    private String idClasse;
+    // @FieldAnnotation(name = "idClasse")
+    // private String idClasse;
 
     @FieldAnnotation(name = "idVol")
     private String idVol;
@@ -42,13 +42,13 @@ public class ReservationDto {
         this.idStatut = idStatut;
     }
 
-    public String getIdClasse() {
-        return idClasse;
-    }
+    // public String getIdClasse() {
+    //     return idClasse;
+    // }
 
-    public void setIdClasse(String idClasse) {
-        this.idClasse = idClasse;
-    }
+    // public void setIdClasse(String idClasse) {
+    //     this.idClasse = idClasse;
+    // }
 
     public String getIdVol() {
         return idVol;

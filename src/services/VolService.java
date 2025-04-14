@@ -21,6 +21,139 @@ public class VolService {
         this.statutService = new StatutService();
     }
 
+
+    public boolean isVolComplet(Long idVol) throws Exception {
+        String sqlCapacite = "SELECT SUM(cf.capacite) AS capacite_totale " +
+                           "FROM conf_vol cf " +
+                           "WHERE cf.id_vol = ?";
+        
+        String sqlReservations = "SELECT SUM(rd.nb) AS reservations_totales " +
+                               "FROM reservation_details rd " +
+                               "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
+                               "WHERE r.id_vol = ? AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
+        
+        int capaciteTotale = 0;
+        int reservationsTotales = 0;
+        
+        try (Connection connection = DbConnect.getConnection()) {
+            try (PreparedStatement stmtCapacite = connection.prepareStatement(sqlCapacite)) {
+                stmtCapacite.setLong(1, idVol);
+                try (ResultSet rs = stmtCapacite.executeQuery()) {
+                    if (rs.next()) {
+                        capaciteTotale = rs.getInt("capacite_totale");
+                    }
+                }
+            }
+            
+            try (PreparedStatement stmtReservations = connection.prepareStatement(sqlReservations)) {
+                stmtReservations.setLong(1, idVol);
+                try (ResultSet rs = stmtReservations.executeQuery()) {
+                    if (rs.next()) {
+                        reservationsTotales = rs.getInt("reservations_totales");
+                    }
+                }
+            }
+        }
+        
+        return reservationsTotales >= capaciteTotale;
+    }
+
+
+    public int nbSiezeDispo(Long idVol,Long idClasse) throws Exception {
+        String sqlCapacite = "SELECT SUM(cf.capacite) AS capacite_totale " +
+                           "FROM conf_vol cf " +
+                           "WHERE cf.id_vol = ? AND cf.id_classe=?";
+        
+        String sqlReservations = "SELECT SUM(rd.nb) AS reservations_totales " +
+                               "FROM reservation_details rd " +
+                               "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
+                               "WHERE r.id_vol = ? AND rd.id_classe =? AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
+        
+        int capaciteTotale = 0;
+        int reservationsTotales = 0;
+        
+        try (Connection connection = DbConnect.getConnection()) {
+            try (PreparedStatement stmtCapacite = connection.prepareStatement(sqlCapacite)) {
+                stmtCapacite.setLong(1, idVol);
+                stmtCapacite.setLong(2, idClasse);
+                try (ResultSet rs = stmtCapacite.executeQuery()) {
+                    if (rs.next()) {
+                        capaciteTotale = rs.getInt("capacite_totale");
+                    }
+                    else {
+                        throw new Exception("Capacite vol non configurer");
+                    }
+                }
+            }
+            
+            try (PreparedStatement stmtReservations = connection.prepareStatement(sqlReservations)) {
+                stmtReservations.setLong(1, idVol);
+                stmtReservations.setLong(2, idClasse);
+
+                try (ResultSet rs = stmtReservations.executeQuery()) {
+                    if (rs.next()) {
+                        reservationsTotales = rs.getInt("reservations_totales");
+                    }
+                }
+            }
+        }
+        
+        return capaciteTotale-reservationsTotales;
+    }
+
+   
+    public boolean isVolCompletAvecPromotions(Long idVol) throws Exception {
+        String sqlCapacite = "SELECT SUM(cf.capacite) AS capacite_totale " +
+                           "FROM conf_vol cf " +
+                           "WHERE cf.id_vol = ?";
+        
+        String sqlReservations = "SELECT SUM(rd.nb) AS reservations_totales " +
+                               "FROM reservation_details rd " +
+                               "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
+                               "WHERE r.id_vol = ? AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
+        
+        String sqlPromotions = "SELECT COUNT(*) AS nb_promotions FROM promotions WHERE id_vol = ?";
+        
+        int capaciteTotale = 0;
+        int reservationsTotales = 0;
+        boolean promotionsDisponibles = false;
+        
+        try (Connection connection = DbConnect.getConnection()) {
+            try (PreparedStatement stmtCapacite = connection.prepareStatement(sqlCapacite)) {
+                stmtCapacite.setLong(1, idVol);
+                try (ResultSet rs = stmtCapacite.executeQuery()) {
+                    if (rs.next()) {
+                        capaciteTotale = rs.getInt("capacite_totale");
+                    }
+                }
+            }
+            
+            try (PreparedStatement stmtReservations = connection.prepareStatement(sqlReservations)) {
+                stmtReservations.setLong(1, idVol);
+                try (ResultSet rs = stmtReservations.executeQuery()) {
+                    if (rs.next()) {
+                        reservationsTotales = rs.getInt("reservations_totales");
+                    }
+                }
+            }
+            
+            try (PreparedStatement stmtPromotions = connection.prepareStatement(sqlPromotions)) {
+                stmtPromotions.setLong(1, idVol);
+                try (ResultSet rs = stmtPromotions.executeQuery()) {
+                    if (rs.next()) {
+                        promotionsDisponibles = rs.getInt("nb_promotions") > 0;
+                    }
+                }
+            }
+        }
+        
+        if (promotionsDisponibles) {
+            return false;
+        }
+        
+        return reservationsTotales >= capaciteTotale;
+    }
+
      
     public List<Vol> getAllVolsDisponible() throws Exception {
         List<Vol> vols = getAllVols();
