@@ -138,7 +138,7 @@ public class ReservationService {
                 double prixRemise=prix*pourcentage;
                 prix-=prixRemise;
             }
-            if(nbSiezeDispoPromo<nb){
+            if(promotion && nbSiezeDispoPromo<nb){
                 throw new Exception("Les siezes en promotions insufissant");
             }
             boolean estComplet=volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
