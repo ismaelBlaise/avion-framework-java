@@ -20,7 +20,7 @@ public class DbConnect {
                 
                 
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("Connexion réussie à la base de données.");
+                // System.out.println("Connexion réussie à la base de données.");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 throw new SQLException("Le driver PostgreSQL n'a pas été trouvé.", e);
@@ -36,7 +36,7 @@ public class DbConnect {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Connexion fermée.");
+                // System.out.println("Connexion fermée.");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -12,6 +12,7 @@ import annotation.Post;
 import annotation.Url;
 import dto.RechercheDto;
 import dto.ReservationDto;
+import models.Reservation;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -27,6 +28,27 @@ import util.ModelAndView;
 @Controller
 public class ReservationController {
     private VolService volService=new VolService();
+
+    @Url(url = "reservations")
+    @Get
+    public ModelAndView reservations(CustomSession session){
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/reservation-list.jsp");
+        ReservationService reservationService=new ReservationService();
+        try {
+            Long id=(Long) session.get("id");
+            // System.out.println(id);
+            List<Reservation> reservations=reservationService.findAllByUtilisateur(id.intValue());
+            modelAndView.setAttribute("reservations",reservations);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
+
 
     @Url(url = "vols-disponible")
     @Get
@@ -106,12 +128,15 @@ public class ReservationController {
         CategorieAgeService categorieAgeService=new CategorieAgeService();
         ReservationService reservationService=new ReservationService();
         try {
-            System.out.println(promotion);
+            boolean promo=false;
+            if(promotion!=null && promotion.equals("on")){
+                promo=true;
+            }
             modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             ClasseService classeService=new ClasseService();
             modelAndView.setAttribute("classes",classeService.getAllClasses());
-            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb),Boolean.valueOf(promotion));
+            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb),promo);
             
             modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {

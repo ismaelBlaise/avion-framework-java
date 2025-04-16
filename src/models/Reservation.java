@@ -9,6 +9,10 @@ public class Reservation {
     private int idStatut;
     private int idClasse;
     private int idVol;
+    private String statutNom;
+    private String utilisateurNom;
+    private String volNom;
+    private String classeNom;
     public Reservation(int idReservation, Timestamp dateReservation, int idUtilisateur, int idStatut, int idClasse,
             int idVol) {
         this.idReservation = idReservation;
@@ -94,6 +98,30 @@ public class Reservation {
         if (idVol != other.idVol)
             return false;
         return true;
+    }
+    public String getStatutNom() {
+        return statutNom;
+    }
+    public void setStatutNom(String statutNom) {
+        this.statutNom = statutNom;
+    }
+    public String getUtilisateurNom() {
+        return utilisateurNom;
+    }
+    public void setUtilisateurNom(String utilisateurNom) {
+        this.utilisateurNom = utilisateurNom;
+    }
+    public String getVolNom() {
+        return volNom;
+    }
+    public void setVolNom(String volNom) {
+        this.volNom = volNom;
+    }
+    public String getClasseNom() {
+        return classeNom;
+    }
+    public void setClasseNom(String classeNom) {
+        this.classeNom = classeNom;
     }
 
 
