@@ -120,6 +120,22 @@ public class ReservationController {
         return modelAndView; 
     }
 
+
+    @Url(url = "reservation-details")
+    @Get
+    public ModelAndView reservationDetails(@Param(name = "id") String id){
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page","details-list.jsp");
+        try {
+            
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
     @Url(url = "vols-reservation-details")
     @Post
     public ModelAndView ajouterDetails(@Param(name = "idReservation") String idReservation,@Param(name = "idCategorieAge") String idCategorieAge,@Param(name = "idClasse") String idClasse,@Param(name = "nb") String nb,@Param(name = "promotion") String promotion){
