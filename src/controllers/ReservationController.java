@@ -106,12 +106,15 @@ public class ReservationController {
         CategorieAgeService categorieAgeService=new CategorieAgeService();
         ReservationService reservationService=new ReservationService();
         try {
-            System.out.println(promotion);
+            boolean promo=false;
+            if(promotion!=null && promotion.equals("on")){
+                promo=true;
+            }
             modelAndView.setAttribute("reservation",Integer.parseInt(idReservation));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             ClasseService classeService=new ClasseService();
             modelAndView.setAttribute("classes",classeService.getAllClasses());
-            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb),Boolean.valueOf(promotion));
+            reservationService.ajouterDetails(Integer.parseInt(idReservation),Integer.parseInt(idClasse),Integer.parseInt(idCategorieAge), Integer.parseInt(nb),promo);
             
             modelAndView.setAttribute("succes","Detail reservation ajouter avec succes");
         } catch (Exception e) {
