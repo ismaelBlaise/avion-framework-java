@@ -14,17 +14,14 @@
             const subMenuButton = document.querySelector('.submenu-toggle');
             const subMenu = document.querySelector('.submenu');
 
-            // Toggle Sidebar visibility when the burger icon is clicked
             menuButton.addEventListener('click', function() {
                 sidebar.classList.toggle('hidden');
             });
 
-            // Toggle dropdown menu for the profile
             profileButton.addEventListener('click', function() {
                 dropdownMenu.classList.toggle('hidden');
             });
 
-            // Toggle the sub-menu visibility when the "Vols" button is clicked
             subMenuButton.addEventListener('click', function() {
                 subMenu.classList.toggle('hidden');
             });
@@ -35,7 +32,6 @@
 
     <header class="bg-white shadow-md fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-10">
         <div class="flex items-center space-x-4">
-            <!-- Burger Icon -->
             <button id="menu-button" class="text-gray-700 text-3xl" aria-label="Open Sidebar">&#9776;</button>
             <span class="text-xl font-semibold text-gray-700" style="color:blue ;">Aeroport</span>
         </div>
@@ -62,19 +58,11 @@
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
                         <li><a href="vols-disponible" class="block text-gray-600 hover:text-gray-900">Vols</a></li>
+                        <li><a href="reservations" class="block text-gray-600 hover:text-gray-900">Reservations</a></li>
                         <li><a href="vols-recherche-front-form" class="block text-gray-600 hover:text-gray-900">Recherche</a></li>
                     </ul>
                 </li>
-                <li>
-                    <button class="flex justify-between w-full text-gray-700 hover:bg-gray-200 p-2 rounded submenu-toggle">
-                        <span class="flex items-center"><i class="bi bi-journal-text mr-2"></i> Reservations</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                    <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="reservations" class="block text-gray-600 hover:text-gray-900">Reservations</a></li>
-                        
-                    </ul>
-                </li>
+               
             </ul>
         </nav>
     </aside>

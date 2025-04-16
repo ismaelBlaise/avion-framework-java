@@ -62,19 +62,11 @@
                     </button>
                     <ul class="pl-6 mt-2 space-y-2 hidden submenu">
                         <li><a href="vols-disponible" class="block text-gray-600 hover:text-gray-900">Vols</a></li>
+                        <li><a href="reservations" class="block text-gray-600 hover:text-gray-900">Reservations</a></li>
                         <li><a href="vols-recherche-front-form" class="block text-gray-600 hover:text-gray-900">Recherche</a></li>
                     </ul>
                 </li>
-                <li>
-                    <button class="flex justify-between w-full text-gray-700 hover:bg-gray-200 p-2 rounded submenu-toggle">
-                        <span class="flex items-center"><i class="bi bi-journal-text mr-2"></i> Reservations</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                    <ul class="pl-6 mt-2 space-y-2 hidden submenu">
-                        <li><a href="reservations" class="block text-gray-600 hover:text-gray-900">Reservations</a></li>
-                        
-                    </ul>
-                </li>
+               
             </ul>
         </nav>
     </aside>

@@ -16,7 +16,19 @@ import utils.DbConnect;
 
 public class ReservationService {
 
-    public List<Reservation> findAll() throws SQLException {
+
+    public List<Reservation> findAllByUtilisateur(int id) throws Exception{
+        List<Reservation> reservations=findAll();
+        List<Reservation> reservationsList=new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            if(reservation.getIdUtilisateur()==id){
+                reservationsList.add(reservation);
+            }
+        }
+        return reservationsList;
+    }
+
+    public List<Reservation> findAll() throws Exception {
         List<Reservation> reservations = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -25,7 +37,17 @@ public class ReservationService {
         try {
             connection = DbConnect.getConnection();
             
-            String sql = "SELECT id_reservation, date_reservation, id_statut, id_utilisateur, id_vol FROM reservations";
+            String sql = "SELECT r.id_reservation, r.date_reservation, " +
+                        "r.id_statut, s.statut as nom_statut, " +
+                        "r.id_utilisateur, u.nom as nom_utilisateur, u.prenom as prenom_utilisateur, " +
+                        "r.id_vol, v.numero as numero_vol, " +
+                        "r.id_classe, c.classe as nom_classe " +
+                        "FROM reservations r " +
+                        "LEFT JOIN statuts s ON r.id_statut = s.id_statut " +
+                        "LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur " +
+                        "LEFT JOIN vols v ON r.id_vol = v.id_vol " +
+                        "LEFT JOIN classes c ON r.id_classe = c.id_classe";
+            
             preparedStatement = connection.prepareStatement(sql);
             
             resultSet = preparedStatement.executeQuery();
@@ -37,6 +59,14 @@ public class ReservationService {
                 reservation.setIdStatut(resultSet.getInt("id_statut"));
                 reservation.setIdUtilisateur(resultSet.getInt("id_utilisateur"));
                 reservation.setIdVol(resultSet.getInt("id_vol"));
+                reservation.setIdClasse(resultSet.getInt("id_classe"));
+                
+                // Ajout des noms des relations
+                reservation.setStatutNom(resultSet.getString("nom_statut"));
+                reservation.setUtilisateurNom(resultSet.getString("nom_utilisateur") + " " + 
+                                             resultSet.getString("prenom_utilisateur"));
+                reservation.setVolNom(resultSet.getString("numero_vol"));
+                reservation.setClasseNom(resultSet.getString("nom_classe"));
                 
                 reservations.add(reservation);
             }

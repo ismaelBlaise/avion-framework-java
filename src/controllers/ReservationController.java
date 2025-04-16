@@ -12,6 +12,7 @@ import annotation.Post;
 import annotation.Url;
 import dto.RechercheDto;
 import dto.ReservationDto;
+import models.Reservation;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -30,12 +31,14 @@ public class ReservationController {
 
     @Url(url = "reservations")
     @Get
-    public ModelAndView reservations(){
+    public ModelAndView reservations(CustomSession session){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/reservation-list.jsp");
         ReservationService reservationService=new ReservationService();
         try {
-            modelAndView.setAttribute("reservations",reservationService.findAll());
+            int id=(int) session.get("id");
+            List<Reservation> reservations=reservationService.findAllByUtilisateur(id);
+            modelAndView.setAttribute("reservations",reservations);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
