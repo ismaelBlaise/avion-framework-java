@@ -32,6 +32,7 @@
                     <th class="px-4 py-3 text-left">Classe</th>
                     <th class="px-4 py-3 text-right">Prix unitaire</th>
                     <th class="px-4 py-3 text-center">Place</th>
+                    <th class="px-4 py-3 text-center">Passeports</th>
                     <th class="px-4 py-3 text-right">Total</th>
                 </tr>
             </thead>
@@ -56,6 +57,10 @@
                     <td class="px-4 py-3"><%= detail.getClasse() != null ? detail.getClasse() : "N/A" %></td>
                     <td class="px-4 py-3 text-right"><%= currencyFormat.format(detail.getPrix()) %></td>
                     <td class="px-4 py-3 text-center"><%= detail.getNb() %></td>
+                    <td class="px-4 py-3 border-b flex space-x-2">
+                        <a href="passeports?id=<%= reservation.getIdReservation() %>" 
+                           class="text-blue-500 hover:text-blue-700 hover:underline">passeports</a>
+                    </td>
                     <td class="px-4 py-3 text-right font-medium"><%= currencyFormat.format(totalLigne) %></td>
                 </tr>
                 <% 
