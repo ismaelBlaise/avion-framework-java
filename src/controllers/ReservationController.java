@@ -125,7 +125,7 @@ public class ReservationController {
 
     @Url(url = "detail-form")
     @Get
-    public ModelAndView detailsForm(@Param(name = "id") String id, CustomSession session,@Param(name="iss") CustomPart customPart){
+    public ModelAndView detailsForm(@Param(name = "id") String id, CustomSession session){
         StatutService statutService=new StatutService();
         ClasseService classeService=new ClasseService();
         CategorieAgeService categorieAgeService=new CategorieAgeService();
