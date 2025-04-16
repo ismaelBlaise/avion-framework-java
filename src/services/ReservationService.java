@@ -40,13 +40,11 @@ public class ReservationService {
             String sql = "SELECT r.id_reservation, r.date_reservation, " +
                         "r.id_statut, s.statut as nom_statut, " +
                         "r.id_utilisateur, u.nom as nom_utilisateur, u.prenom as prenom_utilisateur, " +
-                        "r.id_vol, v.numero as numero_vol, " +
-                        "r.id_classe, c.classe as nom_classe " +
+                        "r.id_vol, v.numero as numero_vol " +
                         "FROM reservations r " +
                         "LEFT JOIN statuts s ON r.id_statut = s.id_statut " +
                         "LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur " +
-                        "LEFT JOIN vols v ON r.id_vol = v.id_vol " +
-                        "LEFT JOIN classes c ON r.id_classe = c.id_classe";
+                        "LEFT JOIN vols v ON r.id_vol = v.id_vol ";
             
             preparedStatement = connection.prepareStatement(sql);
             
@@ -59,14 +57,14 @@ public class ReservationService {
                 reservation.setIdStatut(resultSet.getInt("id_statut"));
                 reservation.setIdUtilisateur(resultSet.getInt("id_utilisateur"));
                 reservation.setIdVol(resultSet.getInt("id_vol"));
-                reservation.setIdClasse(resultSet.getInt("id_classe"));
+                // reservation.setIdClasse(resultSet.getInt("id_classe"));
                 
                 // Ajout des noms des relations
                 reservation.setStatutNom(resultSet.getString("nom_statut"));
                 reservation.setUtilisateurNom(resultSet.getString("nom_utilisateur") + " " + 
                                              resultSet.getString("prenom_utilisateur"));
                 reservation.setVolNom(resultSet.getString("numero_vol"));
-                reservation.setClasseNom(resultSet.getString("nom_classe"));
+                // reservation.setClasseNom(resultSet.getString("nom_classe"));
                 
                 reservations.add(reservation);
             }

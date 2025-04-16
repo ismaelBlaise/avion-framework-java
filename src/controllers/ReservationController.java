@@ -36,8 +36,9 @@ public class ReservationController {
         modelAndView.setAttribute("page", "reservations/reservation-list.jsp");
         ReservationService reservationService=new ReservationService();
         try {
-            int id=(int) session.get("id");
-            List<Reservation> reservations=reservationService.findAllByUtilisateur(id);
+            Long id=(Long) session.get("id");
+            // System.out.println(id);
+            List<Reservation> reservations=reservationService.findAllByUtilisateur(id.intValue());
             modelAndView.setAttribute("reservations",reservations);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
@@ -45,6 +46,8 @@ public class ReservationController {
         }
         return modelAndView;
     }
+
+    
 
 
     @Url(url = "vols-disponible")

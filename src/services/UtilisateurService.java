@@ -92,4 +92,6 @@ public class UtilisateurService {
     //         throw new Exception("Erreur inattendue lors de l'enregistrement : " + e.getMessage(), e);
     //     }
     // }
+
+    
 }
