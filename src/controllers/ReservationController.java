@@ -28,6 +28,22 @@ import util.ModelAndView;
 public class ReservationController {
     private VolService volService=new VolService();
 
+    @Url(url = "reservations")
+    @Get
+    public ModelAndView reservations(){
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/reservation-list.jsp");
+        ReservationService reservationService=new ReservationService();
+        try {
+            modelAndView.setAttribute("reservations",reservationService.findAll());
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
     @Url(url = "vols-disponible")
     @Get
     public ModelAndView volsDisponible(){

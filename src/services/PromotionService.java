@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import dto.PromotionDto;
-import models.Promotion;
 import utils.DbConnect;
 
 public class PromotionService {

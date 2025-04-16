@@ -7,13 +7,57 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
-
+import java.util.ArrayList;
+import java.util.List;
 import models.Reservation;
 import models.Statut;
 import models.Vol;
 import utils.DbConnect;
 
 public class ReservationService {
+
+    public List<Reservation> findAll() throws SQLException {
+        List<Reservation> reservations = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            connection = DbConnect.getConnection();
+            
+            String sql = "SELECT id_reservation, date_reservation, id_statut, id_utilisateur, id_vol FROM reservations";
+            preparedStatement = connection.prepareStatement(sql);
+            
+            resultSet = preparedStatement.executeQuery();
+    
+            while (resultSet.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setIdReservation(resultSet.getInt("id_reservation"));
+                reservation.setDateReservation(resultSet.getTimestamp("date_reservation"));
+                reservation.setIdStatut(resultSet.getInt("id_statut"));
+                reservation.setIdUtilisateur(resultSet.getInt("id_utilisateur"));
+                reservation.setIdVol(resultSet.getInt("id_vol"));
+                
+                reservations.add(reservation);
+            }
+            return reservations;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public Reservation findById(int idReservation) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
