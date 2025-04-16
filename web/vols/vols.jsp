@@ -47,7 +47,27 @@
                         <td class="px-4 py-3 border-b"><%= vol.getHeureArrive() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureReservation()==null? "Non configurer":vol.getHeureReservation() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer":vol.getHeureAnnulation() %></td>
-                        <td class="px-4 py-3 border-b"><%= statutService.findStatutVols(vol).getStatut() %></td>
+                        <td class="px-4 py-3 border-b">
+                            <%
+                                String statutVol = statutService.findStatutVols(vol).getStatut();
+                                String bgColor = "";
+                                String textColor = "";
+                                
+                                if ("Disponible".equals(statutVol)) {
+                                    bgColor = "bg-green-100";
+                                    textColor = "text-green-800";
+                                } else if ("Non disponible".equals(statutVol)) {
+                                    bgColor = "bg-red-100";
+                                    textColor = "text-red-800";
+                                } else {
+                                    bgColor = "bg-yellow-100";
+                                    textColor = "text-yellow-800";
+                                }
+                            %>
+                            <span class="px-2 py-1 rounded-full text-xs <%= bgColor %> <%= textColor %>">
+                                <%= statutVol %>
+                            </span>
+                        </td>
                         <td class="px-4 py-3 border-b flex space-x-2">
                             <a href="vols-update-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Modifier</button></a>
                             <a href="vols-delete?id=<%= vol.getIdVol() %>"><button class="text-red-500 hover:text-red-700">Supprimer</button></a>
