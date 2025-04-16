@@ -122,6 +122,36 @@ public class ReservationController {
     }
 
 
+    @Url(url = "detail-form")
+    @Get
+    public ModelAndView detailsForm(@ParamObject(name = "id") String id, CustomSession session){
+        StatutService statutService=new StatutService();
+        ClasseService classeService=new ClasseService();
+        CategorieAgeService categorieAgeService=new CategorieAgeService();
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/reservation-details.jsp");
+        try {
+           try {
+            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
+            modelAndView.setAttribute("classes", classeService.getAllClasses());
+            modelAndView.setAttribute("reservation",id);
+            // modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
+            modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
+            
+           } catch (PSQLException e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+           }
+        } catch (Exception e) {
+            
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return modelAndView; 
+    }
+
+
     @Url(url = "reservation-details")
     @Get
     public ModelAndView reservationDetails(@Param(name = "id") String id){

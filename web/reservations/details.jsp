@@ -9,7 +9,13 @@
         Reservation reservation=(Reservation) request.getAttribute("reservation");
      %>
     <h2 class="text-2xl font-bold mb-4">Details de la reservation #<%= reservation.getIdReservation() %></h2>
-    
+    <div class="mb-4">
+        <a href="detail-form?id=<%= reservation.getIdReservation() %>" >
+            <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                Ajouter
+            </button>
+        </a>
+    </div>
     <!-- Tableau des details -->
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">

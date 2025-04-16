@@ -83,6 +83,8 @@ CREATE TABLE reservations (
 CREATE TABLE reservation_passeports (
    id_reservation_passeport SERIAL PRIMARY KEY,
    passeport BYTEA NOT NULL UNIQUE,
+   nom_fichier VARCHAR(255) NOT NULL,
+   date_depot TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    id_reservation INTEGER NOT NULL,
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
 );
