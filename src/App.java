@@ -1,5 +1,9 @@
 import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import models.Avion;
 import models.Promotion;
@@ -19,6 +23,12 @@ public class App {
             for (Reservation reservation : reservations) {
                 System.out.println(reservation.getVolNom());
             }
+
+            Locale malagasyLocale = new Locale("fr", "MG");
+                        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(malagasyLocale);
+                        DecimalFormatSymbols symbols = ((DecimalFormat)currencyFormat).getDecimalFormatSymbols();
+                        symbols.setCurrencySymbol("MGA"); 
+                        ((DecimalFormat)currencyFormat).setDecimalFormatSymbols(symbols);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
