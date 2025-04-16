@@ -126,7 +126,7 @@ public class ReservationController {
     @Get
     public ModelAndView reservationDetails(@Param(name = "id") String id){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
-        modelAndView.setAttribute("page","details.jsp");
+        modelAndView.setAttribute("page","reservations/details.jsp");
         ReservationService reservationService=new ReservationService();
         try {
             List<ReservationDetail> reservationDetails=reservationService.findAllDetails(Integer.parseInt(id));
