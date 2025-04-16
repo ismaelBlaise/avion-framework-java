@@ -9,7 +9,7 @@
 
     <!-- Tableau des vols -->
     <div class="overflow-x-auto">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Les vols displonibles</h2>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Les vols displonible</h2>
         
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
             <thead>
