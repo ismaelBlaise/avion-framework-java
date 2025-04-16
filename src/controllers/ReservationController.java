@@ -47,7 +47,7 @@ public class ReservationController {
         return modelAndView;
     }
 
-    
+
 
 
     @Url(url = "vols-disponible")
@@ -100,6 +100,7 @@ public class ReservationController {
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
             Long idUtilisateur=(Long) session.get("id");
+            System.out.println(reservationDto.getIdStatut());
             int id=reservationService.creerReservation(reservationDto.getDateReservation(), Integer.parseInt(reservationDto.getIdStatut()), idUtilisateur.intValue(),Integer.parseInt(reservationDto.getIdVol()));
             modelAndView.setAttribute("reservation",id);
             // modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
