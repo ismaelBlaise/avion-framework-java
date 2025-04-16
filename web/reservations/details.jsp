@@ -31,7 +31,7 @@
                     <th class="px-4 py-3 text-left">Categorie d'âge</th>
                     <th class="px-4 py-3 text-left">Classe</th>
                     <th class="px-4 py-3 text-right">Prix unitaire</th>
-                    <th class="px-4 py-3 text-center">Quantite</th>
+                    <th class="px-4 py-3 text-center">Place</th>
                     <th class="px-4 py-3 text-right">Total</th>
                 </tr>
             </thead>

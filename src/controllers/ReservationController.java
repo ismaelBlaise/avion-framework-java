@@ -23,6 +23,7 @@ import services.ReservationService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
+import util.CustomPart;
 import util.CustomSession;
 import util.ModelAndView;
 
@@ -124,7 +125,7 @@ public class ReservationController {
 
     @Url(url = "detail-form")
     @Get
-    public ModelAndView detailsForm(@ParamObject(name = "id") String id, CustomSession session){
+    public ModelAndView detailsForm(@Param(name = "id") String id, CustomSession session,@Param(name="iss") CustomPart customPart){
         StatutService statutService=new StatutService();
         ClasseService classeService=new ClasseService();
         CategorieAgeService categorieAgeService=new CategorieAgeService();
@@ -134,7 +135,7 @@ public class ReservationController {
            try {
             modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
-            modelAndView.setAttribute("reservation",id);
+            modelAndView.setAttribute("reservation",Integer.parseInt(id));
             // modelAndView.setAttribute("classe", classeService.findById(Integer.parseInt(reservationDto.getIdClasse())));
             modelAndView.setAttribute("categoriesAge", categorieAgeService.getAllCategoriesAge());
             
