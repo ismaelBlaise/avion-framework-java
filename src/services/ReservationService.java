@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import models.Reservation;
+import models.ReservationDetail;
 import models.Statut;
 import models.Vol;
 import utils.DbConnect;
@@ -190,6 +191,57 @@ public class ReservationService {
         }
         return idReservation;
     }    
+
+
+    public List<ReservationDetail> findAllDetails(int idReservation) throws Exception {
+        List<ReservationDetail> reservationDetails = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DbConnect.getConnection();
+            String sql = "SELECT rd.id_reservation, rd.id_categorie_age, rd.id_classe, " +
+                         "rd.prix, rd.nb, ca.categorie, c.classe " +
+                         "FROM reservation_details rd " +
+                         "JOIN categories_age ca ON rd.id_categorie_age = ca.id_categorie_age " +
+                         "JOIN classes c ON rd.id_classe = c.id_classe " +
+                         "WHERE rd.id_reservation = ?";
+            
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idReservation);
+            
+            resultSet = preparedStatement.executeQuery();
+    
+            while (resultSet.next()) {
+                ReservationDetail detail = new ReservationDetail();
+                detail.setIdReservation(resultSet.getInt("id_reservation"));
+                detail.setIdCategorieAge(resultSet.getInt("id_categorie_age"));
+                detail.setIdClasse(resultSet.getInt("id_classe"));
+                detail.setPrix(resultSet.getDouble("prix"));
+                detail.setNb(resultSet.getInt("nb"));
+                detail.setCategorieAge(resultSet.getString("categorie"));
+                detail.setClasse(resultSet.getString("classe"));
+                
+                reservationDetails.add(detail);
+            }
+            return reservationDetails;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     public void ajouterDetails(int idReservation, int idClasse,int idCategorieAge, int nb,boolean promotion) throws Exception {

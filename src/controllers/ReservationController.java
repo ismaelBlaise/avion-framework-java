@@ -13,6 +13,7 @@ import annotation.Url;
 import dto.RechercheDto;
 import dto.ReservationDto;
 import models.Reservation;
+import models.ReservationDetail;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -125,9 +126,12 @@ public class ReservationController {
     @Get
     public ModelAndView reservationDetails(@Param(name = "id") String id){
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
-        modelAndView.setAttribute("page","details-list.jsp");
+        modelAndView.setAttribute("page","details.jsp");
+        ReservationService reservationService=new ReservationService();
         try {
-            
+            List<ReservationDetail> reservationDetails=reservationService.findAllDetails(Integer.parseInt(id));
+            modelAndView.setAttribute("reservation",reservationService.findById(Integer.parseInt(id)));
+            modelAndView.setAttribute("details",reservationDetails);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
