@@ -88,7 +88,7 @@
     <div class="mt-6">
         <a href="reservations" 
            class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors">
-            ← Retour a la liste des reservations
+            Retour a la liste des reservations
         </a>
     </div>
 </div>
