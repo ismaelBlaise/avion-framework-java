@@ -34,7 +34,7 @@
                 <%
                     List<Vol> vols = (List<Vol>) request.getAttribute("vols");
                     StatutService statutService=new StatutService();
-                    if (vols != null && !vol.isEmpty()) {
+                    if (vols != null && !vols.isEmpty()) {
                         for (Vol vol : vols) {
                             
                                 
