@@ -295,27 +295,35 @@ public class VolService {
     
     public List<Vol> getAllVols() throws Exception {
         List<Vol> vols = new ArrayList<>();
-        String query = "SELECT * FROM vols";
+        String query = "SELECT v.*, a.modele AS modele_avion " +
+                    "FROM vols v " +
+                    "JOIN avions a ON v.id_avion = a.id_avion";
 
-        try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
             while (resultSet.next()) {
                 Vol vol = new Vol(
-                        resultSet.getLong("id_vol"),
-                        resultSet.getString("numero"),
-                        resultSet.getString("depart"),
-                        resultSet.getString("arrivee"),
-                        resultSet.getString("fin_reservation"),
-                        resultSet.getString("fin_annulation"),
-                        resultSet.getLong("id_statut"),
-                        resultSet.getLong("id_ville_depart"),
-                        resultSet.getLong("id_ville_arrivee"),
-                        resultSet.getLong("id_avion")
+                    resultSet.getLong("id_vol"),
+                    resultSet.getString("numero"),
+                    resultSet.getString("depart"),
+                    resultSet.getString("arrivee"),
+                    resultSet.getString("fin_reservation"),
+                    resultSet.getString("fin_annulation"),
+                    resultSet.getLong("id_statut"),
+                    resultSet.getLong("id_ville_depart"),
+                    resultSet.getLong("id_ville_arrivee"),
+                    resultSet.getLong("id_avion")
                 );
+                vol.setModeleAvion(resultSet.getString("modele_avion"));
+
                 vols.add(vol);
             }
         }
         return vols;
     }
+
 
     public Vol getVolById(Long id) throws Exception {
         Vol vol = null;

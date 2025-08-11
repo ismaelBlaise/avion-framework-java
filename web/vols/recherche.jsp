@@ -1,7 +1,7 @@
 <%@ page import ="java.util.*"%>
 <%@ page import ="models.*"%>
 <div class="max-w-4xl mx-auto py-8">
-    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Rechercher un vol</h2>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Espace de recherche</h2>
 
     <!-- Formulaire de recherche de vol -->
     <form action="vols-rechercher" method="POST" class="space-y-6">

@@ -18,7 +18,7 @@
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
             <thead>
                 <tr class="text-left bg-gray-100 text-sm font-semibold text-gray-700">
-                    <!-- <th class="px-4 py-3 border-b">ID Vol</th> -->
+                    <th class="px-4 py-3 border-b">Avion</th>
                     <th class="px-4 py-3 border-b">Numero</th>
                     <!-- <th class="px-4 py-3 border-b">Date de Vol</th> -->
                     <th class="px-4 py-3 border-b">Date de Depart</th>
@@ -40,7 +40,7 @@
                                 
                 %>
                     <tr class="hover:bg-gray-50">
-                        <!-- <td class="px-4 py-3 border-b"><%= vol.getIdVol() %></td> -->
+                        <td class="px-4 py-3 border-b"><%= vol.getModeleAvion() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getNumero() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getDepart() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getArrivee() %></td>

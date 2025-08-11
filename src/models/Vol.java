@@ -13,7 +13,9 @@ public class Vol {
     private Long idVilleDepart;
     private Long idVilleArrive;
     private Long idAvion;
+    private String modeleAvion;
     
+   
     public Vol() {
     }
     public Vol(Long idVol, String numero, String depart, String arrivee, String finReservation, String finAnnulation,
@@ -90,5 +92,11 @@ public class Vol {
         this.idAvion = idAvion;
     }
 
+     public String getModeleAvion() {
+        return modeleAvion;
+    }
+    public void setModeleAvion(String modeleAvion) {
+        this.modeleAvion = modeleAvion;
+    }
    
 }
