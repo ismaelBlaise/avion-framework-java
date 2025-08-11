@@ -25,7 +25,7 @@
                 String erreur = (String) request.getAttribute("erreur");
                 List<Statut> statuts = (List<Statut>) request.getAttribute("statuts");
                 List<Classe> classes = (List<Classe>) request.getAttribute("classes");
-                Vol vol = (Vol) request.getAttribute("vol");
+                
             %>
             
             <% if (erreur != null) { %>
