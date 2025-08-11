@@ -1,46 +1,41 @@
--- Rôles
+
 INSERT INTO roles (role) VALUES ('admin'), ('passager');
 
--- Villes
-INSERT INTO villes (ville) VALUES ('Paris'), ('Dakar'), ('Abidjan');
 
--- Avions
-INSERT INTO avions (capacite, modele) VALUES (180, 'Boeing 737'), (150, 'Airbus A320');
+INSERT INTO statuts (statut,source) VALUES ('Non disponible','vols'),('Disponible','vols'), ('Annulee','reservation'), ('Confirme','reservation'),('Payee','reservation');
+-- INSERT INTO statuts (statut,source) VALUES ('En ','vols');
 
--- Statuts
-INSERT INTO statuts (statut) VALUES ('Réservé'), ('Annulé'), ('Confirmé');
-
--- Classes
 INSERT INTO classes (classe) VALUES ('Economique'), ('Business'), ('Première');
 
--- Utilisateurs
-INSERT INTO utilisateurs (nom, prenom, email,date_naissance, contact, mdp, id_role) VALUES
-('Admin', 'Super', 'admin@gmail.com','2020-02-25', '770001122', 'admin123', 1),
-('Diop', 'Mamadou', 'mamadou@gmail.com', '2020-02-25','771234567', 'pass123', 2),
-('Fall', 'Aissatou', 'aissatou@gmail.com', '2020-02-25','776543210', 'pass456', 2);
+INSERT INTO categories_age (categorie,age_min,age_max) VALUES ('Enfant',1,20), ('Adulte',20,100) ;
 
--- Vols
-INSERT INTO vols (numero, date_vol, heure_depart, heure_arrive, heure_reservation, heure_annulation, id_statut, id_ville_depart, id_ville_arrive, id_avion) VALUES
-('VOL001', '2024-10-10', '10:00', '13:00', '08:00', '09:00', 3, 1, 2, 1),
-('VOL002', '2024-10-15', '15:00', '18:00', '10:00', '11:00', 1, 2, 3, 2);
+INSERT INTO villes (nom_ville) VALUES ('Paris'), ('New York'), ('Londres'), ('Tokyo'), ('Dubaï');
 
--- Villes Escale
-INSERT INTO villes_escale (id_vol, id_ville) VALUES (1, 3);
+INSERT INTO avions (capacite, modele) VALUES (180, 'Boeing 737'), (250, 'Airbus A320'), (350, 'Boeing 777');
 
--- Configurations de Vol
-INSERT INTO conf_vol (id_vol, id_classe, montant, capacite) VALUES
-(1, 1, 50000, 100),
-(1, 2, 80000, 50),
-(2, 1, 70000, 90),
-(2, 3, 120000, 30);
+INSERT INTO utilisateurs (nom, prenom, email, contact, mdp, id_role) 
+VALUES 
+('Dupont', 'Jean', 'admin@example.com', '0601020304', 'adminpass', 1),  
+('Martin', 'Sophie', 'passager@example.com', '0605060708', 'passagerpass', 2);   
 
--- Promotions
-INSERT INTO promotions (id_vol, id_classe, pourcentage, nb_siege) VALUES
-(1, 1, 10.00, 10),
-(2, 3, 20.00, 5);
 
--- Réservations
-INSERT INTO reservations (date_reservation, prix, id_statut, id_classe, id_vol, id_utilisateur) VALUES
-(NOW(), 45000.0000, 1, 1, 1, 2),
-(NOW(), 68000.0000, 3, 2, 1, 3),
-(NOW(), 56000.0000, 3, 1, 2, 2);
+
+
+-- Exemple d'insertion de vols
+
+INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
+('AF123', '2025-09-01 08:00:00', '2025-09-01 12:00:00', '2025-08-31 23:59:59', NULL, 2, -- statut 'Disponible' pour vol
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737')),
+
+('BA456', '2025-09-02 14:30:00', '2025-09-02 18:45:00', '2025-09-02 13:30:00', NULL, 2,
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Tokyo'),
+    (SELECT id_avion FROM avions WHERE modele = 'Airbus A320')),
+
+('EK789', '2025-09-03 22:00:00', '2025-09-04 06:00:00', '2025-09-03 21:00:00', NULL, 2,
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Dubaï'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 777'));
+

@@ -10,38 +10,60 @@ import models.Role;
 import utils.DbConnect;
 
 public class RoleService {
-    public Role findById(Long id) throws Exception{
-        try (Connection connection=DbConnect.getConnection()){
-            PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM roles WHERE id_role =?");
+
+    public Role findById(Long id) throws Exception {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Role role = null;
+
+        try (Connection connection = DbConnect.getConnection()) {
+            preparedStatement = connection.prepareStatement("SELECT * FROM roles WHERE id_role = ?");
             preparedStatement.setLong(1, id);
-            ResultSet resultSet=preparedStatement.executeQuery();
-            Role role=new Role();
-            role=role.toRole(resultSet);
-            preparedStatement.close();
-            resultSet.close();
-            return role;
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                role = new Role();
+                role = role.toRole(resultSet);
+            }
         } catch (Exception e) {
-            throw e;
+            throw e; 
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace(); 
+            }
         }
+
+        return role;
     }
 
+    public List<Role> findAll() throws Exception {
+        List<Role> roles = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-    public List<Role> findAll() throws Exception{
-        List<Role> roles=new ArrayList<>();
-        try (Connection connection=DbConnect.getConnection()){
-            PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM roles");
-            // preparedStatement.setLong(1, id);
-            ResultSet resultSet=preparedStatement.executeQuery();
+        try (Connection connection = DbConnect.getConnection()) {
+            preparedStatement = connection.prepareStatement("SELECT * FROM roles");
+            resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                Role role=new Role();
-                role=role.toRole(resultSet);
+                Role role = new Role();
+                role = role.toRole(resultSet);
                 roles.add(role);
             }
-            preparedStatement.close();
-            resultSet.close();
-            return roles;
         } catch (Exception e) {
-            throw e;
+            throw e;  
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace();  
+            }
         }
+
+        return roles;
     }
 }

@@ -1,11 +1,11 @@
 package controllers;
 
 import annotation.Controller;
+import annotation.Get;
 import annotation.ParamObject;
 import annotation.Post;
 import annotation.Url;
 import dto.LoginDto;
-import dto.SignupDto;
 import models.Role;
 import services.UtilisateurService;
 import util.CustomSession;
@@ -23,7 +23,7 @@ public class UtilisateurController {
             if(role.getRole().equals("admin")){
                 modelAndView.setUrl("template-back.jsp");
             }
-            else if(role.getRole().equals("utilisateur")){  
+            else if(role.getRole().equals("passager")){  
                 modelAndView.setUrl("template-front.jsp");
             }
         } catch (Exception e) {
@@ -34,10 +34,20 @@ public class UtilisateurController {
         return modelAndView;
     }
 
-    @Url(url="register")
-    @Post
-    public ModelAndView register(@ParamObject(name = "user") SignupDto signupDto){
-        ModelAndView modelAndView=new ModelAndView(null);
+
+    @Url(url = "deconnexion")
+    @Get
+    public ModelAndView deconnexion(CustomSession customSession){
+        ModelAndView modelAndView=new ModelAndView("index.jsp");
+        customSession.delete("id");
         return modelAndView;
+    
     }
+
+    // @Url(url="register")
+    // @Post
+    // public ModelAndView register(@ParamObject(name = "user") SignupDto signupDto){
+    //     ModelAndView modelAndView=new ModelAndView(null);
+    //     return modelAndView;
+    // }
 }

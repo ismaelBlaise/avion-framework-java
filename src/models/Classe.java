@@ -11,6 +11,10 @@ public class Classe {
         this.classe = classe;
     }
 
+    public Classe() {
+        //TODO Auto-generated constructor stub
+    }
+
     // Getters et setters
     public Long getIdClasse() {
         return idClasse;

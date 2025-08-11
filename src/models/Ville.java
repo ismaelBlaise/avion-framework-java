@@ -5,6 +5,9 @@ public class Ville {
     private Long idVille;
     private String ville;
 
+    public Ville() {
+    }
+
     // Constructeur
     public Ville(Long idVille, String ville) {
         this.idVille = idVille;

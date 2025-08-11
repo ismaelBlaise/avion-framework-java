@@ -7,6 +7,9 @@ public class Avion{
     private Integer capacite;
     private String modele;
 
+    public Avion() {
+    }
+
     // Constructeur
     public Avion(Long idAvion, Integer capacite, String modele) {
 

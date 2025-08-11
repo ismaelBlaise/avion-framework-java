@@ -1,0 +1,70 @@
+<%@page import="models.Avion" %>
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow rounded-lg p-6 sm:p-8">
+        <!-- Titre avec icône -->
+        <div class="flex items-center mb-6">
+            <i data-lucide="airplane" class="w-8 h-8 text-blue-500 mr-3"></i>
+            <h2 class="text-2xl font-semibold text-gray-800">Modifier l'avion</h2>
+        </div>
+
+        <!-- Formulaire de modification -->
+        <form action="avions-update" method="POST" class="space-y-6">
+            <% String erreur = (String) request.getAttribute("erreur"); %>
+            <% if (erreur != null) { %>
+                <div class="p-4 text-red-700 bg-red-50 border-l-4 border-red-500 rounded-md flex items-start">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0"></i>
+                    <div><%= erreur %></div>
+                </div>
+            <% } %>
+            <% 
+                Avion avion=(Avion) request.getAttribute("avion");
+            %>
+            <input type="hidden" value="<%= avion.getIdAvion() %>" id="id" name="id">
+            
+            <!-- Champ Modele -->
+            <div class="space-y-2">
+                <label for="modele" class="block text-sm font-medium text-gray-700">Modele d'avion</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="type" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" value="<%= avion.getModele() %>" id="modele" name="avion.modele" required 
+                           placeholder="Entrer le modele de l'avion"
+                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+
+            <!-- Champ Capacite -->
+            <div class="space-y-2">
+                <label for="capacite" class="block text-sm font-medium text-gray-700">Capacite (passagers)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="users" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <input type="number" value="<%=avion.getCapacite()%>" id="capacite" name="avion.capacite" required 
+                           placeholder="Entrer la capacite de l'avion"
+                           class="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="flex justify-end space-x-4 pt-4">
+                <a href="avions" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                    Annuler
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                    Modifier l'avion
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Initialisation des icônes Lucide
+    document.addEventListener('DOMContentLoaded', function() {
+        lucide.createIcons();
+    });
+</script>
