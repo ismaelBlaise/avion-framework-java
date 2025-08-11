@@ -14,7 +14,7 @@
             return;
         }
     %>
-    <div class="overflow-x-auto"></div>
+    <div class="overflow-x-auto">
     <!-- Titre avec l'ID de reservation -->
     <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-bold">Details de la reservation #<%= reservation.getIdReservation() %></h2>
@@ -62,9 +62,12 @@
                     <td class="px-4 py-3"><%= detail.getClasse() != null ? detail.getClasse() : "N/A" %></td>
                     <td class="px-4 py-3 text-right"><%= currencyFormat.format(detail.getPrix()) %></td>
                     <td class="px-4 py-3 text-center">
-                        <% if (detail.getPasseport() == null || detail.getNomFichier() == null) { %>
-                            <a href="import-passport?idReservationDetail=<%= detail.getIdReservationDetail() %>" 
-                               class="text-blue-600 hover:underline">Importer</a>
+                        <% if ((detail.getPasseport() == null || detail.getNomFichier() == null)) { %>
+                            <a href="import-form?id=<%= detail.getIdReservationDetail() %>" 
+                            class="text-blue-600 hover:underline <%= isAnnulee ? "opacity-50 cursor-not-allowed pointer-events-none" : "" %>" 
+                            <%= isAnnulee ? "tabindex=\"-1\" aria-disabled=\"true\"" : "" %>>
+                                Importer
+                            </a>
                         <% } else { %>
                             Dejà fourni
                         <% } %>
@@ -91,5 +94,7 @@
             ← Retour a la liste des reservations
         </a>
     </div>
+    </div>
+
     </div>
 </div>

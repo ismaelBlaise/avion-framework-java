@@ -20,10 +20,12 @@ import services.AvionService;
 import services.CategorieAgeService;
 import services.ClasseService;
 import services.RechercheService;
+import services.ReservationDetailService;
 import services.ReservationService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
+import util.CustomPart;
 import util.CustomSession;
 import util.ModelAndView;
 
@@ -153,6 +155,50 @@ public class ReservationController {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
            }
+        } catch (Exception e) {
+            
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return modelAndView; 
+    }
+
+
+    @Url(url = "import-form")
+    @Get
+    public ModelAndView importForm(@Param(name = "id") String id, CustomSession session){
+    
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/import.jsp");
+        try {
+           
+            ReservationDetailService reservationDetailService=new ReservationDetailService();
+            ReservationDetail detail=reservationDetailService.findById(Long.parseLong(id));
+            modelAndView.setAttribute("detail", detail);
+            modelAndView.setAttribute("reservation", detail.getIdReservation());
+        } catch (Exception e) {
+            
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return modelAndView; 
+    }
+
+
+    @Url(url = "import")
+    @Get
+    public ModelAndView importer(@Param(name = "id") String id,CustomPart passport, CustomSession session){
+    
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/import.jsp");
+        try {
+           
+            ReservationDetailService reservationDetailService=new ReservationDetailService();
+            ReservationDetail detail=reservationDetailService.findById(Long.parseLong(id));
+            modelAndView.setAttribute("detail", detail);
+            modelAndView.setAttribute("reservation", detail.getIdReservation());
         } catch (Exception e) {
             
             modelAndView.setAttribute("erreur", e.getMessage());
