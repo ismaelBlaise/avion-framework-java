@@ -41,6 +41,9 @@
         .submenu-item {
             color: #BFDBFE;
         }
+        .sidebar-gradient2 {
+            background: linear-gradient(135deg, #758fd8 0%, #3b82f6 100%);
+        }
         .submenu-item:hover {
             background-color: rgba(255, 255, 255, 0.08);
             color: white;
@@ -52,7 +55,7 @@
 </head>
 <body class="bg-gray-50 font-sans antialiased">
     <!-- Header -->
-    <header class="bg-white shadow-sm sidebar-gradient fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
+    <header class="bg-white shadow-sm sidebar-gradient2 fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
         <div class="flex items-center space-x-4">
             <!-- Menu Toggle -->
             <button id="menu-button" class="text-gray-600 hover:text-blue-600 transition-colors">

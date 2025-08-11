@@ -11,7 +11,7 @@
         <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800 flex items-center">
                 <i data-lucide="ticket" class="w-6 h-6 text-blue-500 mr-2"></i>
-                Details de la reservation #<%= reservation.getIdReservation() %>
+                Details de la reservation # 
             </h2>
             
             <%
