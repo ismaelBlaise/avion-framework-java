@@ -52,22 +52,22 @@ CREATE TABLE utilisateurs (
 );
 
 CREATE TABLE vols (
-   id_vol SERIAL PRIMARY KEY,
-   numero VARCHAR(50) NOT NULL UNIQUE,
-   date_vol DATE NOT NULL,
-   heure_depart TIME NOT NULL,
-   heure_arrivee TIME NOT NULL,
-   heure_reservation TIME,
-   heure_annulation TIME,
-   id_statut INTEGER NOT NULL,
-   id_ville_depart INTEGER NOT NULL,
-   id_ville_arrivee INTEGER NOT NULL,
-   id_avion INTEGER NOT NULL,
-   FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE SET NULL,
-   FOREIGN KEY (id_ville_depart) REFERENCES villes(id_ville) ON DELETE CASCADE,
-   FOREIGN KEY (id_ville_arrivee) REFERENCES villes(id_ville) ON DELETE CASCADE,
-   FOREIGN KEY (id_avion) REFERENCES avions(id_avion) ON DELETE CASCADE
+    id_vol SERIAL PRIMARY KEY,
+    numero VARCHAR(50) NOT NULL UNIQUE,
+    depart TIMESTAMP NOT NULL,             
+    arrivee TIMESTAMP NOT NULL,           
+    fin_reservation TIMESTAMP,            
+    fin_annulation TIMESTAMP,              
+    id_statut INTEGER,                     
+    id_ville_depart INTEGER NOT NULL,
+    id_ville_arrivee INTEGER NOT NULL,
+    id_avion INTEGER NOT NULL,
+    FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE SET NULL,
+    FOREIGN KEY (id_ville_depart) REFERENCES villes(id_ville) ON DELETE CASCADE,
+    FOREIGN KEY (id_ville_arrivee) REFERENCES villes(id_ville) ON DELETE CASCADE,
+    FOREIGN KEY (id_avion) REFERENCES avions(id_avion) ON DELETE CASCADE
 );
+
 
 CREATE TABLE reservations (
    id_reservation SERIAL PRIMARY KEY,

@@ -6,16 +6,14 @@ public class VolDto {
 
     @FieldAnnotation(name = "numero")
     private String numero;
-    @FieldAnnotation(name = "dateVol")
-    private String dateVol;
-    @FieldAnnotation(name = "heureDepart")
-    private String heureDepart;
-    @FieldAnnotation(name = "heureArrive")
-    private String heureArrive;
+    @FieldAnnotation(name = "depart")
+    private String depart;
+    @FieldAnnotation(name = "arrive")
+    private String arrive;
     // @FieldAnnotation(name = "heureReservation")
-    private String heureReservation;
-    // @FieldAnnotation(name = "heureAnnulation")
-    private String heureAnnulation;
+    private String finReservation;
+    // @FieldAnnotation(name = "finAnnulation")
+    private String finAnnulation;
     @FieldAnnotation(name = "idStatut")
     private String idStatut;
     @FieldAnnotation(name = "idVilleDepart")
@@ -25,42 +23,51 @@ public class VolDto {
     @FieldAnnotation(name = "idAvion")
     private String idAvion;
 
+
     
+    public VolDto() {
+    }
+    public VolDto(String numero, String depart, String arrive, String finReservation, String finAnnulation,
+            String idStatut, String idVilleDepart, String idVilleArrive, String idAvion) {
+        this.numero = numero;
+        this.depart = depart;
+        this.arrive = arrive;
+        this.finReservation = finReservation;
+        this.finAnnulation = finAnnulation;
+        this.idStatut = idStatut;
+        this.idVilleDepart = idVilleDepart;
+        this.idVilleArrive = idVilleArrive;
+        this.idAvion = idAvion;
+    }
     public String getNumero() {
         return numero;
     }
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    public String getDateVol() {
-        return dateVol;
+    public String getDepart() {
+        return depart;
     }
-    public void setDateVol(String dateVol) {
-        this.dateVol = dateVol;
+    public void setDepart(String depart) {
+        this.depart = depart;
     }
-    public String getHeureDepart() {
-        return heureDepart;
+    public String getArrive() {
+        return arrive;
     }
-    public void setHeureDepart(String heureDepart) {
-        this.heureDepart = heureDepart;
+    public void setArrive(String arrive) {
+        this.arrive = arrive;
     }
-    public String getHeureArrive() {
-        return heureArrive;
+    public String getFinReservation() {
+        return finReservation;
     }
-    public void setHeureArrive(String heureArrive) {
-        this.heureArrive = heureArrive;
+    public void setFinReservation(String finReservation) {
+        this.finReservation = finReservation;
     }
-    public String getHeureReservation() {
-        return heureReservation;
+    public String getFinAnnulation() {
+        return finAnnulation;
     }
-    public void setHeureReservation(String heureReservation) {
-        this.heureReservation = heureReservation;
-    }
-    public String getHeureAnnulation() {
-        return heureAnnulation;
-    }
-    public void setHeureAnnulation(String heureAnnulation) {
-        this.heureAnnulation = heureAnnulation;
+    public void setFinAnnulation(String finAnnulation) {
+        this.finAnnulation = finAnnulation;
     }
     public String getIdStatut() {
         return idStatut;
@@ -87,7 +94,8 @@ public class VolDto {
         this.idAvion = idAvion;
     }
 
-    // Getters and Setters
+    
+    
 
     
 }

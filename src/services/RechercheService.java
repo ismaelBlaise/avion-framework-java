@@ -87,11 +87,11 @@ public class RechercheService {
                 Vol vol = new Vol();
                 vol.setIdVol(resultSet.getLong("id_vol"));
                 vol.setNumero(resultSet.getString("numero"));
-                vol.setDateVol(resultSet.getString("date_vol"));
-                vol.setHeureDepart(resultSet.getString("heure_depart"));
-                vol.setHeureArrive(resultSet.getString("heure_arrivee"));
-                vol.setHeureReservation(resultSet.getString("heure_reservation"));
-                vol.setHeureAnnulation(resultSet.getString("heure_annulation"));
+                // vol.setDateVol(resultSet.getString("date_vol"));
+                vol.setDepart(resultSet.getString("depart"));
+                vol.setArrivee(resultSet.getString("arrivee"));
+                vol.setFinReservation(resultSet.getString("fin_reservation"));
+                vol.setFinAnnulation(resultSet.getString("fin_annulation"));
                 vol.setIdStatut(resultSet.getLong("id_statut"));
                 vol.setIdVilleDepart(resultSet.getLong("id_ville_depart"));
                 vol.setIdVilleArrive(resultSet.getLong("id_ville_arrivee"));

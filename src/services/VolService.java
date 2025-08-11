@@ -1,11 +1,13 @@
 package services;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,17 +165,31 @@ public class VolService {
     }
 
     public void ajouterVol(Vol vol) throws Exception {
-        String query = "INSERT INTO vols (numero, date_vol, heure_depart, heure_arrivee, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, vol.getNumero());
-            preparedStatement.setDate(2, Date.valueOf(vol.getDateVol()));
-            preparedStatement.setTime(3, Time.valueOf(vol.getHeureDepart() + ":00"));
-            preparedStatement.setTime(4, Time.valueOf(vol.getHeureArrive() + ":00"));
-            preparedStatement.setLong(5, vol.getIdStatut());
-            preparedStatement.setLong(6, vol.getIdVilleDepart());
-            preparedStatement.setLong(7, vol.getIdVilleArrive());
-            preparedStatement.setLong(8, vol.getIdAvion());
+
+            preparedStatement.setTimestamp(2, parseTimestamp(vol.getDepart(), formatter));
+            preparedStatement.setTimestamp(3, parseTimestamp(vol.getArrivee(), formatter));
+            preparedStatement.setTimestamp(4, parseTimestamp(vol.getFinReservation(), formatter));
+            preparedStatement.setTimestamp(5, parseTimestamp(vol.getFinAnnulation(), formatter));
+
+            if (vol.getIdStatut() != null) {
+                preparedStatement.setLong(6, vol.getIdStatut());
+            } else {
+                preparedStatement.setNull(6, java.sql.Types.INTEGER);
+            }
+
+            preparedStatement.setLong(7, vol.getIdVilleDepart());
+            preparedStatement.setLong(8, vol.getIdVilleArrive());
+            preparedStatement.setLong(9, vol.getIdAvion());
+
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,28 +197,47 @@ public class VolService {
         }
     }
 
+
+
+    private Timestamp parseTimestamp(String dateStr, SimpleDateFormat formatter) throws ParseException {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return null;
+        }
+        java.util.Date parsedDate = formatter.parse(dateStr);
+        return new Timestamp(parsedDate.getTime());
+    }
+
     public void ajouterHeureReservation(String id, String heureReservation) throws Exception {
-        String query = "UPDATE vols SET heure_reservation = ? WHERE id_vol = ?";
+        String query = "UPDATE vols SET fin_reservation = ? WHERE id_vol = ?";
         Vol vol = null;
-        
-        try (Connection connection = DbConnect.getConnection(); 
+
+        try (Connection connection = DbConnect.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            
-            
+
             vol = getVolById(Long.parseLong(id));
-            
-            if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureReservation + ":00"))) {
-                    preparedStatement.setTime(1, Time.valueOf(heureReservation + ":00"));
-                    preparedStatement.setLong(2, Long.parseLong(id));
-                    preparedStatement.executeUpdate();
-                } else {
-                    throw new IllegalArgumentException("La réservation ne peut pas être effectuée apres l'heure de départ.");
-                }
-            } else {
+
+            if (vol == null) {
                 throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
             }
+
             
+            String heureRes = heureReservation.length() == 5 ? heureReservation + ":00" : heureReservation;
+
+            String departStr = vol.getDepart();
+            String dateDepart = departStr.split(" ")[0]; 
+
+             
+            LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime heureResa = LocalDateTime.parse(dateDepart + " " + heureRes, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            if (heureResa.isBefore(heureDepart)) {
+                preparedStatement.setTimestamp(1, Timestamp.valueOf(heureResa));
+                preparedStatement.setLong(2, Long.parseLong(id));
+                preparedStatement.executeUpdate();
+            } else {
+                throw new IllegalArgumentException("La réservation ne peut pas être effectuée après l'heure de départ.");
+            }
+
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur d'argument : " + e.getMessage());
             e.printStackTrace();
@@ -213,38 +248,48 @@ public class VolService {
         }
     }
 
+
     public void ajouterHeureAnnulation(String id, String heureAnnulation) throws Exception {
-        String query = "UPDATE vols SET heure_annulation = ? WHERE id_vol = ?";
-        Vol vol=null;
-        try (Connection connection = DbConnect.getConnection(); 
+        String query = "UPDATE vols SET fin_annulation = ? WHERE id_vol = ?";
+        Vol vol = null;
+
+        try (Connection connection = DbConnect.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             vol = getVolById(Long.parseLong(id));
-            
-            if (vol != null) {
-                if (Time.valueOf(vol.getHeureDepart()).after(Time.valueOf(heureAnnulation + ":00"))) {
-                    preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
-                    preparedStatement.setLong(2, Long.parseLong(id));
-                    preparedStatement.executeUpdate();
-                } else {
-                    throw new IllegalArgumentException("L'annulation ne peut pas être effectuée apres l'heure de départ.");
-                }
-            } else {
+
+            if (vol == null) {
                 throw new IllegalArgumentException("Vol introuvable pour l'ID : " + id);
             }
-             
-            preparedStatement.setTime(1, Time.valueOf(heureAnnulation + ":00"));
-            preparedStatement.setLong(2, Long.parseLong(id));
-            preparedStatement.executeUpdate();
-            
-        } catch (SQLException e) {
+
+            // Format attendu pour heureAnnulation : "HH:mm" ou "HH:mm:ss"
+            String heureAnnul = heureAnnulation.length() == 5 ? heureAnnulation + ":00" : heureAnnulation;
+
+            // Extraire la date du départ pour construire LocalDateTime complet
+            String departStr = vol.getDepart(); // ex: "2025-08-11 14:30:00"
+            String dateDepart = departStr.split(" ")[0]; // "2025-08-11"
+
+            LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime heureAnnulDt = LocalDateTime.parse(dateDepart + " " + heureAnnul, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            if (heureAnnulDt.isBefore(heureDepart)) {
+                preparedStatement.setTimestamp(1, Timestamp.valueOf(heureAnnulDt));
+                preparedStatement.setLong(2, Long.parseLong(id));
+                preparedStatement.executeUpdate();
+            } else {
+                throw new IllegalArgumentException("L'annulation ne peut pas être effectuée après l'heure de départ.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erreur d'argument : " + e.getMessage());
             e.printStackTrace();
-            System.err.println("Erreur de base de données : " + e.getMessage());
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
+
 
 
     
@@ -257,11 +302,10 @@ public class VolService {
                 Vol vol = new Vol(
                         resultSet.getLong("id_vol"),
                         resultSet.getString("numero"),
-                        resultSet.getString("date_vol"),
-                        resultSet.getString("heure_depart"),
-                        resultSet.getString("heure_arrivee"),
-                        resultSet.getString("heure_reservation"),
-                        resultSet.getString("heure_annulation"),
+                        resultSet.getString("depart"),
+                        resultSet.getString("arrivee"),
+                        resultSet.getString("fin_reservation"),
+                        resultSet.getString("fin_annulation"),
                         resultSet.getLong("id_statut"),
                         resultSet.getLong("id_ville_depart"),
                         resultSet.getLong("id_ville_arrivee"),
@@ -283,16 +327,15 @@ public class VolService {
                 if (resultSet.next()) {
                     vol = new Vol(
                             resultSet.getLong("id_vol"),
-                            resultSet.getString("numero"),
-                            resultSet.getString("date_vol"),
-                            resultSet.getString("heure_depart"),
-                            resultSet.getString("heure_arrivee"),
-                            resultSet.getString("heure_reservation"),
-                            resultSet.getString("heure_annulation"),
-                            resultSet.getLong("id_statut"),
-                            resultSet.getLong("id_ville_depart"),
-                            resultSet.getLong("id_ville_arrivee"),
-                            resultSet.getLong("id_avion")
+                        resultSet.getString("numero"),
+                        resultSet.getString("depart"),
+                        resultSet.getString("arrivee"),
+                        resultSet.getString("fin_reservation"),
+                        resultSet.getString("fin_annulation"),
+                        resultSet.getLong("id_statut"),
+                        resultSet.getLong("id_ville_depart"),
+                        resultSet.getLong("id_ville_arrivee"),
+                        resultSet.getLong("id_avion")
                     );
                 }
             }
@@ -303,11 +346,13 @@ public class VolService {
     public void updateVol(Vol vol) throws Exception {
         String query = "UPDATE vols SET numero = ?, date_vol = ?, heure_depart = ?, heure_arrivee = ?, id_statut = ?, id_ville_depart = ?, id_ville_arrivee = ?, id_avion = ? WHERE id_vol = ?";
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, vol.getNumero());
-            preparedStatement.setDate(2, Date.valueOf(vol.getDateVol()));
-            preparedStatement.setTime(3, Time.valueOf(vol.getHeureDepart()));
-            preparedStatement.setTime(4, Time.valueOf(vol.getHeureArrive()));
+            preparedStatement.setTimestamp(2, parseTimestamp(vol.getDepart(), formatter));
+            preparedStatement.setTimestamp(3, parseTimestamp(vol.getArrivee(), formatter));
+            preparedStatement.setTimestamp(4, parseTimestamp(vol.getFinReservation(), formatter));
+            preparedStatement.setTimestamp(5, parseTimestamp(vol.getFinAnnulation(), formatter));
             preparedStatement.setLong(5, vol.getIdStatut());
             preparedStatement.setLong(6, vol.getIdVilleDepart());
             preparedStatement.setLong(7, vol.getIdVilleArrive());

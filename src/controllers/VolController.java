@@ -190,15 +190,15 @@ public class VolController {
             modelAndView.setAttribute("statuts",statutService.getAllBySource("vols"));
             // Vol vol = volService.getVolById(Long.parseLong(id));
             // modelAndView.setAttribute("vol", vol);
-            System.out.println(volDto.getHeureDepart());
+            System.out.println(volDto.getDepart());
 
             Vol vol = new Vol();
             vol.setNumero(volDto.getNumero());
-            vol.setDateVol(volDto.getDateVol());
-            vol.setHeureDepart(volDto.getHeureDepart());
-            vol.setHeureArrive(volDto.getHeureArrive());
-            vol.setHeureReservation(volDto.getHeureReservation());
-            vol.setHeureAnnulation(volDto.getHeureAnnulation());
+           
+            vol.setDepart(volDto.getDepart());
+            vol.setArrivee(volDto.getArrive());
+            vol.setFinReservation(volDto.getFinReservation());
+            vol.setFinAnnulation(volDto.getFinAnnulation());
             vol.setIdStatut(Long.parseLong(volDto.getIdStatut()));
             vol.setIdVilleDepart(Long.parseLong(volDto.getIdVilleDepart()));
             vol.setIdVilleArrive(Long.parseLong(volDto.getIdVilleArrive()));
@@ -229,12 +229,12 @@ public class VolController {
             Vol vol = new Vol();
             vol.setIdVol(Long.parseLong(id));
             vol.setNumero(volDto.getNumero());
-            vol.setDateVol(volDto.getDateVol());
+            // vol.setDateVol(volDto.getDateVol());
             // System.out.println(volDto.getHeureDepart());
-            vol.setHeureDepart(volDto.getHeureDepart());
-            vol.setHeureArrive(volDto.getHeureArrive());
-            vol.setHeureReservation(volDto.getHeureReservation());
-            vol.setHeureAnnulation(volDto.getHeureAnnulation());
+            vol.setDepart(volDto.getDepart());
+            vol.setArrivee(volDto.getArrive());
+            vol.setFinReservation(volDto.getFinReservation());
+            vol.setFinAnnulation(volDto.getFinAnnulation());
             vol.setIdStatut(Long.parseLong(volDto.getIdStatut()));
             vol.setIdVilleDepart(Long.parseLong(volDto.getIdVilleDepart()));
             vol.setIdVilleArrive(Long.parseLong(volDto.getIdVilleArrive()));

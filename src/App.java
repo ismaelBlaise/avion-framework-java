@@ -14,10 +14,20 @@ public class App {
     public static void main(String[] args)  {
         PromotionService promotionService=new PromotionService();
         try {
-            ReservationService reservationService=new ReservationService();
-            List<Reservation> reservations=reservationService.findAllByUtilisateur(2);
-            for (Reservation reservation : reservations) {
-                System.out.println(reservation.getVolNom());
+            VolService volService = new VolService();
+            List<Vol> vols = volService.getAllVols();
+            for (Vol vol : vols) {
+                System.out.println("Vol ID: " + vol.getIdVol());
+                System.out.println("Numero: " + vol.getNumero());
+                System.out.println("Depart: " + vol.getDepart());
+                System.out.println("Arrivee: " + vol.getArrivee());
+                System.out.println("Fin Reservation: " + vol.getFinReservation());
+                System.out.println("Fin Annulation: " + vol.getFinAnnulation());
+                System.out.println("ID Statut: " + vol.getIdStatut());
+                System.out.println("ID Ville Depart: " + vol.getIdVilleDepart());
+                System.out.println("ID Ville Arrive: " + vol.getIdVilleArrive());
+                System.out.println("ID Avion: " + vol.getIdAvion());
+                System.out.println("-----------------------------");
             }
 
             

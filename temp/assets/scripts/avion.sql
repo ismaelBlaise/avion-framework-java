@@ -52,22 +52,22 @@ CREATE TABLE utilisateurs (
 );
 
 CREATE TABLE vols (
-   id_vol SERIAL PRIMARY KEY,
-   numero VARCHAR(50) NOT NULL UNIQUE,
-   date_vol DATE NOT NULL,
-   heure_depart TIME NOT NULL,
-   heure_arrivee TIME NOT NULL,
-   heure_reservation TIME,
-   heure_annulation TIME,
-   id_statut INTEGER NOT NULL,
-   id_ville_depart INTEGER NOT NULL,
-   id_ville_arrivee INTEGER NOT NULL,
-   id_avion INTEGER NOT NULL,
-   FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE SET NULL,
-   FOREIGN KEY (id_ville_depart) REFERENCES villes(id_ville) ON DELETE CASCADE,
-   FOREIGN KEY (id_ville_arrivee) REFERENCES villes(id_ville) ON DELETE CASCADE,
-   FOREIGN KEY (id_avion) REFERENCES avions(id_avion) ON DELETE CASCADE
+    id_vol SERIAL PRIMARY KEY,
+    numero VARCHAR(50) NOT NULL UNIQUE,
+    depart TIMESTAMP NOT NULL,             
+    arrivee TIMESTAMP NOT NULL,           
+    fin_reservation TIMESTAMP,            
+    fin_annulation TIMESTAMP,              
+    id_statut INTEGER,                     
+    id_ville_depart INTEGER NOT NULL,
+    id_ville_arrivee INTEGER NOT NULL,
+    id_avion INTEGER NOT NULL,
+    FOREIGN KEY (id_statut) REFERENCES statuts(id_statut) ON DELETE SET NULL,
+    FOREIGN KEY (id_ville_depart) REFERENCES villes(id_ville) ON DELETE CASCADE,
+    FOREIGN KEY (id_ville_arrivee) REFERENCES villes(id_ville) ON DELETE CASCADE,
+    FOREIGN KEY (id_avion) REFERENCES avions(id_avion) ON DELETE CASCADE
 );
+
 
 CREATE TABLE reservations (
    id_reservation SERIAL PRIMARY KEY,
@@ -80,22 +80,6 @@ CREATE TABLE reservations (
    FOREIGN KEY (id_vol) REFERENCES vols(id_vol) ON DELETE CASCADE
 );
 
-CREATE TABLE reservation_passeports (
-   id_reservation_passeport SERIAL PRIMARY KEY,
-   passeport BYTEA NOT NULL UNIQUE,
-   nom_fichier VARCHAR(255) NOT NULL,
-   date_depot TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   id_reservation INTEGER NOT NULL,
-   FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
-);
-
-CREATE TABLE villes_escale (
-   id_vol INTEGER NOT NULL,
-   id_ville INTEGER NOT NULL,
-   PRIMARY KEY (id_vol, id_ville),
-   FOREIGN KEY (id_vol) REFERENCES vols(id_vol) ON DELETE CASCADE,
-   FOREIGN KEY (id_ville) REFERENCES villes(id_ville) ON DELETE CASCADE
-);
 
 CREATE TABLE conf_vol (
    id_vol INTEGER NOT NULL,
@@ -124,7 +108,9 @@ CREATE TABLE reservation_details (
    id_categorie_age INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
    prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
-   nb INTEGER NOT NULL CHECK (nb > 0),
+   passeport BYTEA UNIQUE,
+   nom_fichier VARCHAR(255) UNIQUE,
+   date_depot TIMESTAMP,
    PRIMARY KEY (id_reservation, id_categorie_age,id_classe),
    FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
