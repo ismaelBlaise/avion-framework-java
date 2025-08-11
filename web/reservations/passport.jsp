@@ -50,7 +50,7 @@
     </div>
 
     <div class="mt-8 text-center">
-        <a href="reservation-details?id=<%= %>" 
+        <a href="reservation-details?id=<%=id %>" 
            class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
            ← Retour aux details de la reservation
         </a>
