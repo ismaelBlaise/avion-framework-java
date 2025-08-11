@@ -20,31 +20,39 @@
             margin-left: 16rem;
         }
         .nav-item-active {
-            background-color: rgba(59, 130, 246, 0.1);
-            border-left: 4px solid #3B82F6;
-            color: #3B82F6;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #93C5FD;
         }
         .submenu-active {
-            background-color: rgba(243, 244, 246, 0.5);
+            background-color: rgba(255, 255, 255, 0.05);
         }
-        .bg-aviation-gradient {
+        .sidebar-gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
         }
+        .sidebar-icon {
+            color: #EFF6FF;
+        }
+        .sidebar-text {
+            color: #EFF6FF;
+        }
         .sidebar-hover:hover {
-            background-color: rgba(59, 130, 246, 0.05);
+            background-color: rgba(255, 255, 255, 0.1);
         }
         .submenu-item {
-            color: #4B5563;
+            color: #BFDBFE;
         }
         .submenu-item:hover {
-            background-color: rgba(59, 130, 246, 0.08);
-            color: #1E40AF;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        .logo-collapsed {
+            justify-content: center;
         }
     </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
     <!-- Header -->
-    <header class="bg-white shadow-sm fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
+    <header class="bg-white shadow-sm sidebar-gradient fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
         <div class="flex items-center space-x-4">
             <!-- Menu Toggle -->
             <button id="menu-button" class="text-gray-600 hover:text-blue-600 transition-colors">
@@ -53,31 +61,29 @@
             
             <!-- Logo -->
             <div class="flex items-center">
-                <i data-lucide="plane" class="w-8 h-8 text-blue-600"></i>
-                <span class="ml-2 text-xl font-bold text-gray-800 hidden md:block">AeroPlan</span>
-                <span class="ml-2 text-sm font-medium text-blue-600 hidden lg:block">Front Office</span>
+                <i data-lucide="plane" class="w-8 h-8 text-white-600"></i>
+                <span class="ml-2 text-xl font-bold text-white-800 hidden md:block">AeroPlan</span>
             </div>
         </div>
         
         <!-- User Profile -->
         <div class="flex items-center space-x-4">
             <div class="relative">
-                <button id="profile-button" class="flex items-center space-x-2 focus:outline-none group">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <button id="profile-button" class="flex items-center space-x-2 focus:outline-none">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                         <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
                     </div>
-                    <span class="hidden md:inline text-gray-700 font-medium">B. Ismael</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden md:block transition-transform group-hover:text-blue-600"></i>
+                    <span class="hidden md:inline text-gray-700 font-medium">Front Office</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden md:block"></i>
                 </button>
                 
                 <!-- Dropdown Menu -->
-                <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-30 border border-gray-200 divide-y divide-gray-100">
-                    <div class="px-4 py-2 text-xs text-gray-500">Connecté en tant que</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center transition-colors">
-                        <i data-lucide="user" class="w-4 h-4 mr-2 text-blue-500"></i> Mon compte
+                <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-30 border border-gray-100">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i> Profil
                     </a>
-                    <a href="deconnexion" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center transition-colors">
-                        <i data-lucide="log-out" class="w-4 h-4 mr-2 text-blue-500"></i> Déconnexion
+                    <a href="deconnexion" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                        <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Deconnexion
                     </a>
                 </div>
             </div>
@@ -85,62 +91,55 @@
     </header>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="bg-white shadow-sm fixed top-16 left-0 bottom-0 sidebar-expanded transition-all duration-300 z-10 overflow-y-auto">
+    <aside id="sidebar" class="sidebar-gradient shadow-sm fixed top-16 left-0 bottom-0 sidebar-expanded transition-all duration-300 z-10 overflow-y-auto">
         <nav class="px-2 py-6">
             <ul class="space-y-1">
                 <li>
-                    <button class="submenu-toggle flex items-center justify-between w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors sidebar-hover">
+                    <button class="submenu-toggle flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors sidebar-hover sidebar-text">
                         <div class="flex items-center">
-                            <i data-lucide="plane" class="w-5 h-5 mr-3 text-blue-500"></i>
+                            <i data-lucide="plane" class="w-5 h-5 mr-3 sidebar-icon"></i>
                             <span class="font-medium">Gestion des Vols</span>
                         </div>
-                        <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform text-gray-400"></i>
+                        <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform sidebar-icon"></i>
                     </button>
                     <ul id="vols-submenu" class="pl-8 mt-1 space-y-1 hidden">
+                        
+                        
+                       
+                       
                         <li>
-                            <a href="vols-disponible" class="block px-3 py-2 rounded-lg flex items-center submenu-item transition-colors">
-                                <i data-lucide="calendar" class="w-4 h-4 mr-3 text-blue-400"></i>
+                            <a href="vols-disponible" class="block px-3 py-2 rounded-lg flex items-center submenu-item">
+                                <i data-lucide="calendar" class="w-4 h-4 mr-3"></i>
                                 <span>Vols disponibles</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="reservations" class="block px-3 py-2 rounded-lg flex items-center submenu-item transition-colors">
-                                <i data-lucide="ticket" class="w-4 h-4 mr-3 text-blue-400"></i>
+                         <li>
+                            <a href="reservations" class="block px-3 py-2 rounded-lg flex items-center submenu-item">
+                                <i data-lucide="square" class="w-4 h-4 mr-3"></i>
                                 <span>Mes réservations</span>
                             </a>
                         </li>
                         <li>
-                            <a href="vols-recherche-front-form" class="block px-3 py-2 rounded-lg flex items-center submenu-item transition-colors">
-                                <i data-lucide="search" class="w-4 h-4 mr-3 text-blue-400"></i>
-                                <span>Recherche de vols</span>
+                            <a href="vols-recherche-front-form" class="block px-3 py-2 rounded-lg flex items-center submenu-item">
+                                <i data-lucide="search" class="w-4 h-4 mr-3"></i>
+                                <span>Recherche</span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 
-                <!-- Additional Menu Items -->
-                <li class="sidebar-collapsed:hidden">
-                    <a href="promotions" class="flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors sidebar-hover">
-                        <i data-lucide="tag" class="w-5 h-5 mr-3 text-blue-500"></i>
-                        <span class="font-medium">Promotions</span>
-                    </a>
-                </li>
+                <!-- Collapsed State Example -->
+               
                 
                 <!-- Collapsed State Icon Only -->
-                <li class="hidden sidebar-collapsed:block">
-                    <a href="promotions" class="flex items-center justify-center px-3 py-2 rounded-lg transition-colors sidebar-hover" title="Promotions">
-                        <i data-lucide="tag" class="w-5 h-5 text-blue-500"></i>
-                    </a>
-                </li>
+                
             </ul>
         </nav>
     </aside>
 
     <!-- Main Content -->
     <main id="main-content" class="main-content-expanded pt-16 px-6 transition-all duration-300">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <jsp:include page="<%= (request.getAttribute(\"page\") != null) ? request.getAttribute(\"page\").toString() : \"accueil.jsp\" %>" />
-        </div>
+        <jsp:include page="<%= (request.getAttribute(\"page\") != null) ? request.getAttribute(\"page\").toString() : \"accueil.jsp\" %>" />
     </main>
 
     <script>
@@ -200,7 +199,7 @@
                     item.addEventListener('mouseenter', function(e) {
                         const title = this.getAttribute('title');
                         const tooltip = document.createElement('div');
-                        tooltip.className = 'absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded whitespace-nowrap z-50 shadow-lg';
+                        tooltip.className = 'absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded whitespace-nowrap z-50';
                         tooltip.textContent = title;
                         this.appendChild(tooltip);
                         

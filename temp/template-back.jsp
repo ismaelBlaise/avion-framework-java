@@ -52,7 +52,7 @@
 </head>
 <body class="bg-gray-50 font-sans antialiased">
     <!-- Header -->
-    <header class="bg-white shadow-sm fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
+    <header class="bg-white shadow-sm sidebar-gradient fixed top-0 left-0 right-0 flex items-center justify-between px-6 py-3 z-20 h-16">
         <div class="flex items-center space-x-4">
             <!-- Menu Toggle -->
             <button id="menu-button" class="text-gray-600 hover:text-blue-600 transition-colors">
@@ -61,8 +61,8 @@
             
             <!-- Logo -->
             <div class="flex items-center">
-                <i data-lucide="plane" class="w-8 h-8 text-blue-600"></i>
-                <span class="ml-2 text-xl font-bold text-gray-800 hidden md:block">AeroPlan</span>
+                <i data-lucide="plane" class="w-8 h-8 text-white-600"></i>
+                <span class="ml-2 text-xl font-bold text-white-800 hidden md:block">AeroPlan</span>
             </div>
         </div>
         
@@ -73,7 +73,7 @@
                     <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                         <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
                     </div>
-                    <span class="hidden md:inline text-gray-700 font-medium">B. Ismael</span>
+                    <span class="hidden md:inline text-gray-700 font-medium">Back Office</span>
                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden md:block"></i>
                 </button>
                 
