@@ -28,9 +28,12 @@
     <%
         } else if ("pdf".equals(extension)) {
     %>
-        <embed src="<%= fileUrl %>" 
-               type="application/pdf" 
-               style="width: 100%; height: 600px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+        <iframe src="<%=fileUrl%>" 
+            width="100%" 
+            height="600px" 
+            style="border:none;">
+        </iframe>
+
     <%
         } else if ("jpg".equals(extension) || "jpeg".equals(extension) || "png".equals(extension) || "gif".equals(extension)) {
     %>
