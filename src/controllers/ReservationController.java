@@ -170,8 +170,11 @@ public class ReservationController {
         modelAndView.setAttribute("page","reservations/details.jsp");
         ReservationService reservationService=new ReservationService();
         try {
+            Reservation reservation=reservationService.findById(Integer.parseInt(id));
+            StatutService statutService=new StatutService();
             List<ReservationDetail> reservationDetails=reservationService.findAllDetails(Integer.parseInt(id));
-            modelAndView.setAttribute("reservation",reservationService.findById(Integer.parseInt(id)));
+            modelAndView.setAttribute("reservation",reservation);
+            modelAndView.setAttribute("statut", statutService.getStatutById(Long.valueOf(reservation.getIdStatut()+"")).getStatut());
             modelAndView.setAttribute("details",reservationDetails);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());

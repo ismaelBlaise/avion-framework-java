@@ -8,6 +8,7 @@
 <div class="py-6 max-w-4xl mx-auto">
     <%
         Reservation reservation = (Reservation) request.getAttribute("reservation");
+        
         if (reservation == null) {
             response.sendRedirect("reservations");
             return;
@@ -16,12 +17,20 @@
     <div class="overflow-x-auto"></div>
     <!-- Titre avec l'ID de reservation -->
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Details de la reservation #<%= reservation.getIdReservation() %></h2>
+    <h2 class="text-2xl font-bold">Details de la reservation #<%= reservation.getIdReservation() %></h2>
+        
+        <%
+            String statut= (String) request.getAttribute("statut");
+            boolean isAnnulee = "Annulee".equalsIgnoreCase(statut);
+        %>
+        
         <a href="detail-form?id=<%= reservation.getIdReservation() %>" 
-           class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition-colors">
+        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition-colors <%= isAnnulee ? "opacity-50 cursor-not-allowed pointer-events-none" : "" %>"
+        <%= isAnnulee ? "tabindex=\"-1\" aria-disabled=\"true\"" : "" %>>
             Ajouter un detail
         </a>
     </div>
+
 
     <!-- Tableau des details -->
     <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
