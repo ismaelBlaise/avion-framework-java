@@ -318,5 +318,84 @@ public class ReservationService {
         }
     }
 
-    
+    public void annulerReservation(int idReservation) throws Exception {
+        Connection connection = null;
+        PreparedStatement psUpdate = null;
+        PreparedStatement psStatut = null;
+        PreparedStatement psVol = null;
+        ResultSet rsStatut = null;
+        ResultSet rsVol = null;
+
+        try {
+            connection = DbConnect.getConnection();
+
+            // 1. Récupérer l'id_statut pour "Annulee"
+            String sqlStatut = "SELECT id_statut FROM statuts WHERE statut = ?";
+            psStatut = connection.prepareStatement(sqlStatut);
+            psStatut.setString(1, "Annulee");
+            rsStatut = psStatut.executeQuery();
+
+            if (!rsStatut.next()) {
+                throw new Exception("Le statut 'Annulee' n'existe pas dans la base.");
+            }
+            int idStatutAnnulee = rsStatut.getInt("id_statut");
+
+            // 2. Récupérer la date fin_annulation du vol associé à la réservation
+            String sqlVol = """
+                SELECT v.fin_annulation 
+                FROM reservations r 
+                JOIN vols v ON r.id_vol = v.id_vol
+                WHERE r.id_reservation = ?
+            """;
+            psVol = connection.prepareStatement(sqlVol);
+            psVol.setInt(1, idReservation);
+            rsVol = psVol.executeQuery();
+
+            if (!rsVol.next()) {
+                throw new Exception("Réservation ou vol non trouvé pour l'id: " + idReservation);
+            }
+
+            Timestamp tsFinAnnulation = rsVol.getTimestamp("fin_annulation");
+
+            if (tsFinAnnulation != null) {
+                LocalDateTime finAnnulation = tsFinAnnulation.toLocalDateTime();
+                LocalDateTime maintenant = LocalDateTime.now();
+
+                if (maintenant.isAfter(finAnnulation)) {
+                    throw new Exception("La date limite d'annulation est dépassée.");
+                }
+            } else {
+                // Si fin_annulation est null, on peut décider si on autorise ou pas
+                // Ici on considère que c'est autorisé
+            }
+
+            // 3. Mettre à jour le statut de la réservation
+            String sqlUpdate = "UPDATE reservations SET id_statut = ? WHERE id_reservation = ?";
+            psUpdate = connection.prepareStatement(sqlUpdate);
+            psUpdate.setInt(1, idStatutAnnulee);
+            psUpdate.setInt(2, idReservation);
+
+            int affectedRows = psUpdate.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new Exception("Aucune réservation trouvée avec l'id " + idReservation);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (rsVol != null) rsVol.close();
+                if (psVol != null) psVol.close();
+                if (rsStatut != null) rsStatut.close();
+                if (psStatut != null) psStatut.close();
+                if (psUpdate != null) psUpdate.close();
+                if (connection != null) connection.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }
