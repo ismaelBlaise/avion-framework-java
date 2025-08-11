@@ -4,8 +4,16 @@ public class Promotion {
 
     private Long idVol;
     private Long idClasse;
+    private String nomClasse;
     private Double pourcentage;
     private Integer nbSiege;
+
+    public Promotion(Long idClasse, String nomClasse, Double pourcentage, Integer nbSiege) {
+        this.idClasse = idClasse;
+        this.nomClasse = nomClasse;
+        this.pourcentage = pourcentage;
+        this.nbSiege = nbSiege;
+    }
 
     // Constructeur
     public Promotion(Long idVol, Long idClasse, Double pourcentage, Integer nbSiege) {
@@ -46,5 +54,13 @@ public class Promotion {
 
     public void setNbSiege(Integer nbSiege) {
         this.nbSiege = nbSiege;
+    }
+
+    public String getNomClasse() {
+        return nomClasse;
+    }
+
+    public void setNomClasse(String nomClasse) {
+        this.nomClasse = nomClasse;
     }
 }

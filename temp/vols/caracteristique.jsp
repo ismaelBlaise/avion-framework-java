@@ -6,11 +6,19 @@
     <form action="vols-caracteristique-ajouter" method="POST" class="space-y-6">
         <% 
             String erreur = (String) request.getAttribute("erreur"); 
+            String succes = (String) request.getAttribute("succes"); 
+
             Vol vol=(Vol) request.getAttribute("vol");
         %>
         <% if (erreur != null) { %>
             <div class="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded-lg text-sm">
                 <%= erreur %>
+            </div>
+        <% } %>
+
+        <% if (succes != null) { %>
+            <div class="mb-4 p-3 text-green-700 bg-green-100 border border-green-400 rounded-lg text-sm">
+                <%= succes%>
             </div>
         <% } %>
 

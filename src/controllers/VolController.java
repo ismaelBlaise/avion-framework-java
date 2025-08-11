@@ -14,6 +14,7 @@ import dto.PromotionDto;
 import dto.RechercheDto;
 import dto.VolDto;
 import models.ConfVol;
+import models.Promotion;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -98,6 +99,10 @@ public class VolController {
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("vol", vol);
+            PromotionService promotionService = new PromotionService();
+            List<Promotion> promotions = promotionService.recupererPromotionsParVol(Long.parseLong(id));
+            modelAndView.setAttribute("promotions", promotions);
+
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
             e.printStackTrace();
@@ -161,19 +166,32 @@ public class VolController {
         Vol vol=null;
         try {
             ClasseService classeService=new ClasseService();
+            PromotionService promotionService = new PromotionService();
+            List<Promotion> promotions = promotionService.recupererPromotionsParVol(Long.parseLong(promotionDto.getIdVol()));
+            modelAndView.setAttribute("promotions", promotions);
+            modelAndView.setAttribute("vol", vol);
+
             modelAndView.setAttribute("classes", classeService.getAllClasses());
-            // Vol vol = volService.getVolById(Long.parseLong(id));
-            PromotionService promotionService=new PromotionService();
+            vol = volService.getVolById(Long.parseLong(promotionDto.getIdVol()));
+            
             vol = volService.getVolById(Long.parseLong(promotionDto.getIdVol()));
             
             promotionService.ajouterPromotion(promotionDto);
             
-            modelAndView.setUrl("redirect:vols");
-            // modelAndView.setAttribute("vol", vol);
+            // modelAndView.setUrl("redirect:vols");
+            modelAndView.setAttribute("succes", "Promotion ajoutée avec succès");
+            modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
 
+            // modelAndView.setAttribute("vol", vol);
+           String message = e.getMessage();
+            if (message != null && message.contains("promotions_pkey ")) {
+                message = "Promotion existe déjà";
+            }
             modelAndView.setAttribute("vol", vol);
-            modelAndView.setAttribute("erreur", e.getMessage());
+            modelAndView.setAttribute("erreur", message);
+
+            e.printStackTrace();
             e.printStackTrace();
         }
         return modelAndView;
@@ -390,11 +408,13 @@ public class VolController {
         modelAndView.setAttribute("page", "vols/caracteristique.jsp");
         Vol vol=null;
         ConfVolService confVolService=new ConfVolService();
+        VolService volService=new VolService();
         try {
             ClasseService  classeService=new ClasseService();
             CategorieAgeService categorieAgeService=new CategorieAgeService();
             
-           
+            vol = volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
+            modelAndView.setAttribute("vol", vol);
             List<ConfVol> confVols = confVolService.recupererConfVolParNumeroVol(confVolDto.getIdVol());
             modelAndView.setAttribute("conf-vols", confVols);
             modelAndView.setAttribute("classes", classeService.getAllClasses());
@@ -404,15 +424,16 @@ public class VolController {
             vol = volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             
 
-            modelAndView.setUrl("redirect:vols");
+            // modelAndView.setUrl("redirect:vols");
+            modelAndView.setAttribute("succes", "Configuration ajoutée avec succès");
         } catch (Exception e) {
             String message = e.getMessage();
             if (message != null && message.contains("conf_vol_pkey")) {
-                message = "existe déjà";
+                message = "Configuration existe déjà";
             }
             modelAndView.setAttribute("vol", vol);
             modelAndView.setAttribute("erreur", message);
-            
+
             e.printStackTrace();
         }
         return modelAndView;
