@@ -11,7 +11,9 @@ public class Vol {
     private String finAnnulation;
     private Long idStatut;
     private Long idVilleDepart;
+    private String villeDepart;
     private Long idVilleArrive;
+    private String villeArrive;
     private Long idAvion;
     private String modeleAvion;
     
@@ -97,6 +99,18 @@ public class Vol {
     }
     public void setModeleAvion(String modeleAvion) {
         this.modeleAvion = modeleAvion;
+    }
+    public String getVilleDepart() {
+        return villeDepart;
+    }
+    public void setVilleDepart(String villeDepart) {
+        this.villeDepart = villeDepart;
+    }
+    public String getVilleArrive() {
+        return villeArrive;
+    }
+    public void setVilleArrive(String villeArrive) {
+        this.villeArrive = villeArrive;
     }
    
 }

@@ -316,6 +316,9 @@ public class VolService {
                     resultSet.getLong("id_ville_arrivee"),
                     resultSet.getLong("id_avion")
                 );
+                VilleService villeService = new VilleService();
+                vol.setVilleDepart(villeService.getById(vol.getIdVilleDepart()).getVille());
+                vol.setVilleArrive(villeService.getById(vol.getIdVilleArrive()).getVille());
                 vol.setModeleAvion(resultSet.getString("modele_avion"));
 
                 vols.add(vol);

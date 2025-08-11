@@ -21,6 +21,8 @@
                     <th class="px-4 py-3 border-b">Heure d'Arrivee</th>
                     <th class="px-4 py-3 border-b">Heure limite reservation</th>
                     <th class="px-4 py-3 border-b">Heure limite annulation</th>
+                    <th class="px-4 py-3 border-b">Ville Depart</th>
+                    <th class="px-4 py-3 border-b">Ville Arrivee</th>
                     <!-- <th class="px-4 py-3 border-b">Statut</th> -->
                     <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
@@ -42,6 +44,8 @@
                         <td class="px-4 py-3 border-b"><%= vol.getHeureArrive() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureReservation()==null? "Non configurer":vol.getHeureReservation() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer":vol.getHeureAnnulation() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getVilleDepart() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getVilleArrive() %></td>
                         <!-- <td class="px-4 py-3 border-b"><%= statutService.findStatutVols(vol).getStatut() %></td> -->
                         <td class="px-4 py-3 border-b flex space-x-2">
                             <a href="vols-reserver-form?id=<%= vol.getIdVol() %>"><button class="text-blue-500 hover:text-blue-700">Resrever</button></a>

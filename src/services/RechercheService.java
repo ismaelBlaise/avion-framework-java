@@ -120,7 +120,9 @@ public class RechercheService {
                 vol.setIdVilleArrive(resultSet.getLong("id_ville_arrivee"));
                 vol.setIdAvion(resultSet.getLong("id_avion"));
                 vol.setModeleAvion(resultSet.getString("modele"));
-
+                VilleService villeService = new VilleService();
+                vol.setVilleDepart(villeService.getById(vol.getIdVilleDepart()).getVille());
+                vol.setVilleArrive(villeService.getById(vol.getIdVilleArrive()).getVille());
                 vols.add(vol);
             }
 

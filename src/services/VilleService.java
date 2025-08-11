@@ -39,4 +39,36 @@ public class VilleService {
             }
         }
     }
+
+
+    public Ville getById(long idVille) throws Exception {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        Ville ville = null;
+        try {
+            connection = DbConnect.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM villes WHERE id_ville = ?");
+            preparedStatement.setLong(1, idVille);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                ville = new Ville();
+                ville.setIdVille(resultSet.getLong("id_ville"));
+                ville.setVille(resultSet.getString("nom_ville"));
+            }
+            return ville;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

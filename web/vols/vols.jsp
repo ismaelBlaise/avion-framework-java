@@ -25,6 +25,9 @@
                     <th class="px-4 py-3 border-b">Date d'Arrivee</th>
                     <th class="px-4 py-3 border-b">Date limite reservation</th>
                     <th class="px-4 py-3 border-b">Date limite annulation</th>
+                    
+                    <th class="px-4 py-3 border-b">Ville Depart</th>
+                    <th class="px-4 py-3 border-b">Ville Arrivee</th>
                     <th class="px-4 py-3 border-b">Statut</th>
                     <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
@@ -46,6 +49,8 @@
                         <td class="px-4 py-3 border-b"><%= vol.getArrivee() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getFinReservation()==null? "Non configurer":vol.getFinReservation() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getFinAnnulation()==null? "Non configurer":vol.getFinAnnulation() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getVilleDepart() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getVilleArrive() %></td>
                         <td class="px-4 py-3 border-b">
                             <%
                                 String statutVol = statutService.findStatutVols(vol).getStatut();
