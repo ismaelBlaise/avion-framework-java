@@ -3,6 +3,12 @@ package services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +17,9 @@ import models.Vol;
 import utils.DbConnect;
 
 public class RechercheService {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     public List<Vol> rechercher(RechercheDto rechercheDto) throws Exception {
         List<Vol> vols = new ArrayList<>();
         Connection connection = null;
@@ -26,54 +35,65 @@ public class RechercheService {
                 "WHERE 1=1"
             );
 
-            // Liste pour stocker les paramètres dans l'ordre
             List<Object> params = new ArrayList<>();
 
-            // Filtrage numéro vol avec LIKE
+            // Filtrage numéro vol
             if (rechercheDto.getNumero() != null && !rechercheDto.getNumero().isEmpty()) {
                 query.append(" AND v.numero LIKE ?");
                 params.add("%" + rechercheDto.getNumero() + "%");
             }
 
-            // Gestion des dates et heures de départ
-            if (rechercheDto.getDateDebut() != null && !rechercheDto.getDateDebut().isEmpty()) {
-                String dateTimeDebut = rechercheDto.getDateDebut();
-                if (rechercheDto.getHeureDebut() != null && !rechercheDto.getHeureDebut().isEmpty()) {
-                    dateTimeDebut += " " + rechercheDto.getHeureDebut();
-                } else {
-                    dateTimeDebut += " 00:00:00";
+            // Gestion des dates de départ
+            try {
+                if (rechercheDto.getDateDebut() != null && !rechercheDto.getDateDebut().isEmpty()) {
+                    LocalDate dateDebut = LocalDate.parse(rechercheDto.getDateDebut(), DATE_FORMATTER);
+                    LocalTime heureDebut = rechercheDto.getHeureDebut() != null && !rechercheDto.getHeureDebut().isEmpty()
+                            ? LocalTime.parse(rechercheDto.getHeureDebut(), TIME_FORMATTER)
+                            : LocalTime.MIN;
+                    LocalDateTime dateTimeDebut = LocalDateTime.of(dateDebut, heureDebut);
+                    query.append(" AND v.depart >= ?");
+                    params.add(Timestamp.valueOf(dateTimeDebut));
                 }
-                query.append(" AND v.depart >= ?");
-                params.add(java.sql.Timestamp.valueOf(dateTimeDebut));
+
+                if (rechercheDto.getDateFin() != null && !rechercheDto.getDateFin().isEmpty()) {
+                    LocalDate dateFin = LocalDate.parse(rechercheDto.getDateFin(), DATE_FORMATTER);
+                    LocalTime heureFin = rechercheDto.getHeureFin() != null && !rechercheDto.getHeureFin().isEmpty()
+                            ? LocalTime.parse(rechercheDto.getHeureFin(), TIME_FORMATTER)
+                            : LocalTime.MAX;
+                    LocalDateTime dateTimeFin = LocalDateTime.of(dateFin, heureFin);
+                    query.append(" AND v.depart <= ?");
+                    params.add(Timestamp.valueOf(dateTimeFin));
+                }
+            } catch (DateTimeParseException e) {
+                throw new Exception("Format de date ou heure invalide. Utilisez le format yyyy-MM-dd pour les dates et HH:mm:ss pour les heures.");
             }
 
-            if (rechercheDto.getDateFin() != null && !rechercheDto.getDateFin().isEmpty()) {
-                String dateTimeFin = rechercheDto.getDateFin();
-                if (rechercheDto.getHeureFin() != null && !rechercheDto.getHeureFin().isEmpty()) {
-                    dateTimeFin += " " + rechercheDto.getHeureFin();
-                } else {
-                    dateTimeFin += " 23:59:59";
+            // Filtres sur les villes (convertir en entier)
+            try {
+                if (rechercheDto.getVilleDepart() != null && !rechercheDto.getVilleDepart().isEmpty()) {
+                    query.append(" AND v.id_ville_depart = ?");
+                    params.add(Integer.parseInt(rechercheDto.getVilleDepart()));
                 }
-                query.append(" AND v.depart <= ?");
-                params.add(java.sql.Timestamp.valueOf(dateTimeFin));
+                if (rechercheDto.getVilleArrive() != null && !rechercheDto.getVilleArrive().isEmpty()) {
+                    query.append(" AND v.id_ville_arrivee = ?");
+                    params.add(Integer.parseInt(rechercheDto.getVilleArrive()));
+                }
+            } catch (NumberFormatException e) {
+                throw new Exception("L'ID de la ville doit être un nombre entier");
             }
 
             // Autres filtres
-            if (rechercheDto.getVilleDepart() != null && !rechercheDto.getVilleDepart().isEmpty()) {
-                query.append(" AND v.id_ville_depart = ?");
-                params.add(Integer.parseInt(rechercheDto.getVilleDepart()));
-            }
-            if (rechercheDto.getVilleArrive() != null && !rechercheDto.getVilleArrive().isEmpty()) {
-                query.append(" AND v.id_ville_arrivee = ?");
-                params.add(Integer.parseInt(rechercheDto.getVilleArrive()));
-            }
-            if (rechercheDto.getIdStatut() != null && !rechercheDto.getIdStatut().isEmpty()) {
-                query.append(" AND v.id_statut = ?");
-                params.add(Integer.parseInt(rechercheDto.getIdStatut()));
-            }
-            if (rechercheDto.getIdAvion() != null && !rechercheDto.getIdAvion().isEmpty()) {
-                query.append(" AND v.id_avion = ?");
-                params.add(Integer.parseInt(rechercheDto.getIdAvion()));
+            try {
+                if (rechercheDto.getIdStatut() != null && !rechercheDto.getIdStatut().isEmpty()) {
+                    query.append(" AND v.id_statut = ?");
+                    params.add(Integer.parseInt(rechercheDto.getIdStatut()));
+                }
+                if (rechercheDto.getIdAvion() != null && !rechercheDto.getIdAvion().isEmpty()) {
+                    query.append(" AND v.id_avion = ?");
+                    params.add(Integer.parseInt(rechercheDto.getIdAvion()));
+                }
+            } catch (NumberFormatException e) {
+                throw new Exception("L'ID du statut ou de l'avion doit être un nombre entier");
             }
 
             preparedStatement = connection.prepareStatement(query.toString());
@@ -91,8 +111,10 @@ public class RechercheService {
                 vol.setNumero(resultSet.getString("numero"));
                 vol.setDepart(resultSet.getTimestamp("depart").toString());
                 vol.setArrivee(resultSet.getTimestamp("arrivee").toString());
-                vol.setFinReservation(resultSet.getTimestamp("fin_reservation") != null ? resultSet.getTimestamp("fin_reservation").toString() : null);
-                vol.setFinAnnulation(resultSet.getTimestamp("fin_annulation") != null ? resultSet.getTimestamp("fin_annulation").toString() : null);
+                vol.setFinReservation(resultSet.getTimestamp("fin_reservation") != null 
+                    ? resultSet.getTimestamp("fin_reservation").toString() : null);
+                vol.setFinAnnulation(resultSet.getTimestamp("fin_annulation") != null 
+                    ? resultSet.getTimestamp("fin_annulation").toString() : null);
                 vol.setIdStatut(resultSet.getLong("id_statut"));
                 vol.setIdVilleDepart(resultSet.getLong("id_ville_depart"));
                 vol.setIdVilleArrive(resultSet.getLong("id_ville_arrivee"));
