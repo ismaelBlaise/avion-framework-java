@@ -118,20 +118,9 @@
                     </ul>
                 </li>
                 
-                <!-- Additional Menu Items -->
-                <li class="sidebar-collapsed:hidden">
-                    <a href="promotions" class="flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors sidebar-hover">
-                        <i data-lucide="tag" class="w-5 h-5 mr-3 text-blue-500"></i>
-                        <span class="font-medium">Promotions</span>
-                    </a>
-                </li>
                 
-                <!-- Collapsed State Icon Only -->
-                <li class="hidden sidebar-collapsed:block">
-                    <a href="promotions" class="flex items-center justify-center px-3 py-2 rounded-lg transition-colors sidebar-hover" title="Promotions">
-                        <i data-lucide="tag" class="w-5 h-5 text-blue-500"></i>
-                    </a>
-                </li>
+                
+               
             </ul>
         </nav>
     </aside>
