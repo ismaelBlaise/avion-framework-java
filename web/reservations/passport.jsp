@@ -2,12 +2,18 @@
 <%@ page import="java.nio.file.Paths" %>
 
 <%
-    String filePath = (String) request.getAttribute("filePath");
-    String fileName = filePath != null ? filePath.substring(filePath.lastIndexOf("\\") + 1) : null;
+    // filePath contient juste le nom du fichier, par ex: "monfichier.pdf"
+    String fileName = (String) request.getAttribute("filePath");
     String extension = null;
 
     if (fileName != null && fileName.contains(".")) {
         extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+    }
+
+    // Construction du chemin relatif web (URL)
+    String fileUrl = null;
+    if (fileName != null) {
+        fileUrl = request.getContextPath() + "/assets/" + fileName;
     }
 %>
 
@@ -16,19 +22,19 @@
 
     <div class="flex justify-center items-center border border-gray-200 rounded-md bg-gray-50 p-4 min-h-[650px]">
     <%
-        if (filePath == null) {
+        if (fileUrl == null) {
     %>
         <p class="text-red-600 text-lg font-semibold">Aucun fichier disponible.</p>
     <%
         } else if ("pdf".equals(extension)) {
     %>
-        <embed src="<%= filePath.replace("\\", "/") %>" 
+        <embed src="<%= fileUrl %>" 
                type="application/pdf" 
                style="width: 100%; height: 600px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
     <%
         } else if ("jpg".equals(extension) || "jpeg".equals(extension) || "png".equals(extension) || "gif".equals(extension)) {
     %>
-        <img src="<%= filePath.replace("\\", "/") %>" 
+        <img src="<%= fileUrl %>" 
              alt="Passeport" 
              class="max-w-full max-h-[600px] rounded-md shadow-md object-contain" />
     <%
