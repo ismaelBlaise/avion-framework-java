@@ -231,7 +231,7 @@ public class ReservationController {
 
 
             modelAndView.setAttribute("detail", detail);
-            modelAndView.setAttribute("reservation", id);
+            modelAndView.setAttribute("reservation", detail.getIdReservation()+"");
             
             // modelAndView.setAttribute("succes", "Passeport importé avec succès");
         } catch (Exception e) {

@@ -241,7 +241,7 @@ public class VolService {
             String departStr = vol.getDepart();
             // String dateDepart = departStr.split(" ")[0]; 
 
-             
+            heureReservation =heureReservation.replace("T", " ");
             LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             LocalDateTime heureResa = LocalDateTime.parse(heureReservation, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -283,6 +283,7 @@ public class VolService {
             // Extraire la date du départ pour construire LocalDateTime complet
             String departStr = vol.getDepart(); // ex: "2025-08-11 14:30:00"
             // String dateDepart = departStr.split(" ")[0]; // "2025-08-11"
+            heureAnnulation = heureAnnulation.replace("T", " ");
 
             LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             LocalDateTime heureAnnulDt = LocalDateTime.parse(heureAnnulation, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
