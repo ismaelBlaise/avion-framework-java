@@ -222,7 +222,7 @@ public class ReservationController {
            
             ReservationDetailService reservationDetailService=new ReservationDetailService();
             ReservationDetail detail=reservationDetailService.findById(Long.parseLong(id));
-            CustomPart2 passeport = new CustomPart2();
+            CustomPart passeport = new CustomPart();
             passeport.setBytes(detail.getPasseport());
             passeport.setFileName(detail.getNomFichier());
             String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\avion-framework\\assets";
