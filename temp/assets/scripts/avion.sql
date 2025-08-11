@@ -109,7 +109,7 @@ CREATE TABLE reservation_details (
    id_categorie_age INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
    prix NUMERIC(15,4) NOT NULL CHECK (prix >= 0),
-   passeport BYTEA UNIQUE,
+   passeport BYTEA,
    nom_fichier VARCHAR(255) UNIQUE,
    date_depot TIMESTAMP,
    FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,

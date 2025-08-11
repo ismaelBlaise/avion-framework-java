@@ -28,6 +28,7 @@ import services.VolService;
 import util.CustomPart;
 import util.CustomSession;
 import util.ModelAndView;
+import utils.CustomPart2;
 
 @Controller
 public class ReservationController {
@@ -201,6 +202,39 @@ public class ReservationController {
             modelAndView.setAttribute("reservation", detail.getIdReservation());
             reservationDetailService.importerPasseport(Long.parseLong(id), passport);
             modelAndView.setAttribute("succes", "Passeport importé avec succès");
+        } catch (Exception e) {
+            
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return modelAndView; 
+    }
+
+
+    @Url(url = "voir-passport")
+    @Get
+    public ModelAndView voirPassport(@Param(name = "id") String id,CustomSession session){
+    
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page", "reservations/passport.jsp");
+        try {
+           
+            ReservationDetailService reservationDetailService=new ReservationDetailService();
+            ReservationDetail detail=reservationDetailService.findById(Long.parseLong(id));
+            CustomPart2 passeport = new CustomPart2();
+            passeport.setBytes(detail.getPasseport());
+            passeport.setFileName(detail.getNomFichier());
+            String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\avion-framework\\assets";
+            passeport.regenerateFile(filePath);
+            // modelAndView.setAttribute("passeport", passeport);
+            modelAndView.setAttribute("filePath", passeport.getFileName());
+
+
+            modelAndView.setAttribute("detail", detail);
+            modelAndView.setAttribute("reservation", id);
+            
+            // modelAndView.setAttribute("succes", "Passeport importé avec succès");
         } catch (Exception e) {
             
             modelAndView.setAttribute("erreur", e.getMessage());

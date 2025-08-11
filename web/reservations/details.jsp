@@ -69,7 +69,11 @@
                                 Importer
                             </a>
                         <% } else { %>
-                            Dejà fourni
+                             <a href="voir-passport?id=<%= detail.getIdReservationDetail() %>" 
+                            class="text-blue-600 hover:underline <%= isAnnulee ? "opacity-50 cursor-not-allowed pointer-events-none" : "" %>" 
+                            <%= isAnnulee ? "tabindex=\"-1\" aria-disabled=\"true\"" : "" %>>
+                                Voir
+                            </a>
                         <% } %>
                     </td>
                 </tr>
