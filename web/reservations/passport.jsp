@@ -9,7 +9,7 @@
     if (fileName != null && fileName.contains(".")) {
         extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     }
-    String id=(String)request.getAttribute('reservation');
+    String id=(String)request.getAttribute("reservation");
     // Construction du chemin relatif web (URL)
     String fileUrl = null;
     if (fileName != null) {
