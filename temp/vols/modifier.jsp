@@ -30,24 +30,19 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
-        <!-- Champ Date du Vol -->
-        <div>
-            <label for="dateVol" class="block text-gray-700 font-medium mb-2">Date du vol</label>
-            <input type="date" value="<%= vol.getDateVol() %>" id="dateVol" name="vol.dateVol" required
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
+        
 
         <!-- Champ Heure de Depart -->
         <div>
-            <label for="heureDepart" class="block text-gray-700 font-medium mb-2">Heure de depart</label>
-            <input type="time" value="<%= vol.getHeureDepart() %>" id="heureDepart" name="vol.heureDepart" required
+            <label for="heureDepart" class="block text-gray-700 font-medium mb-2">Depart</label>
+            <input type="datetime" value="<%= vol.getDepart() %>" id="heureDepart" name="vol.depart" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- Champ Heure d'Arrivee -->
         <div>
-            <label for="heureArrive" class="block text-gray-700 font-medium mb-2">Heure d'arrivee</label>
-            <input type="time" value="<%= vol.getHeureArrive() %>" id="heureArrive" name="vol.heureArrive" required
+            <label for="heureArrive" class="block text-gray-700 font-medium mb-2">Arrivee</label>
+            <input type="time" value="<%= vol.getArrive() %>" id="heureArrive" name="vol.arrive" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 

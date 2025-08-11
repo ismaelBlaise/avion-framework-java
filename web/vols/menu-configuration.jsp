@@ -7,12 +7,12 @@
         <div class="flex flex-col space-y-3">
             <a href="vols-heure-reservation-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-                    Heure reservation
+                    Fin reservation
                 </button>
             </a>
             <a href="vols-heure-annulation-form?id=<%=id%>">
                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-                    Heure d'annulation
+                    Fin d'annulation
                 </button>
             </a>
             <a href="vols-caracteristique-form?id=<%=id%>">

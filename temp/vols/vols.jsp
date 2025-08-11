@@ -20,11 +20,11 @@
                 <tr class="text-left bg-gray-100 text-sm font-semibold text-gray-700">
                     <!-- <th class="px-4 py-3 border-b">ID Vol</th> -->
                     <th class="px-4 py-3 border-b">Numero</th>
-                    <th class="px-4 py-3 border-b">Date de Vol</th>
-                    <th class="px-4 py-3 border-b">Heure de Depart</th>
-                    <th class="px-4 py-3 border-b">Heure d'Arrivee</th>
-                    <th class="px-4 py-3 border-b">Heure limite reservation</th>
-                    <th class="px-4 py-3 border-b">Heure limite annulation</th>
+                    <!-- <th class="px-4 py-3 border-b">Date de Vol</th> -->
+                    <th class="px-4 py-3 border-b">Date de Depart</th>
+                    <th class="px-4 py-3 border-b">Date d'Arrivee</th>
+                    <th class="px-4 py-3 border-b">Date limite reservation</th>
+                    <th class="px-4 py-3 border-b">Date limite annulation</th>
                     <th class="px-4 py-3 border-b">Statut</th>
                     <th class="px-4 py-3 border-b">Actions</th>
                 </tr>
@@ -42,11 +42,11 @@
                     <tr class="hover:bg-gray-50">
                         <!-- <td class="px-4 py-3 border-b"><%= vol.getIdVol() %></td> -->
                         <td class="px-4 py-3 border-b"><%= vol.getNumero() %></td>
-                        <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td>
-                        <td class="px-4 py-3 border-b"><%= vol.getHeureDepart() %></td>
-                        <td class="px-4 py-3 border-b"><%= vol.getHeureArrive() %></td>
-                        <td class="px-4 py-3 border-b"><%= vol.getHeureReservation()==null? "Non configurer":vol.getHeureReservation() %></td>
-                        <td class="px-4 py-3 border-b"><%= vol.getHeureAnnulation()==null? "Non configurer":vol.getHeureAnnulation() %></td>
+                        <!-- <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td> -->
+                        <td class="px-4 py-3 border-b"><%= vol.getDepart() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getArrivee() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getFinReservation()==null? "Non configurer":vol.getFinReservation() %></td>
+                        <td class="px-4 py-3 border-b"><%= vol.getFinAnnulation()==null? "Non configurer":vol.getFinAnnulation() %></td>
                         <td class="px-4 py-3 border-b">
                             <%
                                 String statutVol = statutService.findStatutVols(vol).getStatut();

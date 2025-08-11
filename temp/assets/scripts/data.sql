@@ -21,3 +21,21 @@ VALUES
 
 
 
+-- Exemple d'insertion de vols
+
+INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
+('AF123', '2025-09-01 08:00:00', '2025-09-01 12:00:00', '2025-08-31 23:59:59', NULL, 2, -- statut 'Disponible' pour vol
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737')),
+
+('BA456', '2025-09-02 14:30:00', '2025-09-02 18:45:00', '2025-09-02 13:30:00', NULL, 2,
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Tokyo'),
+    (SELECT id_avion FROM avions WHERE modele = 'Airbus A320')),
+
+('EK789', '2025-09-03 22:00:00', '2025-09-04 06:00:00', '2025-09-03 21:00:00', NULL, 2,
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Dubaï'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 777'));
+

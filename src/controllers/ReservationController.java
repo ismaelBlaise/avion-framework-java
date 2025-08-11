@@ -23,7 +23,6 @@ import services.ReservationService;
 import services.StatutService;
 import services.VilleService;
 import services.VolService;
-import util.CustomPart;
 import util.CustomSession;
 import util.ModelAndView;
 
