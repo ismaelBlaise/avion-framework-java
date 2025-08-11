@@ -42,7 +42,7 @@
             color: #BFDBFE;
         }
         .sidebar-gradient2 {
-            background: linear-gradient(135deg, #758fd8 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #3b82f6 0%,#bcccf8 100%);
         }
         .submenu-item:hover {
             background-color: rgba(255, 255, 255, 0.08);

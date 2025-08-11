@@ -30,7 +30,7 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
         }
         .sidebar-gradient2 {
-            background: linear-gradient(135deg, #758fd8 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #3b82f6 0%,#bcccf8 100%);
         }
         .sidebar-icon {
             color: #EFF6FF;

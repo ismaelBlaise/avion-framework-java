@@ -3,6 +3,13 @@
 
 <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="bg-white shadow rounded-lg p-6 sm:p-8">
+        <% 
+            Vol vol = (Vol) request.getAttribute("vol");
+            if (vol == null) {
+                response.sendRedirect("vols-disponible");
+                return;
+            }
+        %>
         <!-- Header with icon -->
         <div class="flex items-center mb-6">
             <i data-lucide="ticket" class="w-8 h-8 text-blue-500 mr-3"></i>

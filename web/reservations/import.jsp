@@ -91,18 +91,19 @@
 <script>
     // Initialize Lucide icons
     document.addEventListener('DOMContentLoaded', function() {
-        lucide.createIcons();
-        
-        // Enhance file input display
-        const fileInput = document.getElementById('passeportFile');
-        if (fileInput) {
-            fileInput.addEventListener('change', function(e) {
-                const fileName = e.target.files[0]?.name || 'Aucun fichier selectionne';
-                const label = this.previousElementSibling?.querySelector('span');
-                if (label) {
-                    label.textContent = fileName;
-                }
-            });
-        }
-    });
+    lucide.createIcons();
+
+    const fileInput = document.getElementById('passeportFile');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Aucun fichier sélectionné';
+            // On va chercher le span dans le label parent
+            const labelSpan = this.parentElement.querySelector('span');
+            if (labelSpan) {
+                labelSpan.textContent = fileName;
+            }
+        });
+    }
+});
+
 </script>

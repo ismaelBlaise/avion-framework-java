@@ -1,5 +1,7 @@
 <%@ page import="java.nio.file.Files" %>
 <%@ page import="java.nio.file.Paths" %>
+<%@ page import="java.util.Arrays" %>
+
 
 <%
     String fileName = (String) request.getAttribute("filePath");
