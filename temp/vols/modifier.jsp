@@ -3,6 +3,8 @@
 <%@ page import="models.Avion" %>
 <%@ page import="models.Statut" %>
 <%@ page import="java.util.List" %>
+<%@ page import ="java.time.LocalDateTime"%>
+<%@ page import ="java.time.format.DateTimeFormatter"%>
 
 <div class="max-w-4xl mx-auto py-8">
     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Modifier le vol</h2>
@@ -20,6 +22,10 @@
             List<Statut> statuts = (List<Statut>) request.getAttribute("statuts");
             List<Ville> villes = (List<Ville>) request.getAttribute("villes");
             List<Avion> avions = (List<Avion>) request.getAttribute("avions");
+
+            LocalDateTime maintenant = LocalDateTime.now();
+            DateTimeFormatter formatteur = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateHeureFormatee = maintenant.format(formatteur);
         %>
         <input type="hidden" value="<%= vol.getIdVol() %>" id="id" name="id">
 
@@ -35,14 +41,14 @@
         <!-- Champ Heure de Depart -->
         <div>
             <label for="heureDepart" class="block text-gray-700 font-medium mb-2">Depart</label>
-            <input type="datetime" value="<%= vol.getDepart() %>" id="heureDepart" name="vol.depart" required
+            <input type="text" value="<%= vol.getDepart() %>" id="heureDepart" name="vol.depart" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- Champ Heure d'Arrivee -->
         <div>
             <label for="heureArrive" class="block text-gray-700 font-medium mb-2">Arrivee</label>
-            <input type="time" value="<%= vol.getArrive() %>" id="heureArrive" name="vol.arrive" required
+            <input type="text" value="<%= vol.getArrivee() %>" id="heureArrive" name="vol.arrive" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 

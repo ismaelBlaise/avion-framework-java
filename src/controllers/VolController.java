@@ -13,6 +13,7 @@ import dto.ConfVolDto;
 import dto.PromotionDto;
 import dto.RechercheDto;
 import dto.VolDto;
+import models.ConfVol;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -370,6 +371,9 @@ public class VolController {
             Vol vol = volService.getVolById(Long.parseLong(id));
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
+            ConfVolService confVolService=new ConfVolService();
+            List<ConfVol> confVols = confVolService.recupererConfVolParNumeroVol(id);
+            modelAndView.setAttribute("conf-vols", confVols);
             modelAndView.setAttribute("vol", vol);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());
@@ -390,15 +394,25 @@ public class VolController {
             ClasseService  classeService=new ClasseService();
             CategorieAgeService categorieAgeService=new CategorieAgeService();
             
+           
+            List<ConfVol> confVols = confVolService.recupererConfVolParNumeroVol(confVolDto.getIdVol());
+            modelAndView.setAttribute("conf-vols", confVols);
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("categories-age",categorieAgeService.getAllCategoriesAge());
             vol=volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             confVolService.ajouterCaracteristique(confVolDto);
+            vol = volService.getVolById(Long.parseLong(confVolDto.getIdVol()));
             
+
             modelAndView.setUrl("redirect:vols");
         } catch (Exception e) {
+            String message = e.getMessage();
+            if (message != null && message.contains("conf_vol_pkey")) {
+                message = "existe déjà";
+            }
             modelAndView.setAttribute("vol", vol);
-            modelAndView.setAttribute("erreur", e.getMessage());
+            modelAndView.setAttribute("erreur", message);
+            
             e.printStackTrace();
         }
         return modelAndView;

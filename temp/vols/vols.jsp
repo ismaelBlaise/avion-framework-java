@@ -42,7 +42,6 @@
                     <tr class="hover:bg-gray-50">
                         <!-- <td class="px-4 py-3 border-b"><%= vol.getIdVol() %></td> -->
                         <td class="px-4 py-3 border-b"><%= vol.getNumero() %></td>
-                        <!-- <td class="px-4 py-3 border-b"><%= vol.getDateVol() %></td> -->
                         <td class="px-4 py-3 border-b"><%= vol.getDepart() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getArrivee() %></td>
                         <td class="px-4 py-3 border-b"><%= vol.getFinReservation()==null? "Non configurer":vol.getFinReservation() %></td>

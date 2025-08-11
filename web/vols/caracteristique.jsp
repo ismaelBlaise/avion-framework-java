@@ -68,4 +68,42 @@
             </button>
         </div>
     </form>
+
+
+
+    <h3 class="text-xl font-semibold text-gray-700 mt-10 mb-4">Configurations du vol</h3>
+    
+    <table class="w-full border border-gray-300 rounded-md">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="border px-4 py-2 text-left">Classe</th>
+                <th class="border px-4 py-2 text-left">Categorie d'age</th>
+                <th class="border px-4 py-2 text-right">Montant </th>
+                <th class="border px-4 py-2 text-right">Capacite</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                List<ConfVol> confVols = (List<ConfVol>) request.getAttribute("conf-vols");
+                if (confVols != null && !confVols.isEmpty()) {
+                    for (ConfVol conf : confVols) {
+                        // Pour afficher les noms des classes et catégories d'âge, il faut idéalement les avoir en attributs
+                        // Ici on affiche juste les IDs sinon tu peux faire appel à des maps ou services pour récupérer les noms
+            %>
+                <tr>
+                    <td class="border px-4 py-2"><%= conf.getNomClasse() %></td>
+                    <td class="border px-4 py-2"><%= conf.getCategorieAge() %></td>
+                    <td class="border px-4 py-2 text-right"><%= String.format("%.3f", conf.getMontant()) %></td>
+                    <td class="border px-4 py-2 text-right"><%= conf.getCapacite() %></td>
+                </tr>
+            <%  
+                    }
+                } else { 
+            %>
+                <tr>
+                    <td colspan="4" class="border px-4 py-2 text-center text-gray-500 italic">Aucune configuration trouvée</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
 </div>

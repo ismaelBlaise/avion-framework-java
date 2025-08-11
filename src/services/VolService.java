@@ -221,14 +221,14 @@ public class VolService {
             }
 
             
-            String heureRes = heureReservation.length() == 5 ? heureReservation + ":00" : heureReservation;
+            // String heureRes = heureReservation.length() == 5 ? heureReservation + ":00" : heureReservation;
 
             String departStr = vol.getDepart();
-            String dateDepart = departStr.split(" ")[0]; 
+            // String dateDepart = departStr.split(" ")[0]; 
 
              
             LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            LocalDateTime heureResa = LocalDateTime.parse(dateDepart + " " + heureRes, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime heureResa = LocalDateTime.parse(heureReservation, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             if (heureResa.isBefore(heureDepart)) {
                 preparedStatement.setTimestamp(1, Timestamp.valueOf(heureResa));
@@ -263,14 +263,14 @@ public class VolService {
             }
 
             // Format attendu pour heureAnnulation : "HH:mm" ou "HH:mm:ss"
-            String heureAnnul = heureAnnulation.length() == 5 ? heureAnnulation + ":00" : heureAnnulation;
+            // String heureAnnul = heureAnnulation.length() == 5 ? heureAnnulation + ":00" : heureAnnulation;
 
             // Extraire la date du départ pour construire LocalDateTime complet
             String departStr = vol.getDepart(); // ex: "2025-08-11 14:30:00"
-            String dateDepart = departStr.split(" ")[0]; // "2025-08-11"
+            // String dateDepart = departStr.split(" ")[0]; // "2025-08-11"
 
             LocalDateTime heureDepart = LocalDateTime.parse(departStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            LocalDateTime heureAnnulDt = LocalDateTime.parse(dateDepart + " " + heureAnnul, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime heureAnnulDt = LocalDateTime.parse(heureAnnulation, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             if (heureAnnulDt.isBefore(heureDepart)) {
                 preparedStatement.setTimestamp(1, Timestamp.valueOf(heureAnnulDt));
@@ -344,20 +344,18 @@ public class VolService {
     }
 
     public void updateVol(Vol vol) throws Exception {
-        String query = "UPDATE vols SET numero = ?, date_vol = ?, heure_depart = ?, heure_arrivee = ?, id_statut = ?, id_ville_depart = ?, id_ville_arrivee = ?, id_avion = ? WHERE id_vol = ?";
+        String query = "UPDATE vols SET numero = ?, depart = ?, arrivee = ?, id_statut = ?, id_ville_depart = ?, id_ville_arrivee = ?, id_avion = ? WHERE id_vol = ?";
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try (Connection connection = DbConnect.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, vol.getNumero());
             preparedStatement.setTimestamp(2, parseTimestamp(vol.getDepart(), formatter));
             preparedStatement.setTimestamp(3, parseTimestamp(vol.getArrivee(), formatter));
-            preparedStatement.setTimestamp(4, parseTimestamp(vol.getFinReservation(), formatter));
-            preparedStatement.setTimestamp(5, parseTimestamp(vol.getFinAnnulation(), formatter));
-            preparedStatement.setLong(5, vol.getIdStatut());
-            preparedStatement.setLong(6, vol.getIdVilleDepart());
-            preparedStatement.setLong(7, vol.getIdVilleArrive());
-            preparedStatement.setLong(8, vol.getIdAvion());
-            preparedStatement.setLong(9, vol.getIdVol());
+            preparedStatement.setLong(4, vol.getIdStatut());
+            preparedStatement.setLong(5, vol.getIdVilleDepart());
+            preparedStatement.setLong(6, vol.getIdVilleArrive());
+            preparedStatement.setLong(7, vol.getIdAvion());
+            preparedStatement.setLong(8, vol.getIdVol());
             preparedStatement.executeUpdate();
         }
     }

@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Reservation {
     private int idReservation;
     private Timestamp dateReservation;
+    private Timestamp dateAnnulation; // Ajout date et heure d'annulation
     private int idUtilisateur;
     private int idStatut;
     private int idClasse;
@@ -13,14 +14,22 @@ public class Reservation {
     private String utilisateurNom;
     private String volNom;
     private String classeNom;
-    public Reservation(int idReservation, Timestamp dateReservation, int idUtilisateur, int idStatut, int idClasse,
+    public Reservation(int idReservation, Timestamp dateReservation, Timestamp dateAnnulation, int idUtilisateur, int idStatut, int idClasse,
             int idVol) {
         this.idReservation = idReservation;
         this.dateReservation = dateReservation;
+        this.dateAnnulation = dateAnnulation;
         this.idUtilisateur = idUtilisateur;
         this.idStatut = idStatut;
         this.idClasse = idClasse;
         this.idVol = idVol;
+    }
+    public Timestamp getDateAnnulation() {
+        return dateAnnulation;
+    }
+
+    public void setDateAnnulation(Timestamp dateAnnulation) {
+        this.dateAnnulation = dateAnnulation;
     }
     public Reservation() {
        
@@ -67,6 +76,7 @@ public class Reservation {
         int result = 1;
         result = prime * result + idReservation;
         result = prime * result + ((dateReservation == null) ? 0 : dateReservation.hashCode());
+        result = prime * result + ((dateAnnulation == null) ? 0 : dateAnnulation.hashCode());
         result = prime * result + idUtilisateur;
         result = prime * result + idStatut;
         result = prime * result + idClasse;
@@ -88,6 +98,11 @@ public class Reservation {
             if (other.dateReservation != null)
                 return false;
         } else if (!dateReservation.equals(other.dateReservation))
+            return false;
+        if (dateAnnulation == null) {
+            if (other.dateAnnulation != null)
+                return false;
+        } else if (!dateAnnulation.equals(other.dateAnnulation))
             return false;
         if (idUtilisateur != other.idUtilisateur)
             return false;
