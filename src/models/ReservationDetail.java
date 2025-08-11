@@ -15,6 +15,10 @@ public class ReservationDetail {
     private String categorieAge;
     private String classe;
 
+
+
+    
+
     public ReservationDetail(int idReservation, int idCategorieAge, int idClasse, BigDecimal prix,
                               byte[] passeport, String nomFichier, LocalDateTime dateDepot,
                               String categorieAge, String classe) {

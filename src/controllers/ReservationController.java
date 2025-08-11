@@ -199,6 +199,8 @@ public class ReservationController {
             ReservationDetail detail=reservationDetailService.findById(Long.parseLong(id));
             modelAndView.setAttribute("detail", detail);
             modelAndView.setAttribute("reservation", detail.getIdReservation());
+            reservationDetailService.importerPasseport(Long.parseLong(id), passport);
+            modelAndView.setAttribute("succes", "Passeport importé avec succès");
         } catch (Exception e) {
             
             modelAndView.setAttribute("erreur", e.getMessage());

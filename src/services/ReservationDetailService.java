@@ -4,7 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import annotation.Param;
 import models.ReservationDetail;
+import util.CustomPart;
 import utils.DbConnect;
 
 public class ReservationDetailService {
@@ -45,5 +50,48 @@ public class ReservationDetailService {
                                 + idReservationDetail + ": " + e.getMessage(), e);
         }
         return detail;
+    }
+
+    public String generateUniqueFileName(String originalFileName) {
+        // Extraire l'extension (ex: ".pdf")
+        String extension = "";
+        int dotIndex = originalFileName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            extension = originalFileName.substring(dotIndex);
+        }
+        
+        // Générer un UUID
+        String uniqueName = UUID.randomUUID().toString();
+        
+        // Retourner nom unique + extension
+        return uniqueName + extension;
+    }
+
+
+    public void importerPasseport(Long idReservationDetail, @Param(name = "passport")CustomPart passeport) throws Exception {
+        if (idReservationDetail == null || passeport == null || passeport.getBytes() == null || passeport.getFileName() == null) {
+            throw new IllegalArgumentException("Paramètres invalides pour l'import du passeport");
+        }
+
+        String sql = "UPDATE reservation_details SET passeport = ?, nom_fichier = ?, date_depot = ? WHERE id_reservation_detail = ?";
+
+        try (Connection connection = DbConnect.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            String originalFileName = passeport.getFileName();
+            String uniqueFileName = generateUniqueFileName(originalFileName);
+
+            ps.setBytes(1, passeport.getBytes());       // le contenu
+            ps.setString(2, uniqueFileName);     
+            ps.setString(2, passeport.getFileName());
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(4, idReservationDetail);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new Exception("Aucun détail de réservation trouvé avec l'id " + idReservationDetail);
+            }
+        }
     }
 }
