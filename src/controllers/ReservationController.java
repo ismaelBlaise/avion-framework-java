@@ -189,7 +189,7 @@ public class ReservationController {
 
     @Url(url = "import")
     @Get
-    public ModelAndView importer(@Param(name = "id") String id,CustomPart passport, CustomSession session){
+    public ModelAndView importer(@Param(name = "id") String id,@Param(name = "passport")CustomPart passport, CustomSession session){
     
         ModelAndView modelAndView=new ModelAndView("template-front.jsp");
         modelAndView.setAttribute("page", "reservations/import.jsp");

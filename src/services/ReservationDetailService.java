@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import annotation.Param;
 import models.ReservationDetail;
 import util.CustomPart;
 import utils.DbConnect;
@@ -68,7 +66,7 @@ public class ReservationDetailService {
     }
 
 
-    public void importerPasseport(Long idReservationDetail, @Param(name = "passport")CustomPart passeport) throws Exception {
+    public void importerPasseport(Long idReservationDetail, CustomPart passeport) throws Exception {
         if (idReservationDetail == null || passeport == null || passeport.getBytes() == null || passeport.getFileName() == null) {
             throw new IllegalArgumentException("Paramètres invalides pour l'import du passeport");
         }
@@ -78,11 +76,11 @@ public class ReservationDetailService {
         try (Connection connection = DbConnect.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            String originalFileName = passeport.getFileName();
-            String uniqueFileName = generateUniqueFileName(originalFileName);
+            // String originalFileName = passeport.getFileName();
+            // String uniqueFileName = generateUniqueFileName(originalFileName);
 
             ps.setBytes(1, passeport.getBytes());       // le contenu
-            ps.setString(2, uniqueFileName);     
+            // ps.setString(2, uniqueFileName);     
             ps.setString(2, passeport.getFileName());
             ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps.setLong(4, idReservationDetail);
