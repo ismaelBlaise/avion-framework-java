@@ -44,7 +44,7 @@
         <!-- Champ Ville de depart -->
         <div>
             <label for="idVilleDepart" class="block text-gray-700 font-medium mb-2">Ville de depart</label>
-            <select id="idVilleDepart" name="recherche.idVilleDepart" 
+            <select id="idVilleDepart" name="recherche.villeDepart" 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Toutes les villes</option>
                 <% for (Ville ville : villes) { %>
@@ -56,7 +56,7 @@
         <!-- Champ Ville d'arrivee -->
         <div>
             <label for="idVilleArrive" class="block text-gray-700 font-medium mb-2">Ville d'arrivee</label>
-            <select id="idVilleArrive" name="recherche.idVilleArrive" 
+            <select id="idVilleArrive" name="recherche.villeArrive" 
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Toutes les villes</option>
                 <% for (Ville ville : villes) { %>

@@ -37,13 +37,12 @@ public class RechercheService {
 
             List<Object> params = new ArrayList<>();
 
-            // Filtrage numéro vol
+            
             if (rechercheDto.getNumero() != null && !rechercheDto.getNumero().isEmpty()) {
                 query.append(" AND v.numero LIKE ?");
                 params.add("%" + rechercheDto.getNumero() + "%");
             }
 
-            // Gestion des dates de départ
             try {
                 if (rechercheDto.getDateDebut() != null && !rechercheDto.getDateDebut().isEmpty()) {
                     LocalDate dateDebut = LocalDate.parse(rechercheDto.getDateDebut(), DATE_FORMATTER);
@@ -68,7 +67,7 @@ public class RechercheService {
                 throw new Exception("Format de date ou heure invalide. Utilisez le format yyyy-MM-dd pour les dates et HH:mm:ss pour les heures.");
             }
 
-            // Filtres sur les villes (convertir en entier)
+            // System.out.println(rechercheDto.getVilleDepart() + " " + rechercheDto.getVilleArrive());
             try {
                 if (rechercheDto.getVilleDepart() != null && !rechercheDto.getVilleDepart().isEmpty()) {
                     query.append(" AND v.id_ville_depart = ?");
@@ -95,7 +94,7 @@ public class RechercheService {
             } catch (NumberFormatException e) {
                 throw new Exception("L'ID du statut ou de l'avion doit être un nombre entier");
             }
-
+            // System.out.println("\n"+query.toString()+"\n");
             preparedStatement = connection.prepareStatement(query.toString());
 
             // Set des paramètres
