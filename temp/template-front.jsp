@@ -119,7 +119,7 @@
                          <li>
                             <a href="reservations" class="block px-3 py-2 rounded-lg flex items-center submenu-item">
                                 <i data-lucide="square" class="w-4 h-4 mr-3"></i>
-                                <span>Mes réservations</span>
+                                <span>Mes reservations</span>
                             </a>
                         </li>
                         <li>

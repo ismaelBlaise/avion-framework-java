@@ -8,10 +8,18 @@
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <!-- Header -->
+         <%
+        Reservation reservation = (Reservation) request.getAttribute("reservation");
+        
+        if (reservation == null) {
+            response.sendRedirect("reservations");
+            return;
+        }
+    %>
         <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800 flex items-center">
                 <i data-lucide="ticket" class="w-6 h-6 text-blue-500 mr-2"></i>
-                Details de la reservation # 
+                Details de la reservation #<%= reservation.getIdReservation() %>
             </h2>
             
             <%
