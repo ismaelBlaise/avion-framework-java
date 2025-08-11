@@ -26,83 +26,61 @@ public class RechercheService {
                 "WHERE 1=1"
             );
 
-            // Préparer flags pour la présence des dates et heures
-            boolean hasDateDebut = rechercheDto.getDateDebut() != null && !rechercheDto.getDateDebut().isEmpty();
-            boolean hasHeureDebut = rechercheDto.getHeureDebut() != null && !rechercheDto.getHeureDebut().isEmpty();
-            boolean hasDateFin = rechercheDto.getDateFin() != null && !rechercheDto.getDateFin().isEmpty();
-            boolean hasHeureFin = rechercheDto.getHeureFin() != null && !rechercheDto.getHeureFin().isEmpty();
+            // Liste pour stocker les paramètres dans l'ordre
+            List<Object> params = new ArrayList<>();
 
             // Filtrage numéro vol avec LIKE
             if (rechercheDto.getNumero() != null && !rechercheDto.getNumero().isEmpty()) {
                 query.append(" AND v.numero LIKE ?");
+                params.add("%" + rechercheDto.getNumero() + "%");
             }
 
-            // Filtrage intervalle complet date+heure
-            if (hasDateDebut && hasHeureDebut && hasDateFin && hasHeureFin) {
-                query.append(" AND v.depart BETWEEN ? AND ?");
-            } else {
-                if (hasDateDebut && hasHeureDebut) {
-                    query.append(" AND v.depart >= ?");
-                } else if (hasDateDebut) {
-                    query.append(" AND v.depart >= ?");
+            // Gestion des dates et heures de départ
+            if (rechercheDto.getDateDebut() != null && !rechercheDto.getDateDebut().isEmpty()) {
+                String dateTimeDebut = rechercheDto.getDateDebut();
+                if (rechercheDto.getHeureDebut() != null && !rechercheDto.getHeureDebut().isEmpty()) {
+                    dateTimeDebut += " " + rechercheDto.getHeureDebut();
+                } else {
+                    dateTimeDebut += " 00:00:00";
                 }
-                if (hasDateFin && hasHeureFin) {
-                    query.append(" AND v.depart <= ?");
-                } else if (hasDateFin) {
-                    query.append(" AND v.depart <= ?");
+                query.append(" AND v.depart >= ?");
+                params.add(java.sql.Timestamp.valueOf(dateTimeDebut));
+            }
+
+            if (rechercheDto.getDateFin() != null && !rechercheDto.getDateFin().isEmpty()) {
+                String dateTimeFin = rechercheDto.getDateFin();
+                if (rechercheDto.getHeureFin() != null && !rechercheDto.getHeureFin().isEmpty()) {
+                    dateTimeFin += " " + rechercheDto.getHeureFin();
+                } else {
+                    dateTimeFin += " 23:59:59";
                 }
+                query.append(" AND v.depart <= ?");
+                params.add(java.sql.Timestamp.valueOf(dateTimeFin));
             }
 
             // Autres filtres
             if (rechercheDto.getVilleDepart() != null && !rechercheDto.getVilleDepart().isEmpty()) {
                 query.append(" AND v.id_ville_depart = ?");
+                params.add(Integer.parseInt(rechercheDto.getVilleDepart()));
             }
             if (rechercheDto.getVilleArrive() != null && !rechercheDto.getVilleArrive().isEmpty()) {
                 query.append(" AND v.id_ville_arrivee = ?");
+                params.add(Integer.parseInt(rechercheDto.getVilleArrive()));
             }
             if (rechercheDto.getIdStatut() != null && !rechercheDto.getIdStatut().isEmpty()) {
                 query.append(" AND v.id_statut = ?");
+                params.add(Integer.parseInt(rechercheDto.getIdStatut()));
             }
             if (rechercheDto.getIdAvion() != null && !rechercheDto.getIdAvion().isEmpty()) {
                 query.append(" AND v.id_avion = ?");
+                params.add(Integer.parseInt(rechercheDto.getIdAvion()));
             }
 
             preparedStatement = connection.prepareStatement(query.toString());
 
-            int index = 1;
-
-            if (rechercheDto.getNumero() != null && !rechercheDto.getNumero().isEmpty()) {
-                preparedStatement.setString(index++, "%" + rechercheDto.getNumero() + "%"); // LIKE avec wildcard %
-            }
-
-            // Set paramètres date+heure combinés
-            if (hasDateDebut && hasHeureDebut && hasDateFin && hasHeureFin) {
-                preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateDebut() + " " + rechercheDto.getHeureDebut()));
-                preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateFin() + " " + rechercheDto.getHeureFin()));
-            } else {
-                if (hasDateDebut && hasHeureDebut) {
-                    preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateDebut() + " " + rechercheDto.getHeureDebut()));
-                } else if (hasDateDebut) {
-                    preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateDebut() + " 00:00:00"));
-                }
-                if (hasDateFin && hasHeureFin) {
-                    preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateFin() + " " + rechercheDto.getHeureFin()));
-                } else if (hasDateFin) {
-                    preparedStatement.setTimestamp(index++, java.sql.Timestamp.valueOf(rechercheDto.getDateFin() + " 23:59:59"));
-                }
-            }
-
-            if (rechercheDto.getVilleDepart() != null && !rechercheDto.getVilleDepart().isEmpty()) {
-                preparedStatement.setInt(index++, Integer.parseInt(rechercheDto.getVilleDepart()));
-            }
-            if (rechercheDto.getVilleArrive() != null && !rechercheDto.getVilleArrive().isEmpty()) {
-                preparedStatement.setInt(index++, Integer.parseInt(rechercheDto.getVilleArrive()));
-            }
-            if (rechercheDto.getIdStatut() != null && !rechercheDto.getIdStatut().isEmpty()) {
-                preparedStatement.setInt(index++, Integer.parseInt(rechercheDto.getIdStatut()));
-            }
-            if (rechercheDto.getIdAvion() != null && !rechercheDto.getIdAvion().isEmpty()) {
-                preparedStatement.setInt(index++, Integer.parseInt(rechercheDto.getIdAvion()));
+            // Set des paramètres
+            for (int i = 0; i < params.size(); i++) {
+                preparedStatement.setObject(i + 1, params.get(i));
             }
 
             resultSet = preparedStatement.executeQuery();
@@ -137,6 +115,4 @@ public class RechercheService {
         }
         return vols;
     }
-
-
 }
