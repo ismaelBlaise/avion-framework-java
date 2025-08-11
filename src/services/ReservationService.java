@@ -1,12 +1,11 @@
 package services;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import models.Reservation;
@@ -131,171 +130,178 @@ public class ReservationService {
         }
     }
 
-    public int creerReservation(String dateReservation, int idStatut,int idUtilisateur, int idVol) throws Exception {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet generatedKeys = null;
+    public int creerReservation(String dateReservation, int idStatut, int idUtilisateur, int idVol) throws Exception {
         int idReservation = -1;
-        Vol vol=null;
-        VolService volService=new VolService();
-        try {
-            boolean estComplet=volService.isVolComplet(Long.valueOf(idVol));
-            if(estComplet){
-                throw new Exception("Le vol est complet");
-            }
-            vol=volService.getVolById(Long.valueOf(idVol));
-            
-            String[] tab=dateReservation.split("T");
-            String date=tab[0]+" "+tab[1]+":00.000";
+        VolService volService = new VolService();
 
-            String[] tab2=vol.getDepart().split("T");
+        // Vérifier si le vol est complet
+        if (volService.isVolComplet((long) idVol)) {
+            throw new Exception("Le vol est complet");
+        }
 
+        Vol vol = volService.getVolById((long) idVol);
 
-            if(Date.valueOf(tab2[0]).before(Date.valueOf(tab[0]))){
-                throw new Exception("Impossible de reserver apres la date de depart");
-            }
-            if(vol.getFinReservation()==null){
-                if(Time.valueOf(tab2[1]+"00").before(Time.valueOf(tab[1]+":00"))){
-                    throw new Exception("Impossible de reserver apres l'heure de depart");
-                }
-            }
-            else if(Time.valueOf(vol.getFinReservation().split(" ")[1]).before(Time.valueOf(tab[1]+":00"))) {
-                throw new Exception("Impossible de reserver apres l'heure fin de reservation");
-            }
-            connection = DbConnect.getConnection();
-            String sql = "INSERT INTO reservations (date_reservation, id_statut,id_utilisateur, id_vol) VALUES (?, ?, ?, ?) RETURNING id_reservation";
-            preparedStatement = connection.prepareStatement(sql);
+        // Convertir la date de réservation envoyée (ex: "2025-08-11T14:30") en LocalDateTime
+        LocalDateTime dateRes = LocalDateTime.parse(dateReservation);
 
-            preparedStatement.setTimestamp(1, Timestamp.valueOf(date));
-            preparedStatement.setInt(2, idStatut);
-            preparedStatement.setInt(3,idUtilisateur);
-            // preparedStatement.setInt(4, idClasse);
-            preparedStatement.setInt(4, idVol);
+        // Convertir les dates de la base
+        LocalDateTime departVol = Timestamp.valueOf(vol.getDepart().replace("T", " ")).toLocalDateTime();
+        LocalDateTime finReservation = null;
+        if (vol.getFinReservation() != null) {
+            finReservation = Timestamp.valueOf(vol.getFinReservation().replace("T", " ")).toLocalDateTime();
+        }
 
-            generatedKeys = preparedStatement.executeQuery();
+        // Vérifications logiques
+        if (dateRes.isAfter(departVol)) {
+            throw new Exception("Impossible de réserver après la date de départ");
+        }
 
-            if (generatedKeys.next()) {
-                idReservation = generatedKeys.getInt(1);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }catch (Exception e) {
-            e.printStackTrace();
-        throw e;     
-        } finally {
-            try {
-                if (generatedKeys != null) generatedKeys.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (finReservation != null) {
+            if (dateRes.isAfter(finReservation)) {
+                throw new Exception("Impossible de réserver après la fin de réservation");
             }
         }
+
+        // Enregistrer la réservation
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "INSERT INTO reservations (date_reservation, id_statut, id_utilisateur, id_vol) " +
+                "VALUES (?, ?, ?, ?) RETURNING id_reservation"
+            )) {
+
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(dateRes));
+            preparedStatement.setInt(2, idStatut);
+            preparedStatement.setInt(3, idUtilisateur);
+            preparedStatement.setInt(4, idVol);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    idReservation = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erreur SQL lors de la création de la réservation : " + e.getMessage(), e);
+        }
+
         return idReservation;
-    }    
+    }
+    
 
 
     public List<ReservationDetail> findAllDetails(int idReservation) throws Exception {
         List<ReservationDetail> reservationDetails = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        
-        try {
-            connection = DbConnect.getConnection();
-            String sql = "SELECT rd.id_reservation, rd.id_categorie_age, rd.id_classe, " +
-                         "rd.prix, rd.nb, ca.categorie, c.classe " +
-                         "FROM reservation_details rd " +
-                         "JOIN categories_age ca ON rd.id_categorie_age = ca.id_categorie_age " +
-                         "JOIN classes c ON rd.id_classe = c.id_classe " +
-                         "WHERE rd.id_reservation = ?";
-            
-            preparedStatement = connection.prepareStatement(sql);
+
+        String sql = """
+            SELECT rd.id_reservation, rd.id_categorie_age, rd.id_classe, 
+                rd.prix, rd.passeport, rd.nom_fichier, rd.date_depot,
+                ca.categorie, c.classe
+            FROM reservation_details rd
+            JOIN categories_age ca ON rd.id_categorie_age = ca.id_categorie_age
+            JOIN classes c ON rd.id_classe = c.id_classe
+            WHERE rd.id_reservation = ?
+        """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setInt(1, idReservation);
-            
-            resultSet = preparedStatement.executeQuery();
-    
-            while (resultSet.next()) {
-                ReservationDetail detail = new ReservationDetail();
-                detail.setIdReservation(resultSet.getInt("id_reservation"));
-                detail.setIdCategorieAge(resultSet.getInt("id_categorie_age"));
-                detail.setIdClasse(resultSet.getInt("id_classe"));
-                detail.setPrix(resultSet.getDouble("prix"));
-                detail.setNb(resultSet.getInt("nb"));
-                detail.setCategorieAge(resultSet.getString("categorie"));
-                detail.setClasse(resultSet.getString("classe"));
-                
-                reservationDetails.add(detail);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    ReservationDetail detail = new ReservationDetail();
+                    detail.setIdReservation(rs.getInt("id_reservation"));
+                    detail.setIdCategorieAge(rs.getInt("id_categorie_age"));
+                    detail.setIdClasse(rs.getInt("id_classe"));
+                    detail.setPrix(rs.getBigDecimal("prix")); // NUMERIC → BigDecimal
+                    detail.setPasseport(rs.getBytes("passeport")); // BYTEA → byte[]
+                    detail.setNomFichier(rs.getString("nom_fichier"));
+                    Timestamp ts = rs.getTimestamp("date_depot");
+                    if (ts != null) {
+                        detail.setDateDepot(ts.toLocalDateTime());
+                    }
+                    detail.setCategorieAge(rs.getString("categorie"));
+                    detail.setClasse(rs.getString("classe"));
+
+                    reservationDetails.add(detail);
+                }
             }
-            return reservationDetails;
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            throw new Exception("Erreur SQL lors de la récupération des détails de réservation : " + e.getMessage(), e);
         }
+
+        return reservationDetails;
     }
 
 
-    public void ajouterDetails(int idReservation, int idClasse,int idCategorieAge, int nb,boolean promotion) throws Exception {
+
+    public void ajouterDetails(int idReservation, int idClasse, int idCategorieAge, int nb, boolean promotion) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ConfVolService confVolService=new ConfVolService();
-        VolService volService=new VolService();
-        StatutService statutService=new StatutService();
-        PromotionService promotionService=new PromotionService();
-                
+        ConfVolService confVolService = new ConfVolService();
+        VolService volService = new VolService();
+        StatutService statutService = new StatutService();
+        PromotionService promotionService = new PromotionService();
+
         try {
             connection = DbConnect.getConnection();
-            Reservation reservation=findById(idReservation);
-            double prix=confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse,reservation.getIdVol());
-            int nbSiezeDispoPromo= promotionService.getNombreSiegesAvecPromotion(Long.valueOf(reservation.getIdVol()),Long.valueOf(idClasse));
-            if(promotion &&nbSiezeDispoPromo>=nb){
-                double pourcentage=promotionService.getPromotion(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
-                double prixRemise=prix*pourcentage;
-                prix-=prixRemise;
+            connection.setAutoCommit(false);  
+
+            Reservation reservation = findById(idReservation);
+            double prix = confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse, reservation.getIdVol());
+
+            int nbSiegeDispoPromo = promotionService.getNombreSiegesAvecPromotion(
+                    Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+
+            if (promotion && nbSiegeDispoPromo >= nb) {
+                double pourcentage = promotionService.getPromotion(
+                        Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+                prix -= prix * pourcentage;  
             }
-            if(promotion && nbSiezeDispoPromo<nb){
-                throw new Exception("Les siezes en promotions insufissant");
+
+            if (promotion && nbSiegeDispoPromo < nb) {
+                throw new Exception("Les sièges en promotion sont insuffisants");
             }
-            boolean estComplet=volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
-            Vol vol=volService.getVolById(Long.valueOf(reservation.getIdVol()));
-            if(estComplet){
-                Statut statut=statutService.getByStatut("Non disponible");
+
+            boolean estComplet = volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
+            Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
+            if (estComplet) {
+                Statut statut = statutService.getByStatut("Non disponible");
                 vol.setIdStatut(statut.getIdStatut());
                 volService.updateVol(vol);
                 throw new Exception("Vol complet");
             }
-            int nbSiezeDispo=volService.nbSiezeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
-            if(nbSiezeDispo<nb){
-                throw new Exception("Nombre de place insuffisant");
+
+            int nbSiegeDispo = volService.nbSiezeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+            if (nbSiegeDispo < nb) {
+                throw new Exception("Nombre de places insuffisant");
             }
-            
-            String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age,id_classe, prix, nb) VALUES (?, ?, ?,?, ?)";
-            // String sql = "INSERT INTO reservation_details (id_reservation, id_categorie_age, prix, nb) VALUES ( ?, ?,?, ?)";
-            
+
+            String sql = "INSERT INTO reservation_details " +
+                    "(id_reservation, id_categorie_age, id_classe, prix, date_depot) " +
+                    "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
+
             preparedStatement = connection.prepareStatement(sql);
-    
-            preparedStatement.setInt(1, idReservation);
-            preparedStatement.setInt(2, idCategorieAge);
-            preparedStatement.setInt(3, idClasse);
-            preparedStatement.setDouble(4, prix);
-            preparedStatement.setInt(5, nb);
-    
-            preparedStatement.executeUpdate();
-    
+
+            // Boucle pour insérer 1 ligne par siège
+            for (int i = 0; i < nb; i++) {
+                preparedStatement.setInt(1, idReservation);
+                preparedStatement.setInt(2, idCategorieAge);
+                preparedStatement.setInt(3, idClasse);
+                preparedStatement.setBigDecimal(4, new java.math.BigDecimal(prix));
+                preparedStatement.addBatch();
+            }
+
+            preparedStatement.executeBatch(); // exécution en lot
+            connection.commit();
+
         } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
             throw e;
         } finally {
@@ -307,5 +313,6 @@ public class ReservationService {
             }
         }
     }
+
     
 }

@@ -14,6 +14,7 @@ import dto.RechercheDto;
 import dto.ReservationDto;
 import models.Reservation;
 import models.ReservationDetail;
+import models.Statut;
 import models.Vol;
 import services.AvionService;
 import services.CategorieAgeService;
@@ -97,7 +98,17 @@ public class ReservationController {
         modelAndView.setAttribute("page", "reservations/reservations.jsp");
         try {
            try {
-            modelAndView.setAttribute("statuts", statutService.getAllBySource("vols"));
+            List<Statut> statuts=statutService.getAllBySource("reservation");
+            modelAndView.setAttribute("statuts", statuts);
+            if(reservationDto.getIdStatut()==null || reservationDto.getIdStatut().isEmpty()){
+                throw new Exception("Le statut de la reservation est obligatoire");
+            }
+            for (Statut statut : statuts) {
+                if(statut.getStatut().equals("Confirme")) {
+                    reservationDto.setIdStatut(statut.getIdStatut().toString());
+                  
+                }
+            }
             modelAndView.setAttribute("classes", classeService.getAllClasses());
             modelAndView.setAttribute("vol", volService.getVolById(Long.parseLong(reservationDto.getIdVol())));
             Long idUtilisateur=(Long) session.get("id");

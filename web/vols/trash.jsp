@@ -10,3 +10,14 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </div>
+
+
+<div>
+            <label for="idStatut" class="block text-gray-700 font-medium mb-2">Statut</label>
+            <select id="idStatut" name="reservation.idStatut" required 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <% for (Statut statut : statuts) { %>
+                    <option value="<%= statut.getIdStatut() %>"><%= statut.getStatut() %></option>
+                <% } %>
+            </select>
+        </div>

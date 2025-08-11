@@ -25,19 +25,23 @@ public class VolService {
 
 
     public boolean isVolComplet(Long idVol) throws Exception {
-        String sqlCapacite = "SELECT SUM(cf.capacite) AS capacite_totale " +
-                           "FROM conf_vol cf " +
-                           "WHERE cf.id_vol = ?";
-        
-        String sqlReservations = "SELECT SUM(rd.nb) AS reservations_totales " +
-                               "FROM reservation_details rd " +
-                               "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
-                               "WHERE r.id_vol = ? AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
-        
+        String sqlCapacite = 
+            "SELECT SUM(cf.capacite) AS capacite_totale " +
+            "FROM conf_vol cf " +
+            "WHERE cf.id_vol = ?";
+
+        String sqlReservations = 
+            "SELECT COUNT(*) AS reservations_totales " +
+            "FROM reservation_details rd " +
+            "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
+            "WHERE r.id_vol = ? " +
+            "AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
+
         int capaciteTotale = 0;
         int reservationsTotales = 0;
-        
+
         try (Connection connection = DbConnect.getConnection()) {
+            // Récupération de la capacité totale
             try (PreparedStatement stmtCapacite = connection.prepareStatement(sqlCapacite)) {
                 stmtCapacite.setLong(1, idVol);
                 try (ResultSet rs = stmtCapacite.executeQuery()) {
@@ -46,7 +50,8 @@ public class VolService {
                     }
                 }
             }
-            
+
+            // Récupération du nombre total de sièges réservés
             try (PreparedStatement stmtReservations = connection.prepareStatement(sqlReservations)) {
                 stmtReservations.setLong(1, idVol);
                 try (ResultSet rs = stmtReservations.executeQuery()) {
@@ -56,9 +61,10 @@ public class VolService {
                 }
             }
         }
-        
+
         return reservationsTotales >= capaciteTotale;
     }
+
 
 
     public int nbSiezeDispo(Long idVol,Long idClasse) throws Exception {
