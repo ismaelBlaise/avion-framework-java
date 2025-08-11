@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ReservationDetail {
+    private int idReservationDetail;
     private int idReservation;
     private int idCategorieAge;
     private int idClasse;
@@ -100,5 +101,13 @@ public class ReservationDetail {
 
     public void setClasse(String classe) {
         this.classe = classe;
+    }
+
+    public int getIdReservationDetail() {
+        return idReservationDetail;
+    }
+
+    public void setIdReservationDetail(int idReservationDetail) {
+        this.idReservationDetail = idReservationDetail;
     }
 }

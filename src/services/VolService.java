@@ -67,37 +67,45 @@ public class VolService {
 
 
 
-    public int nbSiezeDispo(Long idVol,Long idClasse) throws Exception {
-        String sqlCapacite = "SELECT SUM(cf.capacite) AS capacite_totale " +
-                           "FROM conf_vol cf " +
-                           "WHERE cf.id_vol = ? AND cf.id_classe=?";
-        
-        String sqlReservations = "SELECT SUM(rd.nb) AS reservations_totales " +
-                               "FROM reservation_details rd " +
-                               "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
-                               "WHERE r.id_vol = ? AND rd.id_classe =? AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
-        
+    public int nbSiegeDispo(Long idVol, Long idClasse) throws Exception {
+        String sqlCapacite = """
+            SELECT SUM(cf.capacite) AS capacite_totale
+            FROM conf_vol cf
+            WHERE cf.id_vol = ? AND cf.id_classe = ?
+        """;
+
+        String sqlReservations = """
+            SELECT COUNT(*) AS reservations_totales
+            FROM reservation_details rd
+            JOIN reservations r ON rd.id_reservation = r.id_reservation
+            WHERE r.id_vol = ? 
+            AND rd.id_classe = ?
+            AND r.id_statut != (
+                SELECT id_statut FROM statuts WHERE statut = 'Annulee'
+            )
+        """;
+
         int capaciteTotale = 0;
         int reservationsTotales = 0;
-        
+
         try (Connection connection = DbConnect.getConnection()) {
+            // Récupération capacité totale
             try (PreparedStatement stmtCapacite = connection.prepareStatement(sqlCapacite)) {
                 stmtCapacite.setLong(1, idVol);
                 stmtCapacite.setLong(2, idClasse);
                 try (ResultSet rs = stmtCapacite.executeQuery()) {
                     if (rs.next()) {
                         capaciteTotale = rs.getInt("capacite_totale");
-                    }
-                    else {
-                        throw new Exception("Capacite vol non configurer");
+                    } else {
+                        throw new Exception("Capacité du vol non configurée");
                     }
                 }
             }
-            
+
+            // Récupération nombre de sièges déjà réservés
             try (PreparedStatement stmtReservations = connection.prepareStatement(sqlReservations)) {
                 stmtReservations.setLong(1, idVol);
                 stmtReservations.setLong(2, idClasse);
-
                 try (ResultSet rs = stmtReservations.executeQuery()) {
                     if (rs.next()) {
                         reservationsTotales = rs.getInt("reservations_totales");
@@ -105,9 +113,10 @@ public class VolService {
                 }
             }
         }
-        
-        return capaciteTotale-reservationsTotales;
+
+        return capaciteTotale - reservationsTotales;
     }
+
 
    
     public boolean isVolCompletAvecPromotions(Long idVol) throws Exception {

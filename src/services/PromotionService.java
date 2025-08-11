@@ -108,23 +108,46 @@ public class PromotionService {
     }
 
 
-    public int getNombreSiegesAvecPromotion(Long idVol,Long idClasse) throws SQLException {
-        String query = "SELECT COALESCE(SUM(rd.nb), 0) AS nb_sieges_promotion " +
-                      "FROM reservation_details rd " +
-                      "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
-                      "JOIN conf_vol cv ON rd.id_classe = cv.id_classe " +
-                      "              AND rd.id_categorie_age = cv.id_categorie_age " +
-                      "              AND r.id_vol = cv.id_vol " +
-                      "WHERE r.id_vol = ? " +
-                      "  AND rd.id_classe = ? " +
-                      "  AND rd.prix < cv.montant " +
-                      "  AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulée')";
+    public int getNombreSiegesPromotion(Long idVol, Long idClasse) throws Exception {
+        String query = "SELECT nb_siege FROM promotions WHERE id_vol = ? AND id_classe = ?";
 
         try (Connection connection = DbConnect.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+            PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setLong(1, idVol);
+            stmt.setLong(2, idClasse);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("nb_siege");
+                } else {
+                    return 0; // Pas de promotion définie => 0 sièges promo
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
+
+    public int getNombreVolsAvecPromotion(Long idVol, Long idClasse) throws SQLException {
+        String query = "SELECT COUNT(*) AS nb_sieges_promotion " +
+                    "FROM reservation_details rd " +
+                    "JOIN reservations r ON rd.id_reservation = r.id_reservation " +
+                    "JOIN conf_vol cv ON rd.id_classe = cv.id_classe " +
+                    "                  AND rd.id_categorie_age = cv.id_categorie_age " +
+                    "                  AND r.id_vol = cv.id_vol " +
+                    "WHERE r.id_vol = ? " +
+                    "  AND rd.id_classe = ? " +
+                    "  AND rd.prix < cv.montant " +
+                    "  AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')";
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query)) {
             
-            stmt.setLong(1,idVol);
-            stmt.setLong(2,idClasse);
+            stmt.setLong(1, idVol);
+            stmt.setLong(2, idClasse);
             
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -134,6 +157,7 @@ public class PromotionService {
         }
         return 0;
     }
+
 
 
 

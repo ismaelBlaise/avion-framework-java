@@ -82,7 +82,7 @@
                             <%= promo.getNomClasse() != null ? promo.getNomClasse() : promo.getIdClasse() %>
                         </td>
                         <td class="border border-gray-300 px-4 py-2">
-                            <%= promo.getPourcentage() %> <!-- pourcentage stocké en décimal (ex: 0.15) -->
+                            <%= promo.getPourcentage() * 100 %> <!-- pourcentage stocké en décimal (ex: 0.15) -->
                         </td>
                         <td class="border border-gray-300 px-4 py-2">
                             <%= promo.getNbSiege() %>

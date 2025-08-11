@@ -104,6 +104,7 @@ CREATE TABLE promotions (
 );
 
 CREATE TABLE reservation_details (
+   id_reservation_detail SERIAL PRIMARY KEY,
    id_reservation INTEGER NOT NULL,
    id_categorie_age INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
@@ -111,7 +112,6 @@ CREATE TABLE reservation_details (
    passeport BYTEA UNIQUE,
    nom_fichier VARCHAR(255) UNIQUE,
    date_depot TIMESTAMP,
-   PRIMARY KEY (id_reservation, id_categorie_age,id_classe),
    FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE,
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
    FOREIGN KEY (id_categorie_age) REFERENCES categories_age(id_categorie_age) ON DELETE CASCADE

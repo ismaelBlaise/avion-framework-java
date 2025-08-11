@@ -100,9 +100,9 @@ public class ReservationController {
            try {
             List<Statut> statuts=statutService.getAllBySource("reservation");
             modelAndView.setAttribute("statuts", statuts);
-            if(reservationDto.getIdStatut()==null || reservationDto.getIdStatut().isEmpty()){
-                throw new Exception("Le statut de la reservation est obligatoire");
-            }
+            // if(reservationDto.getIdStatut()==null || reservationDto.getIdStatut().isEmpty()){
+            //     throw new Exception("Le statut de la reservation est obligatoire");
+            // }
             for (Statut statut : statuts) {
                 if(statut.getStatut().equals("Confirme")) {
                     reservationDto.setIdStatut(statut.getIdStatut().toString());

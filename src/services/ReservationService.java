@@ -192,7 +192,7 @@ public class ReservationService {
         List<ReservationDetail> reservationDetails = new ArrayList<>();
 
         String sql = """
-            SELECT rd.id_reservation, rd.id_categorie_age, rd.id_classe, 
+            SELECT rd.id_reservation_detail, rd.id_reservation, rd.id_categorie_age, rd.id_classe, 
                 rd.prix, rd.passeport, rd.nom_fichier, rd.date_depot,
                 ca.categorie, c.classe
             FROM reservation_details rd
@@ -209,6 +209,7 @@ public class ReservationService {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     ReservationDetail detail = new ReservationDetail();
+                    detail.setIdReservationDetail(rs.getInt("id_reservation_detail"));
                     detail.setIdReservation(rs.getInt("id_reservation"));
                     detail.setIdCategorieAge(rs.getInt("id_categorie_age"));
                     detail.setIdClasse(rs.getInt("id_classe"));
@@ -249,8 +250,13 @@ public class ReservationService {
             Reservation reservation = findById(idReservation);
             double prix = confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse, reservation.getIdVol());
 
-            int nbSiegeDispoPromo = promotionService.getNombreSiegesAvecPromotion(
+            int nbSiegeDispoPromo = promotionService.getNombreSiegesPromotion(
+                    Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse))-promotionService.getNombreVolsAvecPromotion(
                     Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+            
+            if (promotion && nbSiegeDispoPromo < nb) {
+                throw new Exception("Les sièges en promotion sont insuffisants");
+            }
 
             if (promotion && nbSiegeDispoPromo >= nb) {
                 double pourcentage = promotionService.getPromotion(
@@ -258,9 +264,7 @@ public class ReservationService {
                 prix -= prix * pourcentage;  
             }
 
-            if (promotion && nbSiegeDispoPromo < nb) {
-                throw new Exception("Les sièges en promotion sont insuffisants");
-            }
+            
 
             boolean estComplet = volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
             Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
@@ -271,7 +275,7 @@ public class ReservationService {
                 throw new Exception("Vol complet");
             }
 
-            int nbSiegeDispo = volService.nbSiezeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+            int nbSiegeDispo = volService.nbSiegeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
             if (nbSiegeDispo < nb) {
                 throw new Exception("Nombre de places insuffisant");
             }

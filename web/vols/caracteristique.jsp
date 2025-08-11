@@ -101,7 +101,7 @@
                 <tr>
                     <td class="border px-4 py-2"><%= conf.getNomClasse() %></td>
                     <td class="border px-4 py-2"><%= conf.getCategorieAge() %></td>
-                    <td class="border px-4 py-2 text-right"><%= String.format("%.3f", conf.getMontant()) %></td>
+                    <td class="border px-4 py-2 text-right"><%= String.format("%.3f", conf.getMontant()) %> MGA</td>
                     <td class="border px-4 py-2 text-right"><%= conf.getCapacite() %></td>
                 </tr>
             <%  
