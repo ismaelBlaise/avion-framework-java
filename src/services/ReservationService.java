@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Reservation;
 import models.ReservationDetail;
+import models.ReservationDetail2;
 import models.Statut;
 import models.Vol;
 import utils.DbConnect;
@@ -220,6 +221,50 @@ public class ReservationService {
                     if (ts != null) {
                         detail.setDateDepot(ts.toLocalDateTime());
                     }
+                    detail.setCategorieAge(rs.getString("categorie"));
+                    detail.setClasse(rs.getString("classe"));
+
+                    reservationDetails.add(detail);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erreur SQL lors de la récupération des détails de réservation : " + e.getMessage(), e);
+        }
+
+        return reservationDetails;
+    }
+
+
+    public List<ReservationDetail2> findAllDetails2(int idReservation) throws Exception {
+        List<ReservationDetail2> reservationDetails = new ArrayList<>();
+
+        String sql = """
+            SELECT rd.id_reservation_detail, rd.id_reservation, rd.id_categorie_age, rd.id_classe, 
+                rd.prix, rd.passeport, rd.nom_fichier, rd.date_depot,
+                ca.categorie, c.classe
+            FROM reservation_details rd
+            JOIN categories_age ca ON rd.id_categorie_age = ca.id_categorie_age
+            JOIN classes c ON rd.id_classe = c.id_classe
+            WHERE rd.id_reservation = ?
+        """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, idReservation);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    ReservationDetail2 detail = new ReservationDetail2();
+                    detail.setIdReservationDetail(rs.getInt("id_reservation_detail"));
+                    detail.setIdReservation(rs.getInt("id_reservation"));
+                    detail.setIdCategorieAge(rs.getInt("id_categorie_age"));
+                    detail.setIdClasse(rs.getInt("id_classe"));
+                    detail.setPrix(rs.getBigDecimal("prix")); // NUMERIC → BigDecimal
+                    detail.setPasseport(rs.getBytes("passeport")); // BYTEA → byte[]
+                    detail.setNomFichier(rs.getString("nom_fichier"));
+                    detail.setDateDepot(rs.getString("date_depot"));
+                   
                     detail.setCategorieAge(rs.getString("categorie"));
                     detail.setClasse(rs.getString("classe"));
 

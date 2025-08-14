@@ -9,11 +9,13 @@ import annotation.Get;
 import annotation.Param;
 import annotation.ParamObject;
 import annotation.Post;
+import annotation.RestApi;
 import annotation.Url;
 import dto.RechercheDto;
 import dto.ReservationDto;
 import models.Reservation;
 import models.ReservationDetail;
+import models.ReservationDetail2;
 import models.Statut;
 import models.Vol;
 import services.AvionService;
@@ -50,6 +52,8 @@ public class ReservationController {
         }
         return modelAndView;
     }
+
+
 
 
 
@@ -256,6 +260,28 @@ public class ReservationController {
             List<ReservationDetail> reservationDetails=reservationService.findAllDetails(Integer.parseInt(id));
             modelAndView.setAttribute("reservation",reservation);
             modelAndView.setAttribute("statut", statutService.getStatutById(Long.valueOf(reservation.getIdStatut()+"")).getStatut());
+            modelAndView.setAttribute("details",reservationDetails);
+        } catch (Exception e) {
+            modelAndView.setAttribute("erreur", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+
+    @Url(url = "reservation-details-json")
+    @Get
+    @RestApi
+    public ModelAndView reservationDetailsJson(@Param(name = "id") String id){
+        ModelAndView modelAndView=new ModelAndView("template-front.jsp");
+        modelAndView.setAttribute("page","reservations/details.jsp");
+        ReservationService reservationService=new ReservationService();
+        try {
+            // Reservation reservation=reservationService.findById(Integer.parseInt(id));
+            // StatutService statutService=new StatutService();
+            List<ReservationDetail2> reservationDetails=reservationService.findAllDetails2(Integer.parseInt(id));
+            // modelAndView.setAttribute("reservation",reservation);
+            // modelAndView.setAttribute("statut", statutService.getStatutById(Long.valueOf(reservation.getIdStatut()+"")).getStatut());
             modelAndView.setAttribute("details",reservationDetails);
         } catch (Exception e) {
             modelAndView.setAttribute("erreur", e.getMessage());

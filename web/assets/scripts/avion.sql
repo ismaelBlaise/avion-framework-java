@@ -116,3 +116,12 @@ CREATE TABLE reservation_details (
    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE,
    FOREIGN KEY (id_categorie_age) REFERENCES categories_age(id_categorie_age) ON DELETE CASCADE
 );
+
+
+CREATE TABLE reservation_paiements (
+    id_paiement SERIAL PRIMARY KEY,
+    id_reservation INTEGER NOT NULL,
+    montant NUMERIC(15,4) NOT NULL CHECK (montant >= 0),
+    date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
+);

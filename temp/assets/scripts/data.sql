@@ -39,3 +39,12 @@ INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_s
     (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
     (SELECT id_avion FROM avions WHERE modele = 'Boeing 777'));
 
+
+INSERT INTO conf_vol (id_vol, id_classe, id_categorie_age, montant, capacite)
+VALUES (
+    (SELECT id_vol FROM vols WHERE numero = 'AF123'),
+    (SELECT id_classe FROM classes WHERE classe = 'Economique'),
+    (SELECT id_categorie_age FROM categories_age WHERE categorie = 'Adulte'),
+    500000.000,   -- montant en MGA
+    120           -- nombre de places disponibles
+);
