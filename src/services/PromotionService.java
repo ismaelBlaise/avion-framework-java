@@ -159,6 +159,28 @@ public class PromotionService {
     }
 
 
+    // public int getNombreVolsAvecPromotion(Long idVol, Long idClasse) throws SQLException {
+    //     String query = "SELECT nb_sieges_promotion " +
+    //                 "FROM vue_vols_promotions " +
+    //                 "WHERE id_vol = ? AND id_classe = ?";
+
+    //     try (Connection connection = DbConnect.getConnection();
+    //         PreparedStatement stmt = connection.prepareStatement(query)) {
+
+    //         stmt.setLong(1, idVol);
+    //         stmt.setLong(2, idClasse);
+
+    //         try (ResultSet rs = stmt.executeQuery()) {
+    //             if (rs.next()) {
+    //                 return rs.getInt("nb_sieges_promotion");
+    //             }
+    //         }
+    //     }
+    //     return 0;
+    // }
+
+
+
 
 
     public List<Promotion> recupererPromotionsParVol(Long idVol) throws Exception {

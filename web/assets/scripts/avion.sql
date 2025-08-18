@@ -125,3 +125,21 @@ CREATE TABLE reservation_paiements (
     date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
 );
+
+
+
+CREATE OR REPLACE VIEW vue_vols_promotions AS
+SELECT 
+    r.id_vol,
+    rd.id_classe,
+    COUNT(*) AS nb_sieges_promotion
+FROM reservation_details rd
+JOIN reservations r 
+    ON rd.id_reservation = r.id_reservation
+JOIN conf_vol cv 
+    ON rd.id_classe = cv.id_classe
+   AND rd.id_categorie_age = cv.id_categorie_age
+   AND r.id_vol = cv.id_vol
+WHERE rd.prix < cv.montant
+  AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')
+GROUP BY r.id_vol, rd.id_classe;

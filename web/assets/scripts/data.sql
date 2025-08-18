@@ -21,30 +21,27 @@ VALUES
 
 
 
--- Exemple d'insertion de vols
-
 INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
-('AF123', '2025-09-01 08:00:00', '2025-09-01 12:00:00', '2025-08-31 23:59:59', NULL, 2, -- statut 'Disponible' pour vol
+('AF100', '2025-08-10 09:00:00', '2025-08-10 13:00:00', '2025-08-09 23:59:59', NULL, 2,   
     (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
-    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737')),
-
-('BA456', '2025-09-02 14:30:00', '2025-09-02 18:45:00', '2025-09-02 13:30:00', NULL, 2,
     (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Tokyo'),
     (SELECT id_avion FROM avions WHERE modele = 'Airbus A320')),
 
-('EK789', '2025-09-03 22:00:00', '2025-09-04 06:00:00', '2025-09-03 21:00:00', NULL, 2,
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Dubaï'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+('BA200', '2025-08-15 15:30:00', '2025-08-15 20:00:00', '2025-08-14 23:59:59', NULL, 2,  -- Annulée
+    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Tokyo'),
     (SELECT id_avion FROM avions WHERE modele = 'Boeing 777'));
 
+-- 2 vols après aujourd'hui (futurs)
+INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
+('EK300', '2025-08-20 07:00:00', '2025-08-20 11:00:00', '2025-08-19 23:59:59', NULL, 2,  -- Disponible
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Dubaï'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737')),
 
-INSERT INTO conf_vol (id_vol, id_classe, id_categorie_age, montant, capacite)
-VALUES (
-    (SELECT id_vol FROM vols WHERE numero = 'AF123'),
-    (SELECT id_classe FROM classes WHERE classe = 'Economique'),
-    (SELECT id_categorie_age FROM categories_age WHERE categorie = 'Adulte'),
-    500000.000,   -- montant en MGA
-    120           -- nombre de places disponibles
-);
+('LH400', '2025-09-10 21:00:00', '2025-09-11 05:00:00', '2025-09-09 23:59:59', NULL, 2,  -- Disponible
+    (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
+    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
+    (SELECT id_avion FROM avions WHERE modele = 'Airbus A320'));
+
+
