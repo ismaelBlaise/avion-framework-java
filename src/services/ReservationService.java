@@ -136,9 +136,9 @@ public class ReservationService {
         VolService volService = new VolService();
 
         // Vérifier si le vol est complet
-        if (volService.isVolComplet((long) idVol)) {
-            throw new Exception("Le vol est complet");
-        }
+        // if (volService.isVolComplet((long) idVol)) {
+        //     throw new Exception("Le vol est complet");
+        // }
 
         Vol vol = volService.getVolById((long) idVol);
 
@@ -293,37 +293,39 @@ public class ReservationService {
             connection.setAutoCommit(false);  
 
             Reservation reservation = findById(idReservation);
-            double prix = confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse, reservation.getIdVol());
+            // double prix = confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse, reservation.getIdVol());
+            double prix = confVolService.recupererPrixSiStockDisponible(idClasse, nb, reservation.getDateReservation().toLocalDateTime().toLocalDate());
 
-            int nbSiegeDispoPromo = promotionService.getNombreSiegesPromotion(
-                    Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse))-promotionService.getNombreVolsAvecPromotion(
-                    Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+
+            // int nbSiegeDispoPromo = promotionService.getNombreSiegesPromotion(
+            //         Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse))-promotionService.getNombreVolsAvecPromotion(
+            //         Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
             
-            if (promotion && nbSiegeDispoPromo < nb) {
-                throw new Exception("Les sièges en promotion sont insuffisants");
-            }
+            // if (promotion && nbSiegeDispoPromo < nb) {
+            //     throw new Exception("Les sièges en promotion sont insuffisants");
+            // }
 
-            if (promotion && nbSiegeDispoPromo >= nb) {
-                double pourcentage = promotionService.getPromotion(
-                        Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
-                prix -= prix * pourcentage;  
-            }
+            // if (promotion && nbSiegeDispoPromo >= nb) {
+            //     double pourcentage = promotionService.getPromotion(
+            //             Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+            //     prix -= prix * pourcentage;  
+            // }
 
             
 
-            boolean estComplet = volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
+            // boolean estComplet = volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
             Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
-            if (estComplet) {
-                Statut statut = statutService.getByStatut("Non disponible");
-                vol.setIdStatut(statut.getIdStatut());
-                volService.updateVol(vol);
-                throw new Exception("Vol complet");
-            }
+            // if (estComplet) {
+            //     Statut statut = statutService.getByStatut("Non disponible");
+            //     vol.setIdStatut(statut.getIdStatut());
+            //     volService.updateVol(vol);
+            //     throw new Exception("Vol complet");
+            // }
 
-            int nbSiegeDispo = volService.nbSiegeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
-            if (nbSiegeDispo < nb) {
-                throw new Exception("Nombre de places insuffisant");
-            }
+            // int nbSiegeDispo = volService.nbSiegeDispo(Long.valueOf(reservation.getIdVol()), Long.valueOf(idClasse));
+            // if (nbSiegeDispo < nb) {
+            //     throw new Exception("Nombre de places insuffisant");
+            // }
 
             String sql = "INSERT INTO reservation_details " +
                     "(id_reservation, id_categorie_age, id_classe, prix, date_depot) " +

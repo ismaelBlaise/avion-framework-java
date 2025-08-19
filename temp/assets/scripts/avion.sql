@@ -93,6 +93,17 @@ CREATE TABLE conf_vol (
    FOREIGN KEY (id_categorie_age) REFERENCES categories_age(id_categorie_age) ON DELETE CASCADE
 );
 
+
+CREATE TABLE reservation_prix (
+   id_vol INTEGER NOT NULL,
+   id_classe INTEGER NOT NULL,
+   montant NUMERIC(15,3) NOT NULL CHECK (montant >= 0),
+   capacite INTEGER NOT NULL CHECK (capacite >= 0),
+   date_fin DATE,
+   FOREIGN KEY (id_vol) REFERENCES vols(id_vol) ON DELETE CASCADE,
+   FOREIGN KEY (id_classe) REFERENCES classes(id_classe) ON DELETE CASCADE
+);
+
 CREATE TABLE promotions (
    id_vol INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
@@ -125,3 +136,45 @@ CREATE TABLE reservation_paiements (
     date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
 );
+
+
+
+CREATE OR REPLACE VIEW vue_vols_promotions AS
+SELECT 
+    r.id_vol,
+    rd.id_classe,
+    COUNT(*) AS nb_sieges_promotion
+FROM reservation_details rd
+JOIN reservations r 
+    ON rd.id_reservation = r.id_reservation
+JOIN conf_vol cv 
+    ON rd.id_classe = cv.id_classe
+   AND rd.id_categorie_age = cv.id_categorie_age
+   AND r.id_vol = cv.id_vol
+WHERE rd.prix < cv.montant
+  AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')
+GROUP BY r.id_vol, rd.id_classe;
+
+
+
+
+CREATE OR REPLACE VIEW vue_stock_billets_date AS
+SELECT 
+    rp.id_vol,
+    rp.id_classe,
+    rp.capacite AS capacite_configuree,
+    rp.montant AS prix_unitaire,
+    rp.date_fin,
+    -- calcul du stock disponible
+    rp.capacite - COALESCE(
+        (
+            SELECT COUNT(*)
+            FROM reservations r
+            JOIN reservation_details rd ON r.id_reservation = rd.id_reservation
+            WHERE
+            r.id_vol = rp.id_vol
+              AND rd.id_classe = rp.id_classe
+              AND r.date_reservation <= rp.date_fin
+        ), 0
+    ) AS stock_disponible
+FROM reservation_prix rp;
