@@ -14,6 +14,7 @@ import java.util.List;
 import models.Statut;
 import models.alea.ReservationList;
 import models.alea.ReservationPrix;
+import models.alea.ReservationPrix2;
 import services.ReservationService;
 import services.StatutService;
 import utils.DbConnect;
@@ -204,7 +205,7 @@ public class AleaService {
             if(reservationPrix.getIdReservationPrix()!=id){
                 id=reservationPrix.getIdReservationPrix();
                 ReservationList reservationList=new ReservationList();
-                reservationList.setDateFin(reservationPrix.getDateFin());
+                reservationList.setDateFin(reservationPrix.getDateFin().toString());
                 reservationList.setCapaciteInitial(reservationPrix.getCapacite());
                 reservationList.setIdReservationPrix(id);
                 reservationLists.add(reservationList);
@@ -212,13 +213,29 @@ public class AleaService {
         }
 
         for (ReservationList reservationList : reservationLists) {
-            List<ReservationPrix> reservationPrixs2=new ArrayList<>();
+            List<ReservationPrix2> reservationPrixs2=new ArrayList<>();
             int siezeVendu=0;
-            for (ReservationPrix reservationPrix2 : reservationPrixs) {
-                if(reservationList.getIdReservationPrix()==reservationPrix2.getIdReservationPrix()){
+            for (ReservationPrix reservationPrix : reservationPrixs) {
+                if(reservationList.getIdReservationPrix()==reservationPrix.getIdReservationPrix()){
+                   ReservationPrix2 reservationPrix2 = new ReservationPrix2();
+                    reservationPrix2.setIdReservation(reservationPrix.getIdReservation());
+                    reservationPrix2.setIdVol(reservationPrix.getIdVol());
+                    reservationPrix2.setIdClasse(reservationPrix.getIdClasse());
+                    reservationPrix2.setIdStatut(reservationPrix.getIdStatut());
+                    reservationPrix2.setCapacite(reservationPrix.getCapacite());
+                    // Conversion des dates en String
+                    reservationPrix2.setDateReservation(reservationPrix.getDateReservation().toString());
+                    reservationPrix2.setDateDebut(reservationPrix.getDateDebut() != null ? reservationPrix.getDateDebut().toString() : null);
+                    reservationPrix2.setDateFin(reservationPrix.getDateFin() != null ? reservationPrix.getDateFin().toString() : null);
+                    reservationPrix2.setIdReservationPrix(reservationPrix.getIdReservationPrix());
+                    reservationPrix2.setPrixConfigure(reservationPrix.getPrixConfigure() != null ? reservationPrix.getPrixConfigure().doubleValue() : 0);
+                    reservationPrix2.setPrixFacture(reservationPrix.getPrixFacture() != null ? reservationPrix.getPrixFacture().doubleValue() : 0);
+                    reservationPrix2.setNbSieges(reservationPrix.getNbSieges());
+
                     reservationPrixs2.add(reservationPrix2);
+                    // reservationPrixs2.add(reservationPrix2);
                     siezeVendu+=reservationPrix2.getNbSieges();
-                    
+
                 }
             }
             reservationList.setSiezeVendu(siezeVendu);

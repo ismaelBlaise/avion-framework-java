@@ -95,6 +95,7 @@ CREATE TABLE conf_vol (
 
 
 CREATE TABLE reservation_prix (
+   id_reservation_prix SERIAL PRIMARY KEY,
    id_vol INTEGER NOT NULL,
    id_classe INTEGER NOT NULL,
    montant NUMERIC(15,3) NOT NULL CHECK (montant >= 0),
@@ -136,56 +137,3 @@ CREATE TABLE reservation_paiements (
     date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_reservation) REFERENCES reservations(id_reservation) ON DELETE CASCADE
 );
-
-
-
-CREATE OR REPLACE VIEW vue_vols_promotions AS
-SELECT 
-    r.id_vol,
-    rd.id_classe,
-    COUNT(*) AS nb_sieges_promotion
-FROM reservation_details rd
-JOIN reservations r 
-    ON rd.id_reservation = r.id_reservation
-JOIN conf_vol cv 
-    ON rd.id_classe = cv.id_classe
-   AND rd.id_categorie_age = cv.id_categorie_age
-   AND r.id_vol = cv.id_vol
-WHERE rd.prix < cv.montant
-  AND r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')
-GROUP BY r.id_vol, rd.id_classe;
-
-
-
-
-CREATE OR REPLACE VIEW vue_stock_billets_date AS
-SELECT 
-    rp.id_vol,
-    rp.id_classe,
-    rp.capacite AS capacite_configuree,
-    rp.montant AS prix_unitaire,
-    rp.date_fin,
-    rp.date_debut,
-    rp.capacite - COALESCE(
-        (
-            SELECT COUNT(*)
-            FROM reservations r
-            JOIN reservation_details rd ON r.id_reservation = rd.id_reservation
-            WHERE  r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')
-            AND r.id_vol = rp.id_vol
-              AND rd.id_classe = rp.id_classe
-              AND r.date_reservation > rp.date_debut
-              AND r.date_reservation <= rp.date_fin
-        ), 0
-    ) AS stock_disponible
-FROM (
-    SELECT 
-        rp.*,
-        COALESCE(
-            LAG(rp.date_fin) OVER (PARTITION BY rp.id_vol, rp.id_classe ORDER BY rp.date_fin),
-            '1970-01-01'::date
-        ) AS date_debut
-    FROM reservation_prix rp
-) rp;
-
-
