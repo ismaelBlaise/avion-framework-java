@@ -21,33 +21,26 @@ VALUES
 
 
 
-INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
-('AF100', '2025-08-10 09:00:00', '2025-08-10 13:00:00', '2025-08-09 23:59:59', NULL, 2,   
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
-    (SELECT id_avion FROM avions WHERE modele = 'Airbus A320')),
-
-('BA200', '2025-08-15 15:30:00', '2025-08-15 20:00:00', '2025-08-14 23:59:59', NULL, 2,  -- Annulée
-    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Tokyo'),
-    (SELECT id_avion FROM avions WHERE modele = 'Boeing 777'));
+I
 
 -- 2 vols après aujourd'hui (futurs)
 INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_statut, id_ville_depart, id_ville_arrivee, id_avion) VALUES
-('EK300', '2025-08-20 07:00:00', '2025-08-20 11:00:00', '2025-08-19 23:59:59', NULL, 2,  -- Disponible
+('EK300', '2025-09-20 07:00:00', '2025-09-20 11:00:00', NULL, NULL, 2,  -- Disponible
     (SELECT id_ville FROM villes WHERE nom_ville = 'Dubaï'),
     (SELECT id_ville FROM villes WHERE nom_ville = 'Paris'),
-    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737')),
-
-('LH400', '2025-09-10 21:00:00', '2025-09-11 05:00:00', '2025-09-09 23:59:59', NULL, 2,  -- Disponible
-    (SELECT id_ville FROM villes WHERE nom_ville = 'Londres'),
-    (SELECT id_ville FROM villes WHERE nom_ville = 'New York'),
-    (SELECT id_avion FROM avions WHERE modele = 'Airbus A320'));
-
+    (SELECT id_avion FROM avions WHERE modele = 'Boeing 737'));
 
 
 
 -- Reservation prix : prix et stock pour chaque vol et classe
 INSERT INTO reservation_prix (id_vol, id_classe, montant, capacite, date_fin)
 VALUES
-((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 600.000, 120, '2025-08-18');
+((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 500.000, 120, '2025-08-28'),
+
+((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 450.000, 120, '2025-08-20');
+
+
+
+
+
+

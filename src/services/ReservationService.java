@@ -165,6 +165,8 @@ public class ReservationService {
 
         // Enregistrer la réservation
         try (Connection connection = DbConnect.getConnection();
+            // double prix = confVolService.recupererPrixSiStockDisponible(idClasse, reservation.getIdVol(), reservation.getDateReservation().toLocalDateTime().toLocalDate());
+
             PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO reservations (date_reservation, id_statut, id_utilisateur, id_vol) " +
                 "VALUES (?, ?, ?, ?) RETURNING id_reservation"
@@ -286,7 +288,7 @@ public class ReservationService {
         ConfVolService confVolService = new ConfVolService();
         VolService volService = new VolService();
         StatutService statutService = new StatutService();
-        PromotionService promotionService = new PromotionService();
+        // PromotionService promotionService = new PromotionService();
 
         try {
             connection = DbConnect.getConnection();
@@ -294,7 +296,7 @@ public class ReservationService {
 
             Reservation reservation = findById(idReservation);
             // double prix = confVolService.recupererPrixParCategorieAge(idCategorieAge, idClasse, reservation.getIdVol());
-            double prix = confVolService.recupererPrixSiStockDisponible(idClasse, nb, reservation.getDateReservation().toLocalDateTime().toLocalDate());
+            double prix = confVolService.recupererPrixSiStockDisponible(idClasse, reservation.getIdVol(), reservation.getDateReservation().toLocalDateTime().toLocalDate());
 
 
             // int nbSiegeDispoPromo = promotionService.getNombreSiegesPromotion(
@@ -314,7 +316,7 @@ public class ReservationService {
             
 
             // boolean estComplet = volService.isVolComplet(Long.valueOf(reservation.getIdVol()));
-            Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
+            // Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
             // if (estComplet) {
             //     Statut statut = statutService.getByStatut("Non disponible");
             //     vol.setIdStatut(statut.getIdStatut());
@@ -326,6 +328,20 @@ public class ReservationService {
             // if (nbSiegeDispo < nb) {
             //     throw new Exception("Nombre de places insuffisant");
             // }
+
+            boolean estComplet = volService.isComplet2(idClasse, reservation.getIdVol(), reservation.getDateReservation().toLocalDateTime().toLocalDate());
+            Vol vol = volService.getVolById(Long.valueOf(reservation.getIdVol()));
+            if (estComplet) {
+                Statut statut = statutService.getByStatut("Non disponible");
+                vol.setIdStatut(statut.getIdStatut());
+                volService.updateVol(vol);
+                throw new Exception("Vol complet");
+            }
+            
+            int nbSiegeDispo = volService.siezeDispo(idClasse,reservation.getIdVol(), reservation.getDateReservation().toLocalDateTime().toLocalDate());
+            if (nbSiegeDispo < nb) {
+                throw new Exception("Nombre de places insuffisant pour la date et la classe choisies avant la date " + reservation.getDateReservation().toLocalDateTime().toLocalDate());
+            }
 
             String sql = "INSERT INTO reservation_details " +
                     "(id_reservation, id_categorie_age, id_classe, prix, date_depot) " +

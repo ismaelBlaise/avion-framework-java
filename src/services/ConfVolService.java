@@ -82,23 +82,14 @@ public class ConfVolService {
     public double recupererPrixSiStockDisponible(int idClasse, int idVol, LocalDate dateDonnee) throws Exception {
         String sql = """
             SELECT 
-                rp.montant AS prix_unitaire,
-                rp.capacite - COALESCE(
-                    (
-                        SELECT COUNT(*) 
-                        FROM reservations r
-                        JOIN reservation_details rd ON r.id_reservation = rd.id_reservation
-                        WHERE r.id_vol = rp.id_vol
-                        AND rd.id_classe = rp.id_classe
-                        AND r.date_reservation <= rp.date_fin
-                    ), 0
-                ) AS stock_disponible
-            FROM reservation_prix rp
-            WHERE rp.id_vol = ?
-            AND rp.id_classe = ?
-            AND rp.date_fin <= ?
-            ORDER BY rp.date_fin ASC
-            LIMIT 1
+                v.prix_unitaire,
+                v.stock_disponible
+            FROM vue_stock_billets_date v
+            WHERE v.id_vol = ?
+            AND v.id_classe = ?
+            AND v.date_fin >= ?
+            ORDER BY v.date_fin ASC
+            LIMIT 1;
         """;
 
         try (Connection connection = DbConnect.getConnection();
@@ -109,18 +100,31 @@ public class ConfVolService {
             ps.setDate(3, java.sql.Date.valueOf(dateDonnee));
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    int stock = rs.getInt("stock_disponible");
-                    if (stock > 0) {
-                        return rs.getDouble("prix_unitaire");
+                while (rs.next()) {
+                    double prixUnitaire = rs.getDouble("prix_unitaire");
+                    int stockDisponible = rs.getInt("stock_disponible");
+
+                    if (stockDisponible > 0) {
+                        return prixUnitaire;
                     } else {
                         throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
                     }
-                } else {
-                    throw new Exception("Aucun prix configuré pour ce vol et cette classe après la date " + dateDonnee);
+                    
                 }
+                throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
+                // if (rs.next()) {
+
+                //     int stock = rs.getInt("stock_disponible");
+                //     if (stock > 0) {
+                //         return rs.getDouble("prix_unitaire");
+                //     } else {
+                //         throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
+                //     }
+                // } else {
+                //     throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
             }
         }
+        
     }
 
 

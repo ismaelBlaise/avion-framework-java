@@ -165,16 +165,27 @@ SELECT
     rp.capacite AS capacite_configuree,
     rp.montant AS prix_unitaire,
     rp.date_fin,
-    -- calcul du stock disponible
+    rp.date_debut,
     rp.capacite - COALESCE(
         (
             SELECT COUNT(*)
             FROM reservations r
             JOIN reservation_details rd ON r.id_reservation = rd.id_reservation
-            WHERE
-            r.id_vol = rp.id_vol
+            WHERE  r.id_statut != (SELECT id_statut FROM statuts WHERE statut = 'Annulee')
+            AND r.id_vol = rp.id_vol
               AND rd.id_classe = rp.id_classe
+              AND r.date_reservation > rp.date_debut
               AND r.date_reservation <= rp.date_fin
         ), 0
     ) AS stock_disponible
-FROM reservation_prix rp;
+FROM (
+    SELECT 
+        rp.*,
+        COALESCE(
+            LAG(rp.date_fin) OVER (PARTITION BY rp.id_vol, rp.id_classe ORDER BY rp.date_fin),
+            '1970-01-01'::date
+        ) AS date_debut
+    FROM reservation_prix rp
+) rp;
+
+

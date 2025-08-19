@@ -50,4 +50,12 @@ INSERT INTO vols (numero, depart, arrivee, fin_reservation, fin_annulation, id_s
 -- Reservation prix : prix et stock pour chaque vol et classe
 INSERT INTO reservation_prix (id_vol, id_classe, montant, capacite, date_fin)
 VALUES
-((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 600.000, 120, '2025-08-18');
+((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 500.000, 120, '2025-08-28'),
+
+((SELECT id_vol FROM vols WHERE numero='EK300'), (SELECT id_classe FROM classes WHERE classe='Economique'), 450.000, 120, '2025-08-20');
+
+
+
+
+
+

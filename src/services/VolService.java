@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,6 +24,102 @@ public class VolService {
         this.statutService = new StatutService();
     }
 
+
+    public boolean isComplet2(int idClasse, int idVol, LocalDate dateDonnee) throws Exception {
+        String sql = """
+            SELECT 
+                v.prix_unitaire,
+                v.stock_disponible
+            FROM vue_stock_billets_date v
+            WHERE v.id_vol = ?
+            AND v.id_classe = ?
+            AND v.date_fin >= ?
+            ORDER BY v.date_fin ASC
+            LIMIT 1;
+        """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, idVol);
+            ps.setInt(2, idClasse);
+            ps.setDate(3, java.sql.Date.valueOf(dateDonnee));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // double prixUnitaire = rs.getDouble("prix_unitaire");
+                    int stockDisponible = rs.getInt("stock_disponible");
+
+                    if (stockDisponible > 0) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                    
+                }
+                throw new Exception("Aucun billet configuré pour ce vol et cette classe avant la date " + dateDonnee);
+                // if (rs.next()) {
+
+                //     int stock = rs.getInt("stock_disponible");
+                //     if (stock > 0) {
+                //         return rs.getDouble("prix_unitaire");
+                //     } else {
+                //         throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
+                //     }
+                // } else {
+                //     throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
+            }
+        }
+        
+    }
+
+    public int siezeDispo(int idClasse, int idVol, LocalDate dateDonnee) throws Exception {
+        String sql = """
+            SELECT 
+                v.prix_unitaire,
+                v.stock_disponible
+            FROM vue_stock_billets_date v
+            WHERE v.id_vol = ?
+            AND v.id_classe = ?
+            AND v.date_fin >= ?
+            ORDER BY v.date_fin ASC
+            LIMIT 1;
+        """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, idVol);
+            ps.setInt(2, idClasse);
+            ps.setDate(3, java.sql.Date.valueOf(dateDonnee));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // double prixUnitaire = rs.getDouble("prix_unitaire");
+                    int stockDisponible = rs.getInt("stock_disponible");
+
+                    if (stockDisponible > 0) {
+                        return stockDisponible;
+                    } else {
+                        return 0;
+                    }
+                    
+                }
+                throw new Exception("Aucun billet configuré pour ce vol et cette classe avant la date " + dateDonnee);
+                // if (rs.next()) {
+
+                //     int stock = rs.getInt("stock_disponible");
+                //     if (stock > 0) {
+                //         return rs.getDouble("prix_unitaire");
+                //     } else {
+                //         throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
+                //     }
+                // } else {
+                //     throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
+            }
+        }
+        
+    }
 
     public boolean isVolComplet(Long idVol) throws Exception {
         String sqlCapacite = 

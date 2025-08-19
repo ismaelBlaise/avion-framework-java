@@ -1,19 +1,17 @@
-import models.ReservationDetail;
+import java.time.LocalDate;
+import java.util.List;
+
+import models.alea.ReservationPrix;
+import services.ConfVolService;
 import services.PromotionService;
-import services.ReservationDetailService;
-import util.CustomPart;
+import services.alea.AleaService;
 
 public class App {
     public static void main(String[] args)  {
         PromotionService promotionService=new PromotionService();
         try {
-            ReservationDetailService reservationDetailService=new ReservationDetailService();
-            ReservationDetail detail=reservationDetailService.findById(Long.parseLong("2"));
-            CustomPart passeport = new CustomPart();
-            passeport.setBytes(detail.getPasseport());
-            passeport.setFileName(detail.getNomFichier());
-            String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\avion-framework\\assets";
-            passeport.regenerateFile(filePath);
+            AleaService aleaService=new AleaService();
+           aleaService.aleaFonction(LocalDate.now().plusDays(20));
             
         } catch (Exception e) {
             
