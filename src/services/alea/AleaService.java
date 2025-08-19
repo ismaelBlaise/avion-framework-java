@@ -200,6 +200,10 @@ public class AleaService {
         reservationPrixs=annulerLesReservation(reservationPrixs);
         reservationPrixs=mettreAJourSieze(reservationPrixs,date);
         List<ReservationList> reservationLists=new ArrayList<>();
+        StatutService statutService=new StatutService();
+        Statut statutAnnulee=statutService.getByStatut("Annulee");
+        Statut statutPayee=statutService.getByStatut("Payee");
+
         int id=-1;
         for (ReservationPrix reservationPrix : reservationPrixs) {
             if(reservationPrix.getIdReservationPrix()!=id){
@@ -215,8 +219,18 @@ public class AleaService {
         for (ReservationList reservationList : reservationLists) {
             List<ReservationPrix2> reservationPrixs2=new ArrayList<>();
             int siezeVendu=0;
+            int siezeAnnulee=0;
+            int siezePayee=0;
             for (ReservationPrix reservationPrix : reservationPrixs) {
                 if(reservationList.getIdReservationPrix()==reservationPrix.getIdReservationPrix()){
+                    if(reservationPrix.getIdStatut()==statutAnnulee.getIdStatut().intValue()){
+                        siezeAnnulee+=reservationPrix.getNbSieges();
+                    }
+                    if(reservationPrix.getIdStatut()==statutPayee.getIdStatut().intValue()){
+                        siezePayee+=reservationPrix.getNbSieges();
+                    }
+                    
+
                    ReservationPrix2 reservationPrix2 = new ReservationPrix2();
                     reservationPrix2.setIdReservation(reservationPrix.getIdReservation());
                     reservationPrix2.setIdVol(reservationPrix.getIdVol());
@@ -239,6 +253,8 @@ public class AleaService {
                 }
             }
             reservationList.setSiezeVendu(siezeVendu);
+            reservationList.setSiezeAnnulee(siezeAnnulee);
+            reservationList.setSiezePayee(siezePayee);
             reservationList.setSiezeNonVendu(reservationList.getCapaciteInitial()-siezeVendu);
         }
         return reservationLists;

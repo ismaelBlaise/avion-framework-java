@@ -1,6 +1,5 @@
 package models.alea;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class ReservationList {
@@ -8,6 +7,8 @@ public class ReservationList {
     int capaciteInitial;
     int siezeVendu;
     int siezeNonVendu;
+    int siezeAnnulee;
+    int siezePayee;
     String dateFin;
     List<ReservationPrix2> reservations;
     public int getIdReservationPrix() {
@@ -45,6 +46,18 @@ public class ReservationList {
     }
     public void setReservations(List<ReservationPrix2> reservations) {
         this.reservations = reservations;
+    }
+    public int getSiezeAnnulee() {
+        return siezeAnnulee;
+    }
+    public void setSiezeAnnulee(int siezeAnnulee) {
+        this.siezeAnnulee = siezeAnnulee;
+    }
+    public int getSiezePayee() {
+        return siezePayee;
+    }
+    public void setSiezePayee(int siezePayee) {
+        this.siezePayee = siezePayee;
     }
     
 }
