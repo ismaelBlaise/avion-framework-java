@@ -61,6 +61,7 @@ SELECT
     r.id_statut,
     rp.montant AS prix_configure,
     rp.id_reservation_prix,
+    rp.capacite ,
     rp.date_debut,
     rp.date_fin,
     rd.prix AS prix_facture,
@@ -82,6 +83,6 @@ JOIN (
    AND r.date_reservation > rp.date_debut
    AND r.date_reservation <= rp.date_fin
 GROUP BY 
-    r.id_reservation,r.id_statut, r.id_vol, rd.id_classe, r.date_reservation,rp.id_reservation_prix,
+    r.id_reservation,r.id_statut,rp.capacite, r.id_vol, rd.id_classe, r.date_reservation,rp.id_reservation_prix,
     rp.montant, rp.date_debut, rp.date_fin, rd.prix;
 

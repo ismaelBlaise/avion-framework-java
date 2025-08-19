@@ -10,6 +10,7 @@ public class ReservationPrix {
     private int idVol;
     private int idClasse;
     private int idStatut;
+    private int capacite;
     private LocalDateTime dateReservation;
     private int idReservationPrix;
     private BigDecimal prixConfigure;
@@ -99,6 +100,12 @@ public class ReservationPrix {
     }
     public void setNbSieges(int nbSieges) {
         this.nbSieges = nbSieges;
+    }
+    public int getCapacite() {
+        return capacite;
+    }
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
     }
 
        

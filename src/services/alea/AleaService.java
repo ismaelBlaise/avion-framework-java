@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Statut;
+import models.alea.ReservationList;
 import models.alea.ReservationPrix;
 import services.ReservationService;
 import services.StatutService;
@@ -29,7 +30,7 @@ public class AleaService {
         try {
             connection = DbConnect.getConnection();
 
-            String sql = "SELECT id_reservation, id_vol, id_classe, id_statut, date_reservation, " +
+            String sql = "SELECT id_reservation,capacite, id_vol, id_classe, id_statut, date_reservation, " +
                          "id_reservation_prix, prix_configure, date_debut, date_fin, prix_facture, nb_sieges " +
                          "FROM vue_reservations_prix_utilises " +
                          "WHERE date_fin <= ?";
@@ -43,6 +44,7 @@ public class AleaService {
                 ReservationPrix rp = new ReservationPrix();
                 rp.setIdReservation(resultSet.getInt("id_reservation"));
                 rp.setIdVol(resultSet.getInt("id_vol"));
+                rp.setCapacite(resultSet.getInt("capacite"));
                 rp.setIdClasse(resultSet.getInt("id_classe"));
                 rp.setIdStatut(resultSet.getInt("id_statut"));
 
@@ -130,14 +132,14 @@ public class AleaService {
                             "LIMIT 1";
 
             String updateSql = "UPDATE reservation_prix SET capacite = capacite + ? WHERE id_reservation_prix = ?";
-            String subtractSql = "UPDATE reservation_prix SET capacite = capacite - ? WHERE id_reservation_prix = ?";
+            String subtractSql = "UPDATE reservation_prix SET capacite =  ? WHERE id_reservation_prix = ?";
 
             selectStmt = connection.prepareStatement(selectSql);
             updateStmt = connection.prepareStatement(updateSql);
             PreparedStatement subtractStmt = connection.prepareStatement(subtractSql);
 
             for (ReservationPrix reservationPrix : reservationPrixs) {
-                System.out.println(reservationPrix.getIdStatut());
+                // System.out.println(reservationPrix.getIdStatut());
                 if (reservationPrix.getIdStatut() == statutAnnulee.getIdStatut()) {
                     int nbSiegesLibres = reservationPrix.getNbSieges();
 
@@ -149,7 +151,7 @@ public class AleaService {
                     rs = selectStmt.executeQuery();
                     // System.out.println(date.toString());
                     if (rs.next()) {
-                        System.out.println("ALLOO");
+                        // System.out.println("ALLOO");
                         int idReservationPrixHeredite = rs.getInt("id_reservation_prix");
 
                         // Ajouter les sièges à la tranche héritière
@@ -192,11 +194,37 @@ public class AleaService {
 
 
 
-    public List<ReservationPrix> aleaFonction(LocalDate date)throws Exception{
+    public List<ReservationList> aleaFonction(LocalDate date)throws Exception{
         List<ReservationPrix> reservationPrixs=findByDate(date);
         reservationPrixs=annulerLesReservation(reservationPrixs);
         reservationPrixs=mettreAJourSieze(reservationPrixs,date);
-        return reservationPrixs;
+        List<ReservationList> reservationLists=new ArrayList<>();
+        int id=-1;
+        for (ReservationPrix reservationPrix : reservationPrixs) {
+            if(reservationPrix.getIdReservationPrix()!=id){
+                id=reservationPrix.getIdReservationPrix();
+                ReservationList reservationList=new ReservationList();
+                reservationList.setDateFin(reservationPrix.getDateFin());
+                reservationList.setCapaciteInitial(reservationPrix.getCapacite());
+                reservationList.setIdReservationPrix(id);
+                reservationLists.add(reservationList);
+            }
+        }
+
+        for (ReservationList reservationList : reservationLists) {
+            List<ReservationPrix> reservationPrixs2=new ArrayList<>();
+            int siezeVendu=0;
+            for (ReservationPrix reservationPrix2 : reservationPrixs) {
+                if(reservationList.getIdReservationPrix()==reservationPrix2.getIdReservationPrix()){
+                    reservationPrixs2.add(reservationPrix2);
+                    siezeVendu+=reservationPrix2.getNbSieges();
+                    
+                }
+            }
+            reservationList.setSiezeVendu(siezeVendu);
+            reservationList.setSiezeNonVendu(reservationList.getCapaciteInitial()-siezeVendu);
+        }
+        return reservationLists;
     }
 
 }
