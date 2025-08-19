@@ -11,7 +11,7 @@ public class App {
         PromotionService promotionService=new PromotionService();
         try {
             AleaService aleaService=new AleaService();
-           aleaService.aleaFonction(LocalDate.now().plusDays(20));
+           aleaService.aleaFonction(LocalDate.now().plusDays(2));
             
         } catch (Exception e) {
             

@@ -91,11 +91,13 @@ public class AleaService {
         ReservationService reservationService = new ReservationService();
         StatutService statutService = new StatutService();
         Statut statut = statutService.getByStatut("Confirme");
+        Statut statutAnnule=statutService.getByStatut("Annulee");
         for (ReservationPrix reservationPrix : reservationPrixs) {
             
             if(reservationPrix.getIdStatut()==statut.getIdStatut()){
                 reservationService.annulerReservation(reservationPrix.getIdReservation());
-                reservationPrix.setIdStatut(statut.getIdStatut().intValue());
+                reservationPrix.setIdStatut(statutAnnule.getIdStatut().intValue());
+                
             }
 
         }
@@ -128,13 +130,14 @@ public class AleaService {
                             "LIMIT 1";
 
             String updateSql = "UPDATE reservation_prix SET capacite = capacite + ? WHERE id_reservation_prix = ?";
-            String subtractSql = "UPDATE reservation_prix SET capacite =  ? WHERE id_reservation_prix = ?";
+            String subtractSql = "UPDATE reservation_prix SET capacite = capacite - ? WHERE id_reservation_prix = ?";
 
             selectStmt = connection.prepareStatement(selectSql);
             updateStmt = connection.prepareStatement(updateSql);
             PreparedStatement subtractStmt = connection.prepareStatement(subtractSql);
 
             for (ReservationPrix reservationPrix : reservationPrixs) {
+                System.out.println(reservationPrix.getIdStatut());
                 if (reservationPrix.getIdStatut() == statutAnnulee.getIdStatut()) {
                     int nbSiegesLibres = reservationPrix.getNbSieges();
 
@@ -144,7 +147,9 @@ public class AleaService {
                     selectStmt.setDate(3, java.sql.Date.valueOf(date));
 
                     rs = selectStmt.executeQuery();
+                    // System.out.println(date.toString());
                     if (rs.next()) {
+                        System.out.println("ALLOO");
                         int idReservationPrixHeredite = rs.getInt("id_reservation_prix");
 
                         // Ajouter les sièges à la tranche héritière
