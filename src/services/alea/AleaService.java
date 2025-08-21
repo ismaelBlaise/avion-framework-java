@@ -112,6 +112,8 @@ public class AleaService {
     }
 
 
+    
+
     @SuppressWarnings("unused")
     public List<ReservationPrix> mettreAJourSieze(List<ReservationPrix> reservationPrixs,LocalDate date) throws Exception {
         StatutService statutService = new StatutService();
