@@ -94,7 +94,7 @@ public class ConfVolService {
             ORDER BY v.date_fin ASC
             LIMIT 1;
         """;
-
+        System.out.println(dateDonnee.toString());
         try (Connection connection = DbConnect.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -121,8 +121,9 @@ public class ConfVolService {
                         if(capaciteRestantes.isEmpty()){
                             capaciteRestantes=getCapacitesRestantesNonPayeesAvantDate(idVol, idClasse, dateDonnee);
                             for (CapaciteRestante capaciteRestante : capaciteRestantes) {
-                                updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
-                                updateCapacite(id,capaciteRestante.getCapacite());
+                                // updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
+                                // updateCapacite(id,capaciteRestante.getCapacite());
+                                System.out.println(capaciteRestante.getIdReservation()+" "+capaciteRestante.getIdReservationPrix());
                             }
                         }
                         else{
