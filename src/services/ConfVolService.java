@@ -104,11 +104,11 @@ public class ConfVolService {
                     double prixUnitaire = rs.getDouble("prix_unitaire");
                     int stockDisponible = rs.getInt("stock_disponible");
 
-                    if (stockDisponible > 0) {
+                    // if (stockDisponible > 0) {
                         return prixUnitaire;
-                    } else {
-                        throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
-                    }
+                    // } else {
+                    //     throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
+                    // }
                     
                 }
                 throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
