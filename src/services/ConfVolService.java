@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,17 +114,15 @@ public class ConfVolService {
                         return prixUnitaire;
                     } else {
                         List<CapaciteRestante> capaciteRestantes=getCapacitesRestantesAvantDate(idVol,idClasse,dateDonnee);
-                        if(capaciteRestantes.isEmpty()==false){
-                            for (CapaciteRestante capaciteRestante : capaciteRestantes) {
-                                updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
-                                updateCapacite(id,capaciteRestante.getCapacite());
-                            }
-                        }
                         if(capaciteRestantes.isEmpty()){
                             capaciteRestantes=getCapacitesRestantesNonPayeesAvantDate(idVol, idClasse, dateDonnee);
+                        }
+                        if(!capaciteRestantes.isEmpty()){
+                            
                             for (CapaciteRestante capaciteRestante : capaciteRestantes) {
-                                // updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
-                                // updateCapacite(id,capaciteRestante.getCapacite());
+                                
+                                updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
+                                updateCapacite(id,capaciteRestante.getCapacite());
                                 System.out.println(capaciteRestante.getIdReservation()+" "+capaciteRestante.getIdReservationPrix());
                             }
                         }
@@ -149,37 +149,111 @@ public class ConfVolService {
         
     }
 
+    public void annulerReservation(int idReservation) throws Exception {
+        Connection connection = null;
+        PreparedStatement psUpdate = null;
+        PreparedStatement psStatut = null;
+        PreparedStatement psVol = null;
+        ResultSet rsStatut = null;
+        ResultSet rsVol = null;
+
+        try {
+            connection = DbConnect.getConnection();
+
+            // 1. Récupérer l'id_statut pour "Annulee"
+            String sqlStatut = "SELECT id_statut FROM statuts WHERE statut = ?";
+            psStatut = connection.prepareStatement(sqlStatut);
+            psStatut.setString(1, "Annulee");
+            rsStatut = psStatut.executeQuery();
+
+            if (!rsStatut.next()) {
+                throw new Exception("Le statut 'Annulee' n'existe pas dans la base.");
+            }
+            int idStatutAnnulee = rsStatut.getInt("id_statut");
+
+            // 2. Récupérer la date fin_annulation du vol associé à la réservation
+            String sqlVol = """
+                SELECT v.fin_annulation 
+                FROM reservations r 
+                JOIN vols v ON r.id_vol = v.id_vol
+                WHERE r.id_reservation = ?
+            """;
+            psVol = connection.prepareStatement(sqlVol);
+            psVol.setInt(1, idReservation);
+            rsVol = psVol.executeQuery();
+
+            if (!rsVol.next()) {
+                throw new Exception("Réservation ou vol non trouvé pour l'id: " + idReservation);
+            }
+
+            // Timestamp tsFinAnnulation = rsVol.getTimestamp("fin_annulation");
+
+            // if (tsFinAnnulation != null) {
+            //     LocalDateTime finAnnulation = tsFinAnnulation.toLocalDateTime();
+            //     LocalDateTime maintenant = LocalDateTime.now();
+
+            //     if (maintenant.isAfter(finAnnulation)) {
+            //         throw new Exception("La date limite d'annulation est dépassée.");
+            //     }
+            // } else {
+            //     // Si fin_annulation est null, on peut décider si on autorise ou pas
+            //     // Ici on considère que c'est autorisé
+            // }
+
+            // 3. Mettre à jour le statut de la réservation
+            String sqlUpdate = "UPDATE reservations SET id_statut = ? WHERE id_reservation = ?";
+            psUpdate = connection.prepareStatement(sqlUpdate);
+            psUpdate.setInt(1, idStatutAnnulee);
+            psUpdate.setInt(2, idReservation);
+
+            int affectedRows = psUpdate.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new Exception("Aucune réservation trouvée avec l'id " + idReservation);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (rsVol != null) rsVol.close();
+                if (psVol != null) psVol.close();
+                if (rsStatut != null) rsStatut.close();
+                if (psStatut != null) psStatut.close();
+                if (psUpdate != null) psUpdate.close();
+                if (connection != null) connection.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+
     public List<CapaciteRestante> getCapacitesRestantesNonPayeesAvantDate(int idVol, int idClasse, LocalDate date) throws SQLException {
         List<CapaciteRestante> result = new ArrayList<>();
         String sql = """
-            SELECT rp.id_reservation_prix,
-                (rp.capacite - COALESCE(SUM(rd.nb_sieges),0)) AS capacite_restante
-            FROM reservation_prix rp
-            LEFT JOIN (
-                SELECT r.id_vol, rd.id_classe, COUNT(*) AS nb_sieges
-                FROM reservations r
-                JOIN reservation_details rd 
-                ON r.id_reservation = rd.id_reservation
-                JOIN statuts s
-                ON r.id_statut = s.id_statut
-                WHERE s.statut NOT IN ('Payee', 'Confirme') 
-                GROUP BY r.id_vol, rd.id_classe
-            ) rd
-            ON rp.id_vol = rd.id_vol
-        AND rp.id_classe = rd.id_classe
-            WHERE rp.date_fin < ?
-            AND rp.id_vol = ?
-            AND rp.id_classe = ?
-            GROUP BY rp.id_reservation_prix, rp.capacite
-            HAVING (rp.capacite - COALESCE(SUM(rd.nb_sieges),0)) > 0
+            SELECT rp.id_reservation_prix, 
+               COUNT(r.id_reservation) AS capacite_restante
+        FROM reservation_prix rp
+        LEFT JOIN reservations r
+          ON rp.id_vol = r.id_vol
+         AND r.id_classe = rp.id_classe
+        LEFT JOIN statuts s
+          ON r.id_statut = s.id_statut
+        WHERE rp.id_vol = ?
+          AND rp.id_classe = ?
+          AND r.date_reservation <= ?
+          AND s.statut IN ('Confirme')
+        GROUP BY rp.id_reservation_prix
             """;
 
         try (Connection connection = DbConnect.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setDate(1, java.sql.Date.valueOf(date));
-            stmt.setInt(2, idVol);
-            stmt.setInt(3, idClasse);
+            stmt.setDate(3, java.sql.Date.valueOf(date));
+            stmt.setInt(1, idVol);
+            stmt.setInt(2, idClasse);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
