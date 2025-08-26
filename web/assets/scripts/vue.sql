@@ -22,6 +22,7 @@ GROUP BY r.id_vol, rd.id_classe;
 
 CREATE OR REPLACE VIEW vue_stock_billets_date AS
 SELECT 
+    rp.id_reservation_prix,
     rp.id_vol,
     rp.id_classe,
     rp.capacite AS capacite_configuree,
