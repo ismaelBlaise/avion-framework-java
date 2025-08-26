@@ -3,12 +3,14 @@ package services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import dto.ConfVolDto;
 import models.ConfVol;
+import models.alea.CapaciteRestante;
 import utils.DbConnect;
 
 public class ConfVolService {
@@ -82,6 +84,7 @@ public class ConfVolService {
     public double recupererPrixSiStockDisponible(int idClasse, int idVol, LocalDate dateDonnee) throws Exception {
         String sql = """
             SELECT 
+                v.id_reservation_prix,
                 v.prix_unitaire,
                 v.stock_disponible
             FROM vue_stock_billets_date v
@@ -101,14 +104,32 @@ public class ConfVolService {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    int id=rs.getInt("id_reservation_prix");
                     double prixUnitaire = rs.getDouble("prix_unitaire");
                     int stockDisponible = rs.getInt("stock_disponible");
 
-                    // if (stockDisponible > 0) {
+                    if (stockDisponible > 0) {
                         return prixUnitaire;
-                    // } else {
-                    //     throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
-                    // }
+                    } else {
+                        List<CapaciteRestante> capaciteRestantes=getCapacitesRestantesAvantDate(idVol,idClasse,dateDonnee);
+                        if(capaciteRestantes.isEmpty()==false){
+                            for (CapaciteRestante capaciteRestante : capaciteRestantes) {
+                                updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
+                                updateCapacite(id,capaciteRestante.getCapacite());
+                            }
+                        }
+                        if(capaciteRestantes.isEmpty()){
+                            capaciteRestantes=getCapacitesRestantesNonPayeesAvantDate(idVol, idClasse, dateDonnee);
+                            for (CapaciteRestante capaciteRestante : capaciteRestantes) {
+                                updateCapacite(capaciteRestante.getIdReservationPrix(), -capaciteRestante.getCapacite());
+                                updateCapacite(id,capaciteRestante.getCapacite());
+                            }
+                        }
+                        else{
+                         throw new Exception("Plus de billets disponibles pour ce vol et cette classe à la date " + dateDonnee);
+
+                        }
+                    }
                     
                 }
                 throw new Exception("Aucun prix configuré pour ce vol et cette classe avant la date " + dateDonnee);
@@ -127,8 +148,101 @@ public class ConfVolService {
         
     }
 
+    public List<CapaciteRestante> getCapacitesRestantesNonPayeesAvantDate(int idVol, int idClasse, LocalDate date) throws SQLException {
+        List<CapaciteRestante> result = new ArrayList<>();
+        String sql = """
+            SELECT rp.id_reservation_prix,
+                (rp.capacite - COALESCE(SUM(rd.nb_sieges),0)) AS capacite_restante
+            FROM reservation_prix rp
+            LEFT JOIN (
+                SELECT r.id_vol, rd.id_classe, COUNT(*) AS nb_sieges
+                FROM reservations r
+                JOIN reservation_details rd 
+                ON r.id_reservation = rd.id_reservation
+                JOIN statuts s
+                ON r.id_statut = s.id_statut
+                WHERE s.statut NOT IN ('Payee', 'Confirme') 
+                GROUP BY r.id_vol, rd.id_classe
+            ) rd
+            ON rp.id_vol = rd.id_vol
+        AND rp.id_classe = rd.id_classe
+            WHERE rp.date_fin < ?
+            AND rp.id_vol = ?
+            AND rp.id_classe = ?
+            GROUP BY rp.id_reservation_prix, rp.capacite
+            HAVING (rp.capacite - COALESCE(SUM(rd.nb_sieges),0)) > 0
+            """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            stmt.setInt(2, idVol);
+            stmt.setInt(3, idClasse);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id_reservation_prix");
+                    int capaciteRestante = rs.getInt("capacite_restante");
+                    result.add(new CapaciteRestante(id, capaciteRestante));
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<CapaciteRestante> getCapacitesRestantesAvantDate(int idVol, int idClasse, LocalDate date) throws SQLException {
+        List<CapaciteRestante> result = new ArrayList<>();
+        String sql = """
+            SELECT rp.id_reservation_prix,
+                (rp.capacite - COALESCE(SUM(vr.nb_sieges),0)) AS capacite_restante
+            FROM reservation_prix rp
+            LEFT JOIN vue_reservations_prix_utilises vr
+            ON rp.id_reservation_prix = vr.id_reservation_prix
+            WHERE rp.date_fin < ?
+            AND rp.id_vol = ?
+            AND rp.id_classe = ?
+            GROUP BY rp.id_reservation_prix, rp.capacite
+            HAVING (rp.capacite - COALESCE(SUM(vr.nb_sieges),0)) > 0
+            """;
+
+        try (Connection connection = DbConnect.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            stmt.setInt(2, idVol);
+            stmt.setInt(3, idClasse);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id_reservation_prix");
+                    int capaciteRestante = rs.getInt("capacite_restante");
+                    result.add(new CapaciteRestante(id, capaciteRestante));
+                }
+            }
+        }
+        return result;
+    }
 
 
+
+    public void updateCapacite(int idReservationPrix, int delta) throws SQLException {
+        String sql = "UPDATE reservation_prix " +
+                     "SET capacite = capacite + ? " +
+                     "WHERE id_reservation_prix = ? " +
+                     "AND capacite + ? >= 0"; 
+        Connection connection=DbConnect.getConnection();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, delta);
+            ps.setInt(2, idReservationPrix);
+            ps.setInt(3, delta);
+
+            int rows = ps.executeUpdate();
+            if (rows == 0) {
+                throw new SQLException("Impossible de mettre à jour la capacité. Vérifie si l'ID existe ou si la capacité deviendrait négative.");
+            }
+        }
+    }
 
 
     public double recupererPrixParCategorieAge(int idCategorieAge,int idClasse, int idVol) throws Exception {
